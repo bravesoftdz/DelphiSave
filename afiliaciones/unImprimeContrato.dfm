@@ -1,0 +1,458 @@
+object frmImprimeContrato: TfrmImprimeContrato
+  Left = 329
+  Top = 191
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Opciones de Impresi'#243'n'
+  ClientHeight = 325
+  ClientWidth = 280
+  Color = clBtnFace
+  Constraints.MaxWidth = 296
+  Constraints.MinHeight = 176
+  Constraints.MinWidth = 286
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnShow = FormShow
+  DesignSize = (
+    280
+    325)
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Bevel1: TBevel
+    Left = 4
+    Top = 283
+    Width = 273
+    Height = 2
+    Anchors = [akLeft]
+    Shape = bsTopLine
+  end
+  object Label20: TLabel
+    Left = 8
+    Top = 228
+    Width = 81
+    Height = 13
+    Caption = 'Cant.Impresiones'
+  end
+  object Label1: TLabel
+    Left = 10
+    Top = 255
+    Width = 79
+    Height = 13
+    Caption = 'Nombre Archivo:'
+  end
+  object gbCartaBienvenida: TGroupBox
+    Left = 2
+    Top = 115
+    Width = 276
+    Height = 96
+    TabOrder = 12
+    DesignSize = (
+      276
+      96)
+    object lbTexto: TLabel
+      Left = 4
+      Top = 21
+      Width = 30
+      Height = 13
+      Caption = 'Texto:'
+      Enabled = False
+    end
+    object lbFirmante: TLabel
+      Left = 4
+      Top = 45
+      Width = 43
+      Height = 13
+      Caption = 'Firmante:'
+      Enabled = False
+    end
+    object lbCorreo: TLabel
+      Left = 4
+      Top = 69
+      Width = 34
+      Height = 13
+      Caption = 'Correo:'
+      Enabled = False
+    end
+    inline fraTexto: TfraStaticCodigoDescripcion
+      Left = 52
+      Top = 16
+      Width = 216
+      Height = 24
+      Anchors = [akLeft, akTop, akRight]
+      Enabled = False
+      TabOrder = 0
+      ExplicitLeft = 52
+      ExplicitTop = 16
+      ExplicitWidth = 216
+      ExplicitHeight = 24
+      DesignSize = (
+        216
+        24)
+      inherited edCodigo: TPatternEdit
+        Width = 48
+        ExplicitWidth = 48
+      end
+      inherited cmbDescripcion: TComboGrid
+        Left = 51
+        Width = 164
+        ExplicitLeft = 51
+        ExplicitWidth = 164
+        Cells = (
+          'C'#243'digo'
+          'Descripci'#243'n'
+          'Id'
+          'Fecha de Baja')
+        ColWidths = (
+          40
+          186
+          -1
+          -1)
+      end
+    end
+    inline fraFirmante: TfraStaticCodigoDescripcion
+      Left = 52
+      Top = 40
+      Width = 216
+      Height = 25
+      Enabled = False
+      TabOrder = 1
+      ExplicitLeft = 52
+      ExplicitTop = 40
+      ExplicitWidth = 216
+      ExplicitHeight = 25
+      DesignSize = (
+        216
+        25)
+      inherited edCodigo: TPatternEdit
+        Width = 48
+        ExplicitWidth = 48
+      end
+      inherited cmbDescripcion: TComboGrid
+        Left = 51
+        Width = 164
+        ExplicitLeft = 51
+        ExplicitWidth = 164
+        Cells = (
+          'C'#243'digo'
+          'Descripci'#243'n'
+          'Id'
+          'Fecha de Baja')
+        ColWidths = (
+          40
+          300
+          -1
+          -1)
+      end
+    end
+    inline fraCorreo: TfraStaticCTB_TABLAS
+      Left = 52
+      Top = 64
+      Width = 216
+      Height = 25
+      Enabled = False
+      TabOrder = 2
+      ExplicitLeft = 52
+      ExplicitTop = 64
+      ExplicitWidth = 216
+      ExplicitHeight = 25
+      DesignSize = (
+        216
+        25)
+      inherited edCodigo: TPatternEdit
+        Width = 48
+        ExplicitWidth = 48
+      end
+      inherited cmbDescripcion: TComboGrid
+        Left = 51
+        Width = 164
+        ExplicitLeft = 51
+        ExplicitWidth = 164
+        Cells = (
+          'C'#243'digo'
+          'Descripci'#243'n'
+          'Id'
+          'Fecha de Baja'
+          'TB_CLAVE'
+          'TB_ESPECIAL1')
+        ColWidths = (
+          40
+          300
+          -1
+          -1
+          -1
+          -1)
+      end
+    end
+  end
+  object btnAceptar2: TButton
+    Left = 148
+    Top = 295
+    Width = 64
+    Height = 25
+    Anchors = [akLeft]
+    Caption = '&Aceptar'
+    Default = True
+    TabOrder = 0
+    OnClick = btnAceptar2Click
+  end
+  object btnCancelar2: TButton
+    Left = 212
+    Top = 295
+    Width = 64
+    Height = 25
+    Anchors = [akLeft]
+    Cancel = True
+    Caption = '&Cancelar'
+    ModalResult = 2
+    TabOrder = 1
+    OnClick = btnCancelar2Click
+  end
+  object chkAnexo: TCheckBox
+    Left = 7
+    Top = 48
+    Width = 97
+    Height = 17
+    Caption = 'Anexo A'
+    TabOrder = 4
+    OnClick = ActualizaChecks
+  end
+  object chkCliente: TCheckBox
+    Left = 109
+    Top = 8
+    Width = 97
+    Height = 17
+    Caption = 'Para el Cliente'
+    TabOrder = 6
+  end
+  object chkAseguradora: TCheckBox
+    Left = 109
+    Top = 28
+    Width = 116
+    Height = 17
+    Caption = 'Para la Aseguradora'
+    TabOrder = 7
+  end
+  object chkAseguradoraArchivo: TCheckBox
+    Left = 109
+    Top = 48
+    Width = 162
+    Height = 17
+    Caption = 'Para la Aseguradora (Archivo)'
+    TabOrder = 8
+  end
+  object edCantCopias: TCardinalEdit
+    Left = 92
+    Top = 225
+    Width = 51
+    Height = 21
+    TabOrder = 13
+    MinValue = 1
+  end
+  object chkGeneraArchivoNomina: TCheckBox
+    Left = 109
+    Top = 68
+    Width = 153
+    Height = 17
+    Caption = 'Genera Archivo N'#243'mina'
+    TabOrder = 9
+    OnClick = ActualizaChecks
+  end
+  object chkContrato: TCheckBox
+    Left = 7
+    Top = 8
+    Width = 97
+    Height = 17
+    Caption = 'Contrato'
+    TabOrder = 2
+    OnClick = ActualizaChecks
+  end
+  object chkEndoso: TCheckBox
+    Left = 7
+    Top = 28
+    Width = 97
+    Height = 17
+    Caption = 'Endoso Actual'
+    TabOrder = 3
+    OnClick = ActualizaChecks
+  end
+  object chkNomina: TCheckBox
+    Left = 7
+    Top = 68
+    Width = 97
+    Height = 17
+    Caption = 'N'#243'mina'
+    TabOrder = 5
+    OnClick = ActualizaChecks
+  end
+  object edNombre: TFilenameEdit
+    Left = 92
+    Top = 252
+    Width = 186
+    Height = 21
+    DialogKind = dkSave
+    InitialDir = 'c:\'
+    DialogOptions = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofCreatePrompt, ofOldStyleDialog, ofEnableSizing]
+    DialogTitle = 'Nombre de Archivo'
+    NumGlyphs = 1
+    TabOrder = 15
+  end
+  object chkImprimirMembrete: TCheckBox
+    Left = 155
+    Top = 227
+    Width = 110
+    Height = 17
+    Caption = 'Imprimir membrete'
+    TabOrder = 14
+  end
+  object chkCartaBienvenida: TCheckBox
+    Left = 7
+    Top = 112
+    Width = 116
+    Height = 17
+    Caption = 'Carta de Bienvenida'
+    TabOrder = 11
+    OnClick = chkCartaBienvenidaClick
+  end
+  object btnEnviarPorEmail: TBitBtn
+    Left = 8
+    Top = 296
+    Width = 40
+    Height = 25
+    Hint = 'Enviar endoso por e-mail'
+    Glyph.Data = {
+      160C0000424D160C000000000000360000002800000032000000140000000100
+      180000000000E00B000000000000000000000000000000000000FF00FFFF00FF
+      000000000000000000000000000000000000000000000000000000000000FF00
+      FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+      00FFFF00FF686868686868000000000000000000000000000000000000000000
+      0000000000000000006868686868686868686868686868686868686868686868
+      686868686868686868686868686868680000FF00FFFF00FF868686CCCCCCCCCC
+      CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC000000FF00FFFF00FFFF00FFFF
+      00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF686868
+      686868868686CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC0000
+      0068686868686868686868686868686868686868686868686868686868686868
+      68686868686868680000FF00FFFF00FF868686FFFFFFCC3300CC3300CC3300CC
+      3300CC3300CC3300CCCCCC000000FF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+      FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF686868686868868686FFFF
+      FF343434343434343434343434343434343434CCCCCC00000068686868686868
+      6868686868686868686868686868686868686868686868686868686868686868
+      0000FF00FFFF00FF868686FFFFFFFFFFFF99FFFFFFFFFF99FFFFFFFFFF99FFFF
+      CCCCCC000000FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+      FFFF00FFFF00FFFF00FFFF00FF686868686868868686FFFFFFFFFFFFF3F3F3FF
+      FFFFF3F3F3FFFFFFF3F3F3CCCCCC000000686868686868686868686868686868
+      6868686868686868686868686868686868686868686868680000FF00FFFF00FF
+      868686FFFFFFFF0000FF0000FF0000FF0000FF0000FF0000CCCCCC0000000000
+      00000000000000000000000000000000000000000000000000000000FF00FFFF
+      00FFFF00FF686868686868868686FFFFFF1C1C1C1C1C1C1C1C1C1C1C1C1C1C1C
+      1C1C1CCCCCCC0000000000000000000000000000000000000000000000000000
+      000000000000006868686868686868680000FF00FFFF00FF868686FFFFFFFFFF
+      FF99FFFFFFFFFF99FFFFFFFFFF99FFFFCCCCCC000000CCCCCCCCCCCCCCCCCCCC
+      CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC000000FF00FFFF00FFFF00FF686868
+      686868868686FFFFFFFFFFFFF3F3F3FFFFFFF3F3F3FFFFFFF3F3F3CCCCCC0000
+      00CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC00000068
+      68686868686868680000FF00FFFF00FF868686FFFFFFFF6633FF6633FF6633FF
+      6633FF6633FF6633CCCCCC00000099FFFFFFFFFF99FFFFFFFFFF99FFFFFFFFFF
+      99FFFFFFFFFFCCCCCC000000FF00FFFF00FFFF00FF686868686868868686FFFF
+      FF676767676767676767676767676767676767CCCCCC000000F3F3F3FFFFFFF3
+      F3F3FFFFFFF3F3F3FFFFFFF3F3F3FFFFFFCCCCCC000000686868686868686868
+      0000FF00FFFF00FF868686FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCCCCCC
+      CCCCCC000000CC3300CC3300CC3300CC3300CC330099FFFFFFFFFF99FFFFCCCC
+      CC000000FF00FFFF00FFFF00FF686868686868868686FFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFCCCCCCCCCCCC000000343434343434343434343434343434
+      F3F3F3FFFFFFF3F3F3CCCCCC0000006868686868686868680000FF00FFFF00FF
+      868686FFFFFFFF6633FF6633FF6633FFFFFF000000000000000000000000FFFF
+      FFFFFFFF99FFFFFFFFFF99FFFFFFFFFF99FFFFFFFFFFCCCCCC000000FF00FFFF
+      00FFFF00FF686868686868868686FFFFFF676767676767676767FFFFFF000000
+      000000000000000000FFFFFFFFFFFFF3F3F3FFFFFFF3F3F3FFFFFFF3F3F3FFFF
+      FFCCCCCC0000006868686868686868680000FF00FFFF00FF868686FFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFF868686FFFFFF000000FF6633FF6633FF6633FF6633FF
+      6633FF6633FFFFFFFFFFFF99FFFFCCCCCC000000FF00FFFF00FFFF00FF686868
+      686868868686FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF868686FFFFFF0000006767
+      67676767676767676767676767676767FFFFFFFFFFFFF3F3F3CCCCCC00000068
+      68686868686868680000FF00FFFF00FF868686FFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFF868686000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFCCCCCC000000FF00FFFF00FFFF00FF686868686868868686FFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFF868686000000FFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCCCCCC000000686868686868686868
+      0000FF00FFFF00FF868686868686868686868686868686868686868686FFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000099000099CCCC
+      CC000000FF00FFFF00FFFF00FF68686868686886868686868686868686868686
+      8686868686868686FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFF2D2D2D2D2D2DCCCCCC0000006868686868686868680000FF00FFFF00FF
+      FF00FFFF00FFFF00FF868686FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF3300FF3300FFCCCCCC000000FF00FFFF
+      00FFFF00FF686868686868686868686868686868868686FFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5252525252
+      52CCCCCC0000006868686868686868680000FF00FFFF00FFFF00FFFF00FFFF00
+      FF868686C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0000000FF00FFFF00FFFF00FF686868
+      686868686868686868686868868686C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+      C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C000000068
+      68686868686868680000FF00FFFF00FFFF00FFFF00FFFF00FFFF00FF868686FF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFF000000FF00FFFF00FFFF00FFFF00FF6868686868686868686868
+      68686868686868868686FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000686868686868686868686868
+      0000FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF868686FFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FF00
+      FFFF00FFFF00FFFF00FFFF00FF68686868686868686868686868686868686868
+      6868868686FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFF0000006868686868686868686868686868680000FF00FFFF00FF
+      FF00FFFF00FFFF00FFFF00FFFF00FFFF00FF868686FFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FF00FFFF00FFFF00FFFF00FFFF
+      00FFFF00FF686868686868686868686868686868686868686868686868868686
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000006868
+      686868686868686868686868686868680000FF00FFFF00FFFF00FFFF00FFFF00
+      FFFF00FFFF00FFFF00FFFF00FF868686FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFF000000FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF686868
+      686868686868686868686868686868686868686868686868868686FFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000068686868686868686868686868
+      68686868686868680000FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+      00FFFF00FFFF00FF868686FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FF00FF
+      FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF6868686868686868686868
+      68686868686868686868686868686868686868868686FFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFF000000686868686868686868686868686868686868686868686868
+      0000FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+      FF00FF868686868686868686868686868686FF00FFFF00FFFF00FFFF00FFFF00
+      FFFF00FFFF00FFFF00FFFF00FF68686868686868686868686868686868686868
+      6868686868686868686868686868868686868686868686868686868686686868
+      6868686868686868686868686868686868686868686868680000}
+    NumGlyphs = 2
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 16
+    OnClick = btnEnviarPorEmailClick
+  end
+  object chkImpresionContratoActual: TCheckBox
+    Left = 109
+    Top = 88
+    Width = 153
+    Height = 17
+    Caption = 'Impresi'#243'n Contrato Actual'
+    Checked = True
+    Enabled = False
+    State = cbChecked
+    TabOrder = 10
+    OnClick = ActualizaChecks
+  end
+  object Seguridad: TSeguridad
+    AutoEjecutar = True
+    Claves = <
+      item
+        Name = 'ImprimirContrato'
+      end
+      item
+        Name = 'ReImprimirContrato'
+      end>
+    DBLogin = frmPrincipal.DBLogin
+    PermitirEdicion = True
+    Left = 62
+    Top = 291
+  end
+end

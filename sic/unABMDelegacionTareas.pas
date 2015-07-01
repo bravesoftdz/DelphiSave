@@ -1,0 +1,204 @@
+unit unABMDelegacionTareas;
+
+{$IFNDEF AGENDA_SIC}
+  {$MESSAGE ERROR 'Este fuente se compila solo en el SIC, remover del DPR si es necesario (subirlo al JEDI!) Gracias'}
+{$ENDIF}
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, unCustomForm, AdvToolBar, AdvToolBarStylers, ImgList, XPMenu, Placemnt,
+  unFraTitulo, FormPanel, StdCtrls, unArtFrame, unfraUsuarios, AdvGlowButton, Mask, ToolEdit, DateComboBox, ExtCtrls, unArtDBAwareFrame, unFraCodigoDescripcion,
+  unFraCodDesc, unFraUsuarioConJerarquias, DB, SDEngine, ComCtrls, JvExComCtrls, JvComponent, JvDBTreeView, Grids, DBGrids, RXDBCtrl, ArtComboBox, ArtDBGrid, ActnList,
+  pngimage, Login, artDbLogin, artSeguridad, RxToolEdit, RxPlacemnt;
+
+type
+  TfrmABMDelegacionTareas = class(TfrmCustomForm)
+    AdvToolBarPager: TAdvToolBarPager;
+    pgActual: TAdvPage;
+    AdvToolBarOfficeStyler: TAdvToolBarOfficeStyler;
+    pgHistorico: TAdvPage;
+    fpABM: TFormPanel;
+    fraTituloDelegacionTareas: TfraTitulo;
+    lbUsuario: TLabel;
+    edFechaDesde: TDateComboBox;
+    lbFecha: TLabel;
+    edFechaHasta: TDateComboBox;
+    lbHasta: TLabel;
+    btnCancelar: TAdvGlowButton;
+    btnAceptar: TAdvGlowButton;
+    bvSepadador: TBevel;
+    fraFiltroUsuario: TfraUsuario;
+    lbFiltroUsuario: TLabel;
+    pgPermanente: TAdvPage;
+    sdqActual: TSDQuery;
+    dsActual: TDataSource;
+    dbgActual: TArtDBGrid;
+    dbgHistorico: TArtDBGrid;
+    dbgPermanente: TArtDBGrid;
+    sdqHistorico: TSDQuery;
+    dsHistorico: TDataSource;
+    sdqPermanente: TSDQuery;
+    dsPermanente: TDataSource;
+    Panel1: TPanel;
+    btnNuevaDelegacion: TAdvGlowButton;
+    btnAnularDelegacion: TAdvGlowButton;
+    alAcciones: TActionList;
+    acNuevaDelegacion: TAction;
+    ilToolbar: TImageList;
+    acAnularDelegacion: TAction;
+    Panel3: TPanel;
+    btnNuevaDelegacionPermanente: TAdvGlowButton;
+    btnAnularDelegacionPermanente: TAdvGlowButton;
+    fraUsuarioExceptuado: TfraUsuario;
+    Image1: TImage;
+    Image2: TImage;
+    Seguridad: TSeguridad;
+    DBLogin: TDBLogin;
+    procedure acAnularDelegacionExecute(Sender: TObject);
+    procedure acNuevaDelegacionExecute(Sender: TObject);
+    procedure AcomodoGrilla(DataSet: TDataSet);
+    procedure btnAceptarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    procedure ChangeUsuario(Sender: TObject);
+  public
+    procedure Actualizar;
+  end;
+
+var
+  frmABMDelegacionTareas: TfrmABMDelegacionTareas;
+
+implementation
+
+uses
+  CustomDlgs, VCLExtra, unDmPrincipal, unSesion, SqlFuncs, AnsiSql, General;
+
+{$R *.dfm}
+
+procedure TfrmABMDelegacionTareas.acAnularDelegacionExecute(Sender: TObject);
+var
+  iId: Integer;
+  iIdExeptuante: Integer;
+  sNombre: String;
+begin
+  if AdvToolBarPager.ActivePage = pgActual then
+  begin
+    iId           := sdqActual.FieldByName('ex_id').AsInteger;
+    iIdExeptuante := sdqActual.FieldByName('idexceptuante').AsInteger;
+    sNombre       := sdqActual.FieldByName('exceptuado').AsString;
+  end
+  else
+  begin
+    iId           := sdqPermanente.FieldByName('ex_id').AsInteger;
+    iIdExeptuante := sdqPermanente.FieldByName('idexceptuante').AsInteger;
+    sNombre       := sdqPermanente.FieldByName('exceptuado').AsString;
+  end;
+
+  if MsgAsk('¿ Realmente desea quitarle el acceso a ' + sNombre + ' de que vea y resuelva' + IIF(iIdExeptuante = Sesion.Id, ' sus tareas', ' las tareas de ' + fraFiltroUsuario.Nombre) + ' ?') then
+    with TSql.Create('agenda.aex_excepcionusuariotarea') do
+    try
+      PrimaryKey.Add('ex_id',    iId);
+      Fields.Add('ex_fechabaja', exDateTime);
+      Fields.Add('ex_usubaja',   Sesion.UserID);
+      SqlType := stUpdate;
+
+      EjecutarSql(Sql);
+      Actualizar;
+    finally
+      Free;
+    end;
+end;
+
+procedure TfrmABMDelegacionTareas.acNuevaDelegacionExecute(Sender: TObject);
+begin
+  with fpABM do
+  begin
+    fraUsuarioExceptuado.Limpiar;
+    edFechaDesde.Clear;
+    edFechaHasta.Clear;
+    VCLExtra.LockControls([edFechaDesde, edFechaHasta], AdvToolBarPager.ActivePage = pgPermanente);
+
+    if ShowModal = mrOk then
+      with TSql.Create('agenda.aex_excepcionusuariotarea') do
+      try
+        PrimaryKey.Add('ex_id',       GetSecNextVal('agenda.seq_aex_id'));
+        Fields.Add('ex_idexceptuado', fraUsuarioExceptuado.ID);
+        Fields.Add('ex_idusuario',    fraFiltroUsuario.ID);
+
+        if AdvToolBarPager.ActivePage = pgActual then
+        begin
+          Fields.Add('ex_vigenciadesde', Trunc(edFechaDesde.Date), dtDateTime);
+          Fields.Add('ex_vigenciahasta', Trunc(edFechaHasta.Date), dtDateTime);
+          Fields.Add('ex_permanente',    'N');
+        end
+        else
+        begin
+          Fields.Add('ex_vigenciadesde', exDateTime);
+          Fields.Add('ex_permanente',    'S');
+        end;
+
+        Fields.Add('ex_fechaalta', exDateTime);
+        Fields.Add('ex_usualta',   Sesion.UserID);
+        SqlType := stInsert;
+
+        EjecutarSql(Sql);
+      finally
+        Free;
+        Actualizar;
+      end;
+  end;
+end;
+
+procedure TfrmABMDelegacionTareas.AcomodoGrilla(DataSet: TDataSet);
+begin
+  if DataSet = dbgActual.DataSource.DataSet then
+    VCLExtra.DynColWidthsByData(dbgActual)
+  else if DataSet = dbgHistorico.DataSource.DataSet then
+    VCLExtra.DynColWidthsByData(dbgHistorico)
+  else if DataSet = dbgPermanente.DataSource.DataSet then
+    VCLExtra.DynColWidthsByData(dbgPermanente);
+end;
+
+procedure TfrmABMDelegacionTareas.Actualizar;
+begin
+  OpenQueryEx(sdqActual, [fraFiltroUsuario.UserID]);
+  OpenQueryEx(sdqHistorico, [fraFiltroUsuario.UserID]);
+  OpenQueryEx(sdqPermanente, [fraFiltroUsuario.UserID]);
+
+  btnAnularDelegacion.Enabled := Seguridad.Activar(btnAnularDelegacion) and not sdqActual.IsEmpty;
+  btnAnularDelegacionPermanente.Enabled := Seguridad.Activar(btnAnularDelegacionPermanente) and not sdqPermanente.IsEmpty;
+end;
+
+procedure TfrmABMDelegacionTareas.btnAceptarClick(Sender: TObject);
+begin
+  Verificar(fraUsuarioExceptuado.IsEmpty, fraUsuarioExceptuado.edCodigo, 'Debe seleccionar un usuario.');
+  if (AdvToolBarPager.ActivePage = pgActual) then
+  begin
+    Verificar(edFechaDesde.IsEmpty, edFechaDesde, 'Debe indicar la fecha desde la cual desea conceder a ' + fraUsuarioExceptuado.Nombre + ' el acceso a sus tareas.');
+    Verificar(edFechaDesde.Date < DBDate, edFechaDesde, 'La fecha inicial puede ser a partir de hoy ' + DateToStr(DBDate));
+    Verificar(edFechaHasta.IsEmpty, edFechaHasta, 'Debe indicar la fecha hasta la cual desea conceder a ' + fraUsuarioExceptuado.Nombre + ' el acceso a sus tareas.');
+    Verificar(edFechaDesde.Date > edFechaHasta.Date, edFechaDesde, 'La fecha inicial debe ser anterior a la fecha de fin del permiso.');
+  end;
+  fpABM.ModalResult := mrOK;
+end;
+
+procedure TfrmABMDelegacionTareas.FormCreate(Sender: TObject);
+begin
+  inherited;
+  HideTitlebar;
+  AdvToolBarPager.ActivePage := pgActual;
+  fraFiltroUsuario.ShowBajas := True;
+  fraFiltroUsuario.Cargar(Sesion.UserID);
+  Actualizar;
+  VCLExtra.LockControls([fraFiltroUsuario], Sesion.Sector <> 'COMPUTOS');
+  pgPermanente.TabVisible := Sesion.Sector = 'COMPUTOS';
+  fraFiltroUsuario.OnChange := ChangeUsuario;
+end;
+
+procedure TfrmABMDelegacionTareas.ChangeUsuario(Sender: TObject);
+begin
+  Actualizar;
+end;
+
+end.

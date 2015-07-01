@@ -1,0 +1,414 @@
+object fraJuzgados: TfraJuzgados
+  Left = 0
+  Top = 0
+  Width = 794
+  Height = 422
+  TabOrder = 0
+  DesignSize = (
+    794
+    422)
+  object gbJuzgados: TGroupBox
+    Left = 5
+    Top = 3
+    Width = 786
+    Height = 412
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    Caption = 'Juzgado'
+    TabOrder = 0
+    DesignSize = (
+      786
+      412)
+    object lblFuero: TLabel
+      Left = 292
+      Top = 16
+      Width = 32
+      Height = 13
+      Caption = 'Fuero:'
+    end
+    object lblJurisdiccion: TLabel
+      Left = 12
+      Top = 18
+      Width = 58
+      Height = 13
+      Caption = 'Jurisdicci'#243'n:'
+    end
+    object lblJuzgado: TLabel
+      Left = 12
+      Top = 42
+      Width = 64
+      Height = 13
+      Caption = 'Juzgado Nro:'
+    end
+    object lblSecretaria: TLabel
+      Left = 293
+      Top = 41
+      Width = 53
+      Height = 13
+      Caption = 'Secretar'#237'a:'
+    end
+    object lblInstancia: TLabel
+      Left = 13
+      Top = 67
+      Width = 48
+      Height = 13
+      Caption = 'Instancia:'
+    end
+    object lblExpediente: TLabel
+      Left = 290
+      Top = 66
+      Width = 41
+      Height = 13
+      Caption = 'N'#186' Exp.:'
+      Visible = False
+    end
+    object lblFechaIngreso: TLabel
+      Left = 544
+      Top = 66
+      Width = 51
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = 'F.Ingreso:'
+      Visible = False
+    end
+    object Label1: TLabel
+      Left = 411
+      Top = 66
+      Width = 4
+      Height = 13
+      Caption = '/'
+      Visible = False
+    end
+    object lbNroExpediente: TLabel
+      Left = 457
+      Top = 65
+      Width = 3
+      Height = 13
+    end
+    inline fraFuero: TfraCodigoDescripcionExt
+      Left = 351
+      Top = 12
+      Width = 431
+      Height = 23
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 1
+      ExplicitLeft = 351
+      ExplicitTop = 12
+      ExplicitWidth = 431
+      DesignSize = (
+        431
+        23)
+      inherited cmbDescripcion: TArtComboBox
+        Width = 366
+        ExplicitWidth = 366
+      end
+    end
+    inline fraJurisdiccion: TfraCodigoDescripcionExt
+      Left = 75
+      Top = 13
+      Width = 214
+      Height = 23
+      TabOrder = 0
+      ExplicitLeft = 75
+      ExplicitTop = 13
+      ExplicitWidth = 214
+      DesignSize = (
+        214
+        23)
+      inherited cmbDescripcion: TArtComboBox
+        Width = 149
+        ExplicitWidth = 149
+      end
+    end
+    inline fraJuzgado: TfraCodigoDescripcionExt
+      Left = 75
+      Top = 37
+      Width = 214
+      Height = 23
+      TabOrder = 2
+      ExplicitLeft = 75
+      ExplicitTop = 37
+      ExplicitWidth = 214
+      DesignSize = (
+        214
+        23)
+      inherited cmbDescripcion: TArtComboBox
+        Width = 149
+        ExplicitWidth = 149
+      end
+    end
+    inline fraSecretaria: TfraCodigoDescripcionExt
+      Left = 352
+      Top = 36
+      Width = 430
+      Height = 23
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 3
+      ExplicitLeft = 352
+      ExplicitTop = 36
+      ExplicitWidth = 430
+      DesignSize = (
+        430
+        23)
+      inherited cmbDescripcion: TArtComboBox
+        Width = 365
+        ExplicitWidth = 365
+      end
+    end
+    object peInstancia: TPatternEdit
+      Left = 76
+      Top = 63
+      Width = 141
+      Height = 21
+      Color = clGradientInactiveCaption
+      Enabled = False
+      ReadOnly = True
+      TabOrder = 4
+    end
+    object btnMasDatosJuzgado: TBitBtn
+      Left = 685
+      Top = 61
+      Width = 96
+      Height = 23
+      Hint = 'Mostrar m'#225's datos del Juzgado'
+      Anchors = [akTop, akRight]
+      Caption = 'Mas Datos'
+      TabOrder = 10
+      OnClick = btnMasDatosJuzgadoClick
+    end
+    object fpMasDatosJuzgado: TFormPanel
+      Left = 70
+      Top = 108
+      Width = 463
+      Height = 237
+      HelpContext = 7
+      FormWidth = 0
+      FormHeigth = 0
+      FormLeft = 0
+      FormTop = 0
+      BorderStyle = bsDialog
+      Position = poScreenCenter
+      OnBeforeShow = fpMasDatosJuzgadoBeforeShow
+      DesignSize = (
+        463
+        237)
+      object SeparadorBotonesMasDatos: TBevel
+        Left = 4
+        Top = 202
+        Width = 456
+        Height = 5
+        Anchors = [akLeft, akRight, akBottom]
+        Shape = bsTopLine
+      end
+      object lblTituloJuzgado: TLabel
+        Left = 12
+        Top = 6
+        Width = 40
+        Height = 13
+        Caption = 'Juzgado'
+      end
+      object btnAceptarMasDatosJuzgado: TButton
+        Left = 300
+        Top = 207
+        Width = 75
+        Height = 25
+        Anchors = [akRight, akBottom]
+        Caption = '&Aceptar'
+        TabOrder = 0
+        OnClick = btnAceptarMasDatosJuzgadoClick
+      end
+      object btnCancelarMasDatos: TButton
+        Left = 378
+        Top = 207
+        Width = 75
+        Height = 25
+        Anchors = [akRight, akBottom]
+        Cancel = True
+        Caption = '&Cancelar'
+        ModalResult = 2
+        TabOrder = 1
+      end
+      object edDescripcionJuzgado: TEdit
+        Left = 8
+        Top = 21
+        Width = 441
+        Height = 21
+        Color = clInactiveCaption
+        TabOrder = 2
+      end
+      object pgMasDatosJuzgado: TPageControl
+        Left = 6
+        Top = 46
+        Width = 453
+        Height = 139
+        ActivePage = tsSede
+        TabOrder = 3
+        object tsSede: TTabSheet
+          Caption = 'Sede'
+          object lblDomicilioJuzgado: TLabel
+            Left = 8
+            Top = 8
+            Width = 44
+            Height = 13
+            Caption = 'Domicilio:'
+          end
+          object lblTelefonoJuzgado: TLabel
+            Left = 8
+            Top = 56
+            Width = 51
+            Height = 13
+            Caption = 'Tel'#233'fonos:'
+          end
+          object lblFaxJuzgado: TLabel
+            Left = 8
+            Top = 80
+            Width = 22
+            Height = 13
+            Caption = 'Fax:'
+          end
+          object lblEmailJuzgado: TLabel
+            Left = 168
+            Top = 80
+            Width = 32
+            Height = 13
+            Caption = 'E-Mail:'
+          end
+          object lblLocJuzgado: TLabel
+            Left = 8
+            Top = 32
+            Width = 48
+            Height = 13
+            Caption = 'Localidad:'
+            FocusControl = btnAceptarMasDatosJuzgado
+          end
+          object lblCPJuzgado: TLabel
+            Left = 304
+            Top = 32
+            Width = 17
+            Height = 13
+            Caption = 'CP:'
+          end
+          object edDomicilioJuzgado: TEdit
+            Left = 60
+            Top = 4
+            Width = 375
+            Height = 21
+            TabOrder = 0
+          end
+          object edTelefonoJuzgado: TEdit
+            Left = 60
+            Top = 52
+            Width = 376
+            Height = 21
+            TabOrder = 3
+          end
+          object edFaxJuzgado: TEdit
+            Left = 60
+            Top = 76
+            Width = 93
+            Height = 21
+            TabOrder = 4
+          end
+          object edEmailJuzgado: TEdit
+            Left = 208
+            Top = 76
+            Width = 229
+            Height = 21
+            TabOrder = 5
+            OnExit = edEmailJuzgadoExit
+          end
+          object edLocalidadJuzgado: TEdit
+            Left = 60
+            Top = 28
+            Width = 233
+            Height = 21
+            TabOrder = 1
+          end
+          object edCPJuzgado: TEdit
+            Left = 332
+            Top = 28
+            Width = 104
+            Height = 21
+            MaxLength = 11
+            TabOrder = 2
+          end
+        end
+      end
+    end
+    object edNroExpediente: TPatternEdit
+      Left = 333
+      Top = 62
+      Width = 75
+      Height = 21
+      MaxLength = 10
+      TabOrder = 6
+      Visible = False
+      Pattern = 
+        'abcdefghijklmn'#241'opqrstuvwxyzABCDEFGHIJKLMN'#209'OPQRSTUVWXYZ0123456789' +
+        '-'
+    end
+    object btnInstanciasAnteriores: TBitBtn
+      Left = 221
+      Top = 63
+      Width = 65
+      Height = 22
+      Hint = 'Mostrar Informaci'#243'n Sobre Instancias Anteriores'
+      Caption = 'Instancias'
+      TabOrder = 5
+      Visible = False
+      OnClick = btnInstanciasAnterioresClick
+    end
+    object dteFechaIngreso: TDateComboBox
+      Left = 593
+      Top = 62
+      Width = 88
+      Height = 21
+      Anchors = [akTop, akRight]
+      TabOrder = 9
+    end
+    object edAnioExpediente: TPatternEdit
+      Left = 422
+      Top = 62
+      Width = 30
+      Height = 21
+      MaxLength = 2
+      TabOrder = 7
+      Visible = False
+      Pattern = '0123456789'
+    end
+    object cbSinExpediente: TCheckBox
+      Left = 502
+      Top = 65
+      Width = 40
+      Height = 17
+      Alignment = taLeftJustify
+      Anchors = [akTop, akRight]
+      Caption = 'S/N'
+      TabOrder = 8
+      Visible = False
+      OnClick = cbSinExpedienteClick
+    end
+  end
+  object sdqJuzgado: TSDQuery
+    DatabaseName = 'dbprincipal'
+    Options = []
+    DataSource = fraJuzgado.dsDatos
+    SQL.Strings = (
+      'SELECT ljz.jz_direccion,'
+      '       ljz.jz_localidad,'
+      '       ljz.jz_cp,'
+      '       ljz.jz_telefono,'
+      '       ljz.jz_fax,'
+      '       ljz.jz_email'
+      '  FROM legales.ljz_juzgado ljz'
+      ' WHERE ljz.jz_id = :idjuzgado')
+    UniDirectional = True
+    Left = 92
+    Top = 316
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'idjuzgado'
+        ParamType = ptInput
+      end>
+  end
+end

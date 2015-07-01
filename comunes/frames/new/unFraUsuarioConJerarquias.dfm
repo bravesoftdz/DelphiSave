@@ -1,0 +1,2 @@
+inherited fraUsuarioConJerarquias: TfraUsuarioConJerarquias
+end

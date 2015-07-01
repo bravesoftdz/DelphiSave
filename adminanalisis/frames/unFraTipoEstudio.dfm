@@ -1,0 +1,2 @@
+inherited fraTipoEstudio: TfraTipoEstudio
+end

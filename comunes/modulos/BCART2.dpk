@@ -1,0 +1,46 @@
+package BCART2;
+
+{$R *.RES}
+{$ALIGN ON}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ART2 - Basic Classes'}
+{$IMPLICITBUILD ON}
+{$DEFINE ART2}
+{$DEFINE ARTUTILS}
+
+requires
+  vcl50,
+  DMART;
+
+contains
+  unArtFrame in '..\REPOSIT\unArtFrame.pas' {ArtFrame: TFrame},
+  unArtDbFrame in '..\REPOSIT\unArtDbFrame.pas' {ArtDbFrame: TFrame},
+  unFraCodigoDescripcion in '..\FRAMES\unFraCodigoDescripcion.pas' {fraCodigoDescripcion: TFrame},
+  unfraCtbTablas in '..\FRAMES\unFraCtbTablas.pas' {fraCtbTablas: TFrame},
+  unFraEmpresa in '..\FRAMES\NEW\unFraEmpresa.pas' {fraEmpresa: TFrame},
+  unFraEstablecimiento in '..\FRAMES\NEW\unFraEstablecimiento.pas' {FraEstablecimiento: TFrame},
+  unFraDomicilio in '..\FRAMES\NEW\unFraDomicilio.pas' {fraDomicilio: TFrame},
+  unFraStaticCodigoDescripcion in '..\FRAMES\unFraStaticCodigoDescripcion.pas' {fraStaticCodigoDescripcion: TFrame},
+  unFraStaticCTB_TABLAS in '..\FRAMES\unFraStaticCTB_TABLAS.pas' {fraStaticCTB_TABLAS: TFrame},
+  unCustomConsulta in '..\REPOSIT\unCustomConsulta.pas' {frmCustomConsulta};
+
+end.

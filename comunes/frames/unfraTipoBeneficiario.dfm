@@ -1,0 +1,2 @@
+inherited fraTipoBeneficiario: TfraTipoBeneficiario
+end

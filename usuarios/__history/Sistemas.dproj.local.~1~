@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2014/01/22 11:46:49.000.836,=C:\delphi\desarrollo\usuarios\Unit1.pas</Transaction>
+    <Transaction>2014/01/22 11:49:39.000.216,C:\delphi\desarrollo\usuarios\Unit1.pas=C:\delphi\desarrollo\sistemas\unImportarInformes.pas</Transaction>
+    <Transaction>2014/01/22 11:49:39.000.216,C:\delphi\desarrollo\usuarios\Unit1.dfm=C:\delphi\desarrollo\sistemas\unImportarInformes.dfm</Transaction>
+    <Transaction>2014/01/24 12:45:11.000.733,=C:\delphi\desarrollo\usuarios\Unit1.pas</Transaction>
+    <Transaction>2014/01/24 12:47:35.000.164,=C:\delphi\desarrollo\usuarios\Unit1.pas</Transaction>
+    <Transaction>2014/01/24 12:48:06.000.889,C:\delphi\desarrollo\usuarios\Unit1.dfm=C:\delphi\desarrollo\usuarios\unfraImportarInformes.dfm</Transaction>
+    <Transaction>2014/01/24 12:48:06.000.889,C:\delphi\desarrollo\usuarios\Unit1.pas=C:\delphi\desarrollo\usuarios\unfraImportarInformes.pas</Transaction>
+    <Transaction>2014/01/24 14:55:23.000.430,=C:\delphi\desarrollo\usuarios\Unit1.pas</Transaction>
+    <Transaction>2014/01/24 14:57:32.000.108,C:\delphi\desarrollo\usuarios\Unit1.dfm=C:\delphi\desarrollo\sistemas\unImportarInformeDirectorios.dfm</Transaction>
+    <Transaction>2014/01/24 14:57:32.000.108,C:\delphi\desarrollo\usuarios\Unit1.pas=C:\delphi\desarrollo\sistemas\unImportarInformeDirectorios.pas</Transaction>
+    <Transaction>2014/01/24 15:05:47.000.663,C:\delphi\desarrollo\usuarios\unfraImportarInformes.pas=</Transaction>
+    <Transaction>2014/01/29 11:07:53.000.846,C:\delphi\desarrollo\sistemas\unImportarInformes.pas=</Transaction>
+    <Transaction>2014/01/29 11:20:42.000.048,=C:\delphi\desarrollo\sistemas\unImportarInformes.pas</Transaction>
+  </Transactions>
+</BorlandProject>

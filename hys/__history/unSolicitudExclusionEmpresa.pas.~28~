@@ -1,0 +1,188 @@
+unit unSolicitudExclusionEmpresa;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, unCustomGridABM, FieldHider, ShortCutControl, Placemnt,
+  artSeguridad, QueryPrint, QueryToFile, ExportDialog, SortDlg, DB,
+  SDEngine, StdCtrls, ExtCtrls, FormPanel, Grids, DBGrids, RXDBCtrl,
+  ArtComboBox, ArtDBGrid, ComCtrls, ToolWin, unfraCtbTablas, unArtDbFrame,
+  unFraEmpresa, unArtFrame, unArtDBAwareFrame, unFraCodigoDescripcion,
+  unFraEstablecimiento, RxPlacemnt
+  //, Vcl.Mask, RxToolEdit
+  ;
+
+type
+  TfrmSolicitudExclusionEmpresa = class(TfrmCustomGridABM)
+    fraEmpresa: TfraEmpresa;
+    lbCUIT: TLabel;
+    lbTipo: TLabel;
+    fraTipo: TfraCtbTablas;
+    lbOperativo: TLabel;
+    fraOperativo: TfraCodigoDescripcion;
+    lbObservaciones: TLabel;
+    edObservacion: TMemo;
+    lbMotivo: TLabel;
+    fraMotivo: TfraCodigoDescripcion;
+    Label1: TLabel;
+    fraEstadoSolicitudExclusion: TfraCodigoDescripcion;
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    protected
+    procedure ClearControls; override;
+    function DoABM: Boolean; override;
+    procedure LoadControls; override;
+    function Validar: Boolean; override;
+  end;
+
+var
+  frmSolicitudExclusionEmpresa: TfrmSolicitudExclusionEmpresa;
+
+implementation
+
+uses
+  unDmPrincipal, SqlFuncs, ansiSql, VclExtra, CustomDlgs, unSesion, General;
+
+{$R *.dfm}
+
+procedure TfrmSolicitudExclusionEmpresa.ClearControls;
+begin
+  inherited;
+  fraEmpresa.Clear;
+  fraMotivo.Clear;
+  fraTipo.Clear;
+  fraOperativo.Clear;
+  edObservacion.Clear;
+  fraEstadoSolicitudExclusion.Clear;
+end;
+
+function TfrmSolicitudExclusionEmpresa.DoABM: Boolean;
+var
+  iIdCodigo : Integer;
+begin
+  BeginTrans(True);
+  try
+    Sql.Clear;
+    if ModoABM = maBaja Then
+    begin
+      iIdCodigo:=sdqConsulta.FieldByName('se_id').AsInteger;
+      Sql.Fields.Add('se_usubaja', Sesion.UserID );
+      Sql.Fields.Add('se_fechabaja', exDateTime );
+      Sql.SqlType := stUpdate;
+    end else begin
+      Sql.Fields.Add('SE_CUIT',fraEmpresa.CUIT);
+      Sql.Fields.Add('SE_IDMOTIVOSOLICITUD',fraMotivo.Value);
+      Sql.Fields.Add('SE_TIPO',fraTipo.Codigo);
+      Sql.Fields.Add('SE_OPERATIVO',fraOperativo.Codigo);
+      Sql.Fields.Add('SE_OBSERVACIONES',edObservacion.Text);
+      Sql.Fields.Add('SE_IDESTADOSOLICITUD',fraEstadoSolicitudExclusion.Codigo);
+      if ModoABM = maAlta Then
+      begin
+        Sql.SqlType := stInsert;
+        iIdCodigo := GetSecNextVal('HYS.SEQ_HSE_ID');
+        Sql.Fields.Add('se_usualta', Sesion.UserID );
+        Sql.Fields.Add('se_fechaalta', exDateTime );
+      end else begin
+        Sql.SqlType := stUpdate;
+        iIdCodigo := sdqConsulta.FieldByName('se_id').AsInteger;
+        Sql.Fields.Add('se_usumodif', Sesion.UserID);
+        Sql.Fields.Add('se_fechamodif', exDateTime );
+        Sql.Fields.Add('se_usubaja', exNull );
+        Sql.Fields.Add('se_fechabaja', exNull );
+      end;
+    end;
+
+    Sql.PrimaryKey.Add('se_id', iIdCodigo);
+
+    EjecutarSQLST(Sql.Sql);
+    CommitTrans(True);
+    Result := True;
+  except
+    Rollback(True);
+    Result := False;
+  end;
+end;
+
+procedure TfrmSolicitudExclusionEmpresa.FormCreate(Sender: TObject);
+begin
+  inherited;
+  FieldBaja := 'se_fechabaja';
+  Sql.TableName := 'hys.hse_solicitudexclusionempresa';
+
+  fraEmpresa.ShowBajas      := True;
+  fraEmpresa.ExtraCondition := '     AND co_contrato = '+
+                               ' (SELECT MAX (b.co_contrato) '+
+                               '    FROM aco_contrato b '+
+                               '   WHERE b.co_idempresa = em_id '+
+                               '     AND NOT EXISTS (SELECT 1 '+
+                               '    FROM art.abc_bajadecontrato '+
+                               '   WHERE b.co_contrato = bc_contrato)) ';
+
+  With fraOperativo do begin
+    TableName    := 'POP_OPERATIVO';
+    FieldID      := 'OP_CODIGO';
+    FieldCodigo  := 'OP_CODIGO';
+    FieldDesc    := 'OP_DESCRIPCION';
+    FieldBaja    := 'OP_FECHABAJA';
+    SelectLast;
+  end;
+
+  With fraMotivo do begin
+    TableName    := 'hys.hms_motivosolicitudexclusion';
+    FieldID      := 'MS_ID';
+    FieldCodigo  := 'MS_CODIGO';
+    FieldDesc    := 'MS_DESCRIPCION';
+    FieldBaja    := 'MS_FECHABAJA';
+    SelectLast;
+  end;
+
+  {Ticket 66192. fraEstadoSolicitudExclusion
+      Nuevo Control para poner el estado de la Exclusión,
+      y de esa forma excluir de los tableros solo aquellas
+      para las cuales la SRT haya aceptado el pedido.
+      Los estados serían 3: Pendiente, Aprobado y Rechazado. }
+  With fraEstadoSolicitudExclusion do begin
+    TableName    := 'hys.hes_estadosolicitudexclusion';
+    FieldID      := 'es_id';
+    FieldCodigo  := 'es_id';
+    FieldDesc    := 'es_descripcion';
+    FieldBaja    := 'es_fechabaja';
+    SelectLast;
+  end;
+
+  fraTipo.Clave   := 'TFET';
+
+  AutoColWidths   := True;
+
+end;
+
+procedure TfrmSolicitudExclusionEmpresa.LoadControls;
+begin
+  inherited;
+  ClearControls;
+  fraEmpresa.CUIT := sdqConsulta.FieldByName('se_cuit').AsString;
+  fraTipo.Codigo := sdqConsulta.FieldByName('se_tipo').AsString;
+  fraOperativo.Codigo := sdqConsulta.FieldByName('se_operativo').AsString;
+  fraMotivo.Value := sdqConsulta.FieldByName('se_idmotivosolicitud').AsInteger;
+  edObservacion.Text := sdqConsulta.FieldByName('se_observaciones').AsString;
+
+  fraEstadoSolicitudExclusion.Codigo := sdqConsulta.FieldByName('SE_IDESTADOSOLICITUD').AsString;
+end;
+
+function TfrmSolicitudExclusionEmpresa.Validar: Boolean;
+begin
+  Verificar(not fraEmpresa.IsSelected, fraEmpresa, 'Debe ingresar la Empresa.');
+  Verificar(not fraTipo.IsSelected, fraTipo, 'Debe ingresar el Tipo.');
+  Verificar(not fraOperativo.IsSelected, fraOperativo, 'Debe ingresar el Operativo.');
+  Verificar(not fraMotivo.IsSelected, fraMotivo, 'Debe ingresar el Motivo.');
+  verificar((fraTipo.Codigo <> 'EP') and ((fraMotivo.Codigo = '38') or (fraMotivo.Codigo = '37')), fraMotivo, 'No se puede cargar los motivos 37 o 38 para un tipo que no sea ''EP''.');
+  Verificar(not fraEstadoSolicitudExclusion.IsSelected, fraEstadoSolicitudExclusion, 'Debe ingresar el Estado.');
+  result := true;
+end;
+
+
+end.

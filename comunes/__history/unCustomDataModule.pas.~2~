@@ -1,0 +1,1329 @@
+
+{********************************************************}
+{                                                        }
+{    CustomDataModule                                    }
+{    Esta unit contiene la clase base para crear         }
+{    datamodules, con todo el juego de funciones.        }
+{                                                        }
+{                                                        }
+{    Autor: Federico Firenze                             }
+{    Fecha:  01/07/1998                                  }
+{                                                        }
+{********************************************************}
+
+unit unCustomDataModule;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, DBFuncs, Db, SDEngine, ArtDatabase, AnsiSql,
+  LogFile, Variants, ImgList;
+
+type
+  IgnoreException = class(Exception);
+
+  TDynStringArray  = Array of String;
+  TDynStringMatrix = Array of Array of String;
+  TTransactionMode = (tmNone, tmBegin, tmEnd, tmBeginEnd);
+  TQueryOptions    = Set of (qoUniDirectional, qoNoPreservation, qoIncludeUpdateObject);
+
+  PdmCustomDataModule = ^TdmCustomDataModule;
+  TdmCustomDataModule = class(TDataModule)
+    sdqConsulta: TSDQuery;
+    sdbPrincipal: TArtDatabase;
+    ilColor: TImageList;
+    ilByN: TImageList;
+    procedure dmCustomDataModuleCreate(Sender: TObject);
+    procedure DataModuleDestroy(Sender: TObject);
+    procedure sdbPrincipalAfterDisconnect(Sender: TObject);
+  private
+    FCopyToClp: Boolean;
+    FDebug: Boolean;
+
+    function GetDebug: Boolean;
+
+    procedure SetDebug(const Value: Boolean);
+    procedure SetQueryOptions(AQuery: TSDQuery; AOptions: TQueryOptions);
+  protected
+    ALogFile: TLogFile;
+
+    function ConfigureDataBase: Boolean; virtual; abstract;
+    function SetIniSettings(ASection: String; SDDatabase: TArtDatabase): Boolean;
+  public
+    procedure SetParamValues(AValues: Array of TVarRec; AParams: TParams);
+    procedure CopySqlClp(Text: String);
+    procedure SetDatabaseToQuery(var Query: TSDQuery);
+
+    function DBDateTime: TDateTime;
+    function DBDate: TDateTime;
+    function DBTime: TTime;
+
+    function GetQuery(ASql: StringSql; AOptions: TQueryOptions = []): TSDQuery;
+    function GetQueryEx(ASql: StringSql; AValues: Array of TVarRec; AOptions: TQueryOptions = []): TSDQuery;
+
+    function QuickGetQuery(ASql: StringSql; AOptions: TQueryOptions): TSDQuery;
+    function QuickGetQueryEx(ASql: StringSql; AValues: Array of TVarRec; AOptions: TQueryOptions): TSDQuery;
+
+    function OpenQuery(AQuery: TSDQuery; ASql: StringSql = ''; ACompareSql: Boolean = False; AReposition: Boolean = False; ACopySqlToClipboard: Boolean = True): Boolean;
+    function OpenQueryEx(AQuery: TSDQuery; AValues: Array of TVarRec; ASql: StringSql = ''; ACompareSql: Boolean = False; AReposition: Boolean = False; ACopySqlToClipboard: Boolean = True): Boolean;
+
+    function ValorSql(ASql: StringSql; ADefault: String = ''; ACopySqlToClipboard: Boolean = True): Variant;
+    function ValorSqlEx(ASql: StringSql; AValues: Array of TVarRec; ADefault: String = ''; ACopySqlToClipboard: Boolean = True): Variant;
+
+    function ValorSqlInteger(ASql: StringSql; ADefault: Integer = 0): Integer;
+    function ValorSqlIntegerEx(ASql: StringSql; AValues: Array of TVarRec; ADefault: Integer = 0): Integer;
+
+    function ValorSqlExtended(ASql: StringSql; ADefault: Extended = 0): Extended;
+    function ValorSqlExtendedEx(ASql: StringSql; AValues: Array of TVarRec; ADefault: Extended = 0): Extended;
+
+    function ValorSqlDateTime(ASql: StringSql; ADefault: TDateTime = 0; ACopySQLToClipboard: Boolean = True): TDateTime;
+    function ValorSqlDateTimeEx(ASql: StringSql; AValues: Array of TVarRec; ADefault: TDateTime = 0): TDateTime;
+
+    function ValoresSql(ASql: StringSql): TStringList;
+    function ValoresSqlEx(ASql: StringSql; AValues: Array of TVarRec): TStringList;
+    function ValoresColSQL(ASql: StringSql): TStringList;
+
+    procedure LoadStrings(ASql: StringSql; const AStrings: TStrings; AClearOld: Boolean = True);
+    procedure LoadStringsValues(ASql: StringSql; const AStrings: TStrings; AClearOld: Boolean = True);
+
+    function ExisteSql(ASql: StringSql): Boolean;
+    function ExisteSqlEx(ASql: StringSql; AValues: Array of TVarRec): Boolean;
+    function IncSql(Sql: String; N: Integer = 1): Integer;
+
+    procedure ArraySql(ASql: StringSql; var AResults: Array of String);
+    procedure ArrayColSql(ASql: StringSql; var AResults: Array of String);
+
+    procedure DynArraySql(ASql: StringSql; var AResults: TDynStringArray; MaxReg: Integer = -1);
+    procedure DynArrayColSql(ASql: StringSql; var AResults: TDynStringArray);
+
+    procedure DynMatrixSql(ASql: StringSql; var AResults: TDynStringMatrix; MaxReg: Integer = -1);
+
+    procedure EjecutarSql(ASql: StringSql);
+    procedure EjecutarSqlST(ASql: StringSql; TransactionMode: TTransactionMode = tmNone; ThreadSafe: Boolean = False);
+
+    procedure EjecutarSqlEx(ASql: StringSql; AValues: array of TVarRec);
+    procedure EjecutarSqlSTEx(ASql: StringSql; AValues: array of TVarRec; TransactionMode: TTransactionMode = tmNone; ThreadSafe: Boolean = False);
+
+    procedure BlobSql( ASql : StringSql; AStream  : TStream ); overload;
+    procedure BlobSql( ASql : StringSql; AStrings : TStrings ); overload;
+
+    procedure SaveBlob(ASql, AUpdateSql: StringSql; AFieldName: string; AStream: TStream); overload;
+    procedure SaveBlob(ASql, AUpdateSql: StringSql; AFieldName: string; ALines: TStrings); overload;
+
+    function RefreshAndLocate(AQuery : TSDQuery; AFields : array of string; AValues : array of variant; Options : TLocateOptions = [] ) : Boolean;
+    function RefreshAndRelocate(AQuery : TSDQuery; AFields : array of string; Options : TLocateOptions = [] ) : Boolean;
+    function GetDecodeFromSql(AValue, ASql : StringSql; ADefaultValue : String = SQL_NULL; ADefIsValue : Boolean = False) : String;
+//    function GetDecodeFromCTB(Value, TB_CLAVE : String; DefaultValue : String = SQL_NULL; DefIsValue : Boolean = False) : String;
+
+    function GetMemoData( AQuery, AField: string; stm: TMemoryStream ): boolean;
+
+    function InTransaction: Boolean;
+    procedure BeginTrans(CheckTrans: Boolean = False);
+    procedure CommitTrans(CheckTrans: Boolean = False);
+    procedure CommitAndBeginTrans(CheckTrans : Boolean = False);
+    procedure Rollback(CheckTrans: Boolean = False);
+    procedure ApplyUpdates(const DataSets: Array of TSDDataSet);
+
+    function GetSecNextVal(ASequence : String) : Integer;
+    function GetSecCurrVal(ASequence : String) : Integer;
+    function Get_TableDescription(ATableName: String; AOwner: String = ''): String;
+
+    function Get_Servidor: String;
+    function Get_PathReportes: String;
+    function Is_ConectadoProduccion: Boolean;
+
+    property Debug: boolean read GetDebug write SetDebug;
+
+    procedure DoAplicarUpdates(Query: TSDQuery);
+    function Get_OracleClientVersion: String;
+    function VerificarTerritoryDB: Boolean;
+  end;
+
+  function GetSettingsFileName: String;
+  function GetIdentificadorINI(Seccion, Identificador: String; Default: String = ''): String;
+
+  {
+  TCustomDBObject = class(TObject)
+  private
+  protected
+    FSql : TSql;
+  public
+    constructor Create( );
+    destructor Destroy; override;
+  end;
+  }
+
+
+implementation
+
+uses
+  unDebug, Clipbrd, SqlFuncs, IniFiles, CustomDlgs, ParamFuncs, DBConsts, unART;
+
+{
+*** Esta sería una muy buena opción...
+var
+  CritSect: TRTLCriticalSection;
+}  
+
+{$R *.DFM}
+
+{Devuelve el valor del primer campo del primer registro del SQL pasado}
+function TdmCustomDataModule.ValorSqlEx(ASql: StringSql; AValues: array of TVarRec; ADefault : String = ''; ACopySqlToClipboard: Boolean = True): Variant;
+var
+  OldParamCheck: Boolean;
+begin
+  OldParamCheck := sdqConsulta.ParamCheck;
+  sdqConsulta.ParamCheck := True; //High(AValues) > 0;
+  try
+    OpenQueryEx(sdqConsulta, AValues, ASql, False, False, ACopySqlToClipboard);
+
+    if sdqConsulta.IsEmpty then
+      Result := ADefault
+    else
+      Result := sdqConsulta.Fields[0].AsString;
+
+    sdqConsulta.Close;
+  finally
+    sdqConsulta.ParamCheck := OldParamCheck;
+  end;
+end;
+
+function TdmCustomDataModule.ValorSql(ASql: StringSql; ADefault : String = ''; ACopySqlToClipboard: Boolean = True) : Variant;
+begin
+  OpenQuery(sdqConsulta, ASql, False, False, ACopySqlToClipboard);
+
+  if sdqConsulta.IsEmpty then
+    Result := ADefault
+  else
+    Result := sdqConsulta.Fields[0].AsString;
+
+  sdqConsulta.Close;
+end;
+
+function TdmCustomDataModule.ValorSqlIntegerEx(ASql: StringSql; AValues: array of TVarRec; ADefault : Integer = 0): Integer;
+var
+  OldParamCheck: Boolean;
+begin
+  OldParamCheck := sdqConsulta.ParamCheck;
+  sdqConsulta.ParamCheck := True; //High(AValues) > 0;
+  try
+    OpenQueryEx(sdqConsulta, AValues, ASql);
+
+    if sdqConsulta.IsEmpty then
+      Result := ADefault
+    else
+      Result := sdqConsulta.Fields[0].AsInteger;
+
+    sdqConsulta.Close;
+  finally
+    sdqConsulta.ParamCheck := OldParamCheck;
+  end;
+end;
+
+function TdmCustomDataModule.ValorSqlDateTimeEx(ASql: StringSql; AValues: array of TVarRec; ADefault : TDateTime = 0): TDateTime;
+var
+  OldParamCheck: Boolean;
+begin
+  OldParamCheck := sdqConsulta.ParamCheck;
+  sdqConsulta.ParamCheck := True; //High(AValues) > 0;
+  try
+    OpenQueryEx(sdqConsulta, AValues, ASql);
+
+    if sdqConsulta.IsEmpty then
+      Result := ADefault
+    else
+      Result := sdqConsulta.Fields[0].AsDateTime;
+
+    sdqConsulta.Close;
+  finally
+    sdqConsulta.ParamCheck := OldParamCheck;
+  end;
+end;
+
+function TdmCustomDataModule.ValorSqlInteger(ASql: StringSql; ADefault : Integer = 0) : Integer;
+begin
+  OpenQuery( sdqConsulta, ASql );
+
+  if sdqConsulta.IsEmpty then
+     Result := ADefault
+  else
+     Result := sdqConsulta.Fields[0].AsInteger;
+
+  sdqConsulta.Close;
+end;
+
+function TdmCustomDataModule.ValorSqlExtended( ASql : StringSql; ADefault : Extended = 0) : Extended;
+begin
+  OpenQuery(sdqConsulta, ASql);
+
+  if sdqConsulta.IsEmpty then
+     Result := ADefault
+  else
+     Result := sdqConsulta.Fields[0].AsFloat;
+
+  sdqConsulta.Close;
+end;
+
+function TdmCustomDataModule.ValorSqlExtendedEx(ASql: StringSql; AValues: array of TVarRec; ADefault : Extended = 0): Extended;
+var
+  OldParamCheck: Boolean;
+begin
+  OldParamCheck := sdqConsulta.ParamCheck;
+  sdqConsulta.ParamCheck := True; //High(AValues) > 0;
+  try
+    OpenQueryEx(sdqConsulta, AValues, ASql);
+
+    if sdqConsulta.IsEmpty then
+      Result := ADefault
+    else
+      Result := sdqConsulta.Fields[0].AsFloat;
+
+    sdqConsulta.Close;
+  finally
+    sdqConsulta.ParamCheck := OldParamCheck;
+  end;
+end;
+
+function TdmCustomDataModule.ValorSqlDateTime(ASql : StringSql; ADefault : TDateTime = 0; ACopySQLToClipboard: Boolean = True) : TDateTime;
+begin
+  OpenQuery(sdqConsulta, ASql, False, False, ACopySQLToClipboard);
+
+  if sdqConsulta.IsEmpty then
+    Result := ADefault
+  else
+    Result := sdqConsulta.Fields[0].AsDateTime;
+
+  sdqConsulta.Close;
+end;
+
+{Devuelve en un TStringList Todos los primeros campos de la consulta pasada}
+function TdmCustomDataModule.ValoresSql( ASql : StringSql ) : TStringList;
+begin
+  OpenQuery(sdqConsulta, ASql);
+  try
+    Result := TStringList.Create;
+    try
+      if sdqConsulta.Active and not sdqConsulta.IsEmpty then
+        while not sdqConsulta.Eof do
+        begin
+          Result.Add(sdqConsulta.Fields[0].AsString);
+          sdqConsulta.Next;
+        end;
+    except
+      Result.Free;
+      raise;
+    end;
+  finally
+    sdqConsulta.Close;
+  end;
+end;
+
+{Devuelve en un TStringList Todos los primeros campos de la consulta pasada}
+function TdmCustomDataModule.ValoresSqlEx(ASql : StringSql; AValues: array of TVarRec): TStringList;
+var
+  OldParamCheck: Boolean;
+begin
+  OldParamCheck := sdqConsulta.ParamCheck;
+  sdqConsulta.ParamCheck := True;
+  try
+    OpenQueryEx(sdqConsulta, AValues, ASql);
+    try
+      Result := TStringList.Create;
+      try
+        while not sdqConsulta.Eof do
+        begin
+          Result.Add(sdqConsulta.Fields[0].AsString);
+          sdqConsulta.Next;
+        end;
+      except
+        Result.Free;
+        Raise;
+      end;
+    finally
+      sdqConsulta.Close;
+    end;
+  finally
+    sdqConsulta.ParamCheck := OldParamCheck;  
+  end
+end;
+
+{Devuelve en un TStringList Todos los el primer registro de la consulta (Todos los Campos)}
+function TdmCustomDataModule.ValoresColSql( ASql : StringSql) : TStringList;
+var
+   nLoop : integer;
+begin
+  OpenQuery( sdqConsulta, ASql );
+  try
+    Result := TStringList.Create ;
+    try
+       for nLoop := 0 to sdqConsulta.Fields.Count-1 do
+           Result.Add ( sdqConsulta.Fields[nLoop].AsString );
+    except
+       Result.Free ;
+       Raise;
+    end;
+  finally
+    sdqConsulta.Close;
+  end;
+end;
+
+procedure TdmCustomDataModule.LoadStrings( ASql : StringSql; const AStrings : TStrings; AClearOld : boolean = True );
+begin
+  OpenQuery( sdqConsulta, ASql );
+  try
+    if AClearOld then
+       AStrings.Clear;
+
+    while not sdqConsulta.Eof do begin
+      AStrings.Add ( sdqConsulta.Fields[0].AsString );
+      sdqConsulta.Next ;
+    end;
+  finally
+    sdqConsulta.Close;
+  end;
+end;
+
+procedure TdmCustomDataModule.LoadStringsValues(ASql: StringSql; const AStrings: TStrings;  AClearOld: boolean);
+begin
+  OpenQuery( sdqConsulta, ASql );
+  try
+    if sdqConsulta.Fields.Count < 2 then
+      Raise exception.Create( SFieldIndexError );
+
+    if AClearOld then
+       AStrings.Clear;
+
+    while not sdqConsulta.Eof do begin
+      AStrings.Add( Format('%s=%s', [sdqConsulta.Fields[0].AsString, sdqConsulta.Fields[1].AsString]) );
+      sdqConsulta.Next ;
+    end;
+  finally
+    sdqConsulta.Close;
+  end;
+end;
+
+function TdmCustomDataModule.ExisteSql(ASql : StringSql): Boolean;
+begin
+  Result := ExisteSqlEx(ASql, []);
+end;
+
+function TdmCustomDataModule.ExisteSqlEx(ASql : StringSql; AValues: array of TVarRec) : Boolean;
+var
+  OldParamCheck: Boolean;
+begin
+  OldParamCheck := sdqConsulta.ParamCheck;
+  sdqConsulta.ParamCheck := True; //High(AValues) > 0;
+  try
+    OpenQueryEx(sdqConsulta, AValues, ASql );
+    try
+      Result := not sdqConsulta.IsEmpty ;
+    finally
+      sdqConsulta.Close;
+    end;
+  finally
+    sdqConsulta.ParamCheck := OldParamCheck;
+  end;
+end;
+
+procedure TdmCustomDataModule.EjecutarSqlEx(ASql: StringSql; AValues: array of TVarRec);
+begin
+  BeginTrans;
+  try
+    EjecutarSqlSTEx(ASql, AValues);
+
+    CommitTrans;
+  except
+    on E: exception do begin
+      Rollback;
+      raise;
+    end;
+  end;
+end;
+
+procedure TdmCustomDataModule.EjecutarSqlSTEx(ASql: StringSql; AValues: array of TVarRec; TransactionMode: TTransactionMode; ThreadSafe: Boolean);
+var
+  i: Integer;
+  OldCursor: TCursor;
+  OldParamCheck: Boolean;
+  objConsulta: TSDQuery;
+begin
+  if ThreadSafe then
+  begin
+    objConsulta := TSDQuery.Create(Self);
+    objConsulta.DatabaseName := sdqConsulta.DatabaseName;
+  end else
+    objConsulta := sdqConsulta;
+
+  CopySqlClp(ASql);
+  if TransactionMode in [tmBegin, tmBeginEnd] then
+     sdbPrincipal.StartTransaction;
+
+  OldCursor     := Screen.Cursor;
+  OldParamCheck := objConsulta.ParamCheck;
+
+  objConsulta.ParamCheck := True;
+  Screen.Cursor := crSQLWait;
+  try
+{
+*** Esta sería una muy buena opción...
+    if ThreadSafe then
+      EnterCriticalSection(CritSect);
+}
+    with objConsulta do
+    begin
+      Close;
+      Params.Clear;
+      SQL.Clear;
+      SQL.Add(ASql);
+
+      for i := Params.Count -1 downto 0 do
+        if (Params[i].Name = '=') or
+           (Params[i].Name = '') then
+          Params.Delete(i);
+
+      try
+        SetParamValues(AValues, Params);
+        ExecSQL;
+      finally
+{
+*** Esta sería una muy buena opción...
+        if ThreadSafe then
+          LeaveCriticalSection(CritSect);
+}
+      end;
+    end;
+
+    if TransactionMode in [tmEnd, tmBeginEnd] then
+       sdbPrincipal.Commit;
+  finally
+    Screen.Cursor := OldCursor;
+    objConsulta.ParamCheck := OldParamCheck;
+    if ThreadSafe then
+      objConsulta.Free;
+  end;
+end;
+
+procedure TdmCustomDataModule.EjecutarSql(ASql: StringSql);
+begin
+  EjecutarSqlEx(ASql, []);
+end;
+
+procedure TdmCustomDataModule.EjecutarSqlST(ASql: StringSql; TransactionMode: TTransactionMode = tmNone; ThreadSafe: Boolean = False);
+begin
+  EjecutarSqlSTEx(ASql, [], TransactionMode, ThreadSafe);
+end;
+
+function TdmCustomDataModule.VerificarTerritoryDB: Boolean;
+var
+  sSql: String;
+begin
+  sSql := 'SELECT 1 ' +
+            'FROM V$PARAMETER ' +
+           'WHERE UPPER(NAME) = ''NLS_TERRITORY'' ' +
+             'AND UPPER(VALUE) = ''AMERICA''';
+
+  Result := ExisteSql(sSql);
+end;
+
+procedure TdmCustomDataModule.dmCustomDataModuleCreate(Sender: TObject);
+var
+  sLogFile: string;
+begin
+  {$IFDEF SERVICE}
+  sdbPrincipal.IdleTimeOut := 0;
+  {$ELSE}
+  sdbPrincipal.IdleTimeOut := 1000 * 60 * 60;
+  {$ENDIF}
+
+  FCopyToClp := CommandExists('CLP');
+  FDebug     := CommandExists('DEBUG');
+  sLogFile   := CommandValue('LOGFILE');
+
+  if (sLogFile = '') and CommandExists('LOGFILE') then
+    sLogFile := ChangeFileExt(ParamStr(0), '.log');
+
+  if sLogFile <> '' then
+    ALogFile := TLogFile.Create(sLogFile, False)
+  else
+    ALogFile := Nil;
+
+  ConfigureDataBase;
+end;
+
+procedure TdmCustomDataModule.CopySqlClp(Text : string);
+var
+  Clp : TClipboard;
+begin
+  try
+    if True then
+      Exit;
+
+    if Debug then
+      AddToLog(Text, ltSQL);
+
+    if FCopyToClp then
+    begin
+      Clp := TClipboard.Create;
+      try
+        try
+          Clp.SetTextBuf(PChar(Text));
+        except
+          raise IgnoreException.Create('No se puede copiar al portapapeles');
+        end;
+      finally
+        Clp.Free;
+      end;
+    end;
+
+    if Assigned(ALogFile) then
+    begin
+      ALogFile.WriteLine('---[' + DateTimeToStr(Now) + ']' + StringOfChar('-', 70));
+      ALogFile.WriteLine(Text);
+    end;
+  except
+  end;
+end;
+
+function TdmCustomDataModule.IncSql(Sql : String; N : Integer = 1) : Integer;
+begin
+     Result := ValorSqlInteger(Sql) +  N;
+end;
+
+procedure TdmCustomDataModule.SetDatabaseToQuery( var Query : TSDQuery );
+begin
+  Query.DatabaseName := sdbPrincipal.DatabaseName ; {Por si en el futuro esto llega a cambiar, o hay que agregar mas cosas}
+end;
+
+function TdmCustomDataModule.GetQuery(ASql: StringSql; AOptions: TQueryOptions = []) : TSDQuery;
+begin
+  Result := GetQueryEx(ASql, [], AOptions);
+end;
+
+function TdmCustomDataModule.GetQueryEx(ASql: StringSql; AValues: array of TVarRec; AOptions: TQueryOptions = []): TSDQuery;
+var
+  OldCursor: TCursor;
+begin
+  CopySqlClp( ASql );
+  OldCursor     := Screen.Cursor;
+  Screen.Cursor := crSQLWait;
+  try
+    Result := TSDQuery.Create(Self);
+    try
+      SetQueryOptions(Result, AOptions);
+      SetDatabaseToQuery(Result);
+      Result.SQL.Text := ASql;
+      SetParamValues(AValues, Result.Params);
+      Result.Open;
+    except
+      FreeAndNil(Result);
+      raise;
+    end;
+  finally
+    Screen.Cursor := OldCursor;
+  end;
+end;
+
+function TdmCustomDataModule.OpenQuery(AQuery: TSDQuery; ASql: StringSql = ''; ACompareSql: Boolean = False; AReposition: Boolean = False; ACopySqlToClipboard: Boolean = True): Boolean;
+begin
+  Result := OpenQueryEx(AQuery, [], ASql, ACompareSql, AReposition, ACopySqlToClipboard);
+end;
+
+function TdmCustomDataModule.OpenQueryEx(AQuery: TSDQuery; AValues: array of TVarRec; ASql: StringSql = ''; ACompareSql: Boolean = False; AReposition: Boolean = False; ACopySqlToClipboard: Boolean = True): Boolean;
+var
+  iPosAnt   : Integer;
+  {$IFNDEF SERVICE}
+  OldCursor : TCursor;
+  {$ENDIF}
+begin
+  Result  := False;
+  iPosAnt := 0;
+  if (not (ACompareSql or AQuery.Active)) or (ASql <> AQuery.Sql.Text) then
+  begin
+    {$IFNDEF SERVICE}
+    if ACopySqlToClipboard then
+    begin
+      OldCursor := Screen.Cursor;
+      Screen.Cursor := crSQLWait;
+    end else
+      OldCursor := crDefault;
+    {$ENDIF}
+    try
+      if AReposition and AQuery.Active then
+        iPosAnt := AQuery.RecNo {$IFNDEF VER150}- 1{$ENDIF};
+
+      AQuery.Close ;
+      if ASql <> '' then
+      begin
+        AQuery.Params.Clear;
+        AQuery.SQL.Text := ASql;
+      end;
+
+      if ACopySqlToClipboard then
+        CopySqlClp( AQuery.SQL.Text );
+        
+      SetParamValues(AValues, AQuery.Params);
+
+      AQuery.Open;
+
+      if AReposition then
+        AQuery.MoveBy(iPosAnt);
+
+      Result := True;
+    finally
+      {$IFNDEF SERVICE}
+      if ACopySqlToClipboard then
+      begin
+        Screen.Cursor := OldCursor;
+      end;
+      {$ENDIF}
+    end;
+  end;
+end;
+
+function TdmCustomDataModule.RefreshAndLocate(AQuery: TSDQuery; AFields: array of string; AValues: array of variant; Options : TLocateOptions = [] ) : Boolean;
+var
+    A       : Variant;
+    i       : Integer;
+    sFields : String;
+    OldCursor : TCursor;
+begin
+  OldCursor     := Screen.Cursor;
+  Screen.Cursor := crSQLWait;
+  try
+     if (Low(AFields) <> Low(AValues)) or (High(AFields) <> High(AValues)) then
+        exception.Create('Error en "RefreshAndLocate: No coinciden la cantidad de campos con la cantidad de valores');
+     sFields := '';
+     A := VarArrayCreate([Low(AFields), High(AFields)], varVariant);
+     for i := Low(AFields) to High(AFields) do begin
+         A[i] := AValues[i] ;
+         sFields := sFields + AFields[i] + ';';
+     end;
+
+     AQuery.Close;
+     AQuery.Open ;
+     Result := AQuery.Locate(sFields, A, Options);
+  finally
+     Screen.Cursor := OldCursor;
+  end;
+end;
+
+function TdmCustomDataModule.RefreshAndRelocate(AQuery : TSDQuery; AFields : array of string; Options : TLocateOptions = [] ) : Boolean;
+var
+    A       : Variant;
+    i       : Integer;
+    sFields : String;
+    OldCursor : TCursor;
+begin
+  OldCursor     := Screen.Cursor;
+  Screen.Cursor := crSQLWait;
+  try
+     sFields := '';
+     A := VarArrayCreate([Low(AFields), High(AFields)], varVariant);
+     for i := Low(AFields) to High(AFields) do begin
+         A[i] := AQuery.FieldByName( AFields[i] ).AsVariant ;
+         sFields := sFields + AFields[i] + ';';
+     end;
+
+     AQuery.Close;
+     AQuery.Open ;
+     Result := AQuery.Locate(sFields, A,Options);
+  finally
+     Screen.Cursor := OldCursor;
+  end;
+end;
+
+procedure TdmCustomDataModule.ArraySql(ASql : StringSql; var AResults: array of String);
+var
+  i: Integer;
+  OldCursor: TCursor;
+begin
+  OldCursor     := Screen.Cursor;
+  Screen.Cursor := crSQLWait;
+  OpenQuery(sdqConsulta, ASql);
+  try
+    for i := Low(AResults) to High(AResults) do
+    begin
+      AResults[i] := (sdqConsulta.Fields[0].AsString);
+      sdqConsulta.Next ;
+      if sdqConsulta.Eof then
+        Break;
+    end;
+  finally
+    sdqConsulta.Close;
+    Screen.Cursor := OldCursor;
+  end;
+end;
+
+procedure TdmCustomDataModule.ArrayColSql(ASql : StringSql; var AResults: array of String);
+var i         : Integer;
+    OldCursor : TCursor;
+begin
+  OldCursor     := Screen.Cursor;
+  Screen.Cursor := crSQLWait;
+  OpenQuery( sdqConsulta, ASql );
+  try
+    for i := Low(AResults) to High(AResults) do
+       if i > sdqConsulta.Fields.Count -1 then
+          Break
+       else
+          AResults[i] := sdqConsulta.Fields[i].AsString;
+  finally
+    sdqConsulta.Close;
+    Screen.Cursor := OldCursor;
+  end;
+end;
+
+procedure TdmCustomDataModule.DynArraySql(ASql : StringSql; var AResults: TDynStringArray; MaxReg : Integer = -1);
+var i          : Integer;
+    OldCursor  : TCursor;
+begin
+  OldCursor     := Screen.Cursor;
+  Screen.Cursor := crSQLWait;
+  //sdqConsulta.UniDirectional := True;
+  try
+    OpenQuery( sdqConsulta, ASql );
+    try
+      //------------------------------------------------------------
+      if (MaxReg > -1) and (sdqConsulta.RecordCount > MaxReg) then
+          SetLength( AResults, MaxReg )
+      else
+          SetLength( AResults, sdqConsulta.RecordCount );
+      //------------------------------------------------------------
+      i := 0;
+      //sdqConsulta.First ;
+      repeat
+          AResults[i] := ( sdqConsulta.Fields[0].AsString );
+          Inc( i );
+          sdqConsulta.Next ;
+      until sdqConsulta.Eof or ((MaxReg > -1) and (i <= MaxReg));
+    finally
+      sdqConsulta.Close;
+    end;
+  finally
+    //sdqConsulta.UniDirectional := False;
+    Screen.Cursor := OldCursor;
+  end;
+end;
+
+procedure TdmCustomDataModule.DynArrayColSql(ASql : StringSql; var AResults: TDynStringArray);
+var i         : Integer;
+    OldCursor : TCursor;
+begin
+  OldCursor     := Screen.Cursor;
+  Screen.Cursor := crSQLWait;
+  OpenQuery( sdqConsulta, ASql );
+  try
+    SetLength( AResults, sdqConsulta.Fields.Count); // - 1
+
+    for i := 0 to (sdqConsulta.Fields.Count - 1) do
+        AResults[i] := sdqConsulta.Fields[i].AsString;
+  finally
+    sdqConsulta.Close;
+    Screen.Cursor := OldCursor;
+  end;
+end;
+
+procedure TdmCustomDataModule.DynMatrixSql(ASql : StringSql; var AResults: TDynStringMatrix; MaxReg : Integer = -1);
+var
+  iRow,
+  iCol,
+  iRows,
+  iCols  : Integer;
+  OldCursor : TCursor;
+begin
+  OldCursor     := Screen.Cursor;
+  Screen.Cursor := crSQLWait;
+  sdqConsulta.UniDirectional := True;
+  try
+    OpenQuery(sdqConsulta, ASql); {Abre la Consulta}
+    try
+      iCols := sdqConsulta.Fields.Count - 1;
+
+      if (MaxReg > -1) and (sdqConsulta.RecordCount > MaxReg) then
+        iRows := MaxReg
+      else
+        iRows := sdqConsulta.RecordCount;
+      //------------------------------------------------------------
+      SetLength( AResults, iRows + 1);
+
+      iRow := 0;
+      repeat
+        SetLength( AResults[iRow], iCols + 1);
+        for iCol := 0 to iCols do
+          AResults[iRow, iCol] := ( sdqConsulta.Fields[iCol].AsString );
+
+        Inc( iRow );
+        sdqConsulta.Next ;
+      until sdqConsulta.Eof or (iRow > iRows);
+
+    finally
+      sdqConsulta.Close;
+    end;
+  finally
+    Screen.Cursor := OldCursor;
+    sdqConsulta.UniDirectional := False;
+  end;
+end;
+
+Function TdmCustomDataModule.GetMemoData( AQuery, AField: string; stm: TMemoryStream ): boolean;
+Var
+  OldCursor : TCursor;
+begin
+  Result        := False;
+  OldCursor     := Screen.Cursor;
+  Screen.Cursor := crSQLWait;
+  try
+     if Assigned( stm ) and ( sdqConsulta.FindField( AField ) <> nil ) then begin
+        TBlobField( sdqConsulta.FieldByName( AField ) ).SaveToStream( stm );
+        Result := True;
+     end;
+  finally
+     sdqConsulta.Close;
+     Screen.Cursor := OldCursor;
+  end;
+end;
+
+procedure TdmCustomDataModule.BeginTrans(CheckTrans: Boolean = False);
+begin
+   if (not CheckTrans) or (not sdbPrincipal.InTransaction) then
+   try
+      sdbPrincipal.StartTransaction;
+   except
+    on E: EDatabaseError do
+    begin
+      if Pos('CANNOT PERFORM', UpperCase(E.Message)) > 0 then
+      begin
+        sdbPrincipal.Connected := True;
+        sdbPrincipal.StartTransaction;
+      end;
+    end;
+   end;
+end;
+
+function TdmCustomDataModule.InTransaction: Boolean;
+begin
+  Result := sdbPrincipal.InTransaction;
+end;
+
+procedure TdmCustomDataModule.CommitTrans( CheckTrans : Boolean = False );
+begin
+   if (not CheckTrans) or (sdbPrincipal.InTransaction) then
+      sdbPrincipal.Commit;
+end;
+
+procedure TdmCustomDataModule.CommitAndBeginTrans( CheckTrans : Boolean = False );
+begin
+   if (not CheckTrans) or (sdbPrincipal.InTransaction) then
+   begin
+     CommitTrans;
+     BeginTrans;
+   end;
+end;
+
+procedure TdmCustomDataModule.Rollback( CheckTrans : Boolean = False );
+begin
+   if (not CheckTrans) or (sdbPrincipal.InTransaction) then
+      sdbPrincipal.Rollback;
+end;
+
+procedure TdmCustomDataModule.ApplyUpdates(const DataSets: array of TSDDataSet);
+begin
+   sdbPrincipal.ApplyUpdates( DataSets );
+end;
+
+function TdmCustomDataModule.GetDecodeFromSql(AValue, ASql, ADefaultValue: String; ADefIsValue: Boolean): String;
+var
+  OldCursor : TCursor;
+  FCompare,
+  FValues   : array of string;
+  sDefault  : string;
+begin
+  OldCursor     := Screen.Cursor;
+  Screen.Cursor := crSQLWait;
+  try
+    OpenQuery( sdqConsulta, ASql );
+    try
+      if sdqConsulta.IsEmpty or (sdqConsulta.Fields.Count < 2)  then begin
+        if ADefIsValue then
+           Result := SQL_NULL
+        else
+           Result := ADefaultValue
+      end else begin
+        sDefault := ADefaultValue;
+        SetLength( FCompare, sdqConsulta.RecordCount );
+        SetLength( FValues,  sdqConsulta.RecordCount );
+        repeat
+          FCompare[ sdqConsulta.RecNo {$IFNDEF VER150}- 1{$ENDIF}] := sdqConsulta.Fields[0].AsString;
+          FValues[ sdqConsulta.RecNo {$IFNDEF VER150}- 1{$ENDIF}]  := sdqConsulta.Fields[1].AsString;
+
+          if ADefIsValue And (sdqConsulta.Fields[0].AsString = ADefaultValue) then
+             sDefault := sdqConsulta.Fields[1].AsString;
+
+          sdqConsulta.Next;
+        until sdqConsulta.Eof;
+
+        if (sDefault <> SQL_NULL) and ((sDefault = '') or (sDefault[1] <> '''')) then
+          Result := SqlDecode( AValue, FCompare, FValues, sDefault, [doDefaultAsString, doCompareAsString, doValuesAsString])
+        else
+          Result := SqlDecode( AValue, FCompare, FValues, sDefault, [doCompareAsString, doValuesAsString]);
+      end;
+    finally
+      sdqConsulta.Close;
+    end;
+  finally
+    Screen.Cursor := OldCursor;
+  end;
+end;
+
+
+{ Pasar a usar SqlDecode }
+{function GetDecodeFromSql(Value, Sql : String; DefaultValue : String = SQL_NULL; DefIsValue : Boolean = False) : String;
+Var sDefault : String;
+begin
+     CopySqlClp( Sql );
+     with dmPrincipal do begin
+
+         sdqConsulta.SQL.Clear;
+         sdqConsulta.SQL.Add ( Sql );
+         sdqConsulta.Open;
+         if sdqConsulta.IsEmpty or (sdqConsulta.Fields.Count < 2)  then begin
+            if DefIsValue then
+               Result := SQL_NULL
+            else
+               Result := DefaultValue
+         end else begin
+            sDefault := DefaultValue;
+            Result   := 'DECODE(' + Value + ', ';
+            repeat
+               Result := Result + '''' + sdqConsulta.Fields[0].AsString + ''', ''' + sdqConsulta.Fields[1].AsString + ''', ';
+               if DefIsValue And (sdqConsulta.Fields[0].AsString = DefaultValue) then
+                  sDefault := sdqConsulta.Fields[1].AsString;
+
+               sdqConsulta.Next;
+            until sdqConsulta.Eof;
+
+            if (sDefault <> SQL_NULL) and ((sDefault = '') or (sDefault[1] <> '''')) then
+               sDefault := '''' + sDefault + '''';
+
+            Result := Result + sDefault + ')';
+         end;
+
+         sdqConsulta.Close;
+     end;
+end;}
+
+{function GetDecodeFromCTB(Value, TB_CLAVE : String; DefaultValue : String = SQL_NULL; DefIsValue : Boolean = False) : String;
+Var Sql : String;
+begin
+   Sql := 'SELECT TB_CODIGO, TB_DESCRIPCION ' +
+            'FROM CTB_TABLAS ' +
+           'WHERE TB_CODIGO <> ''0'' ' +
+             'AND TB_BAJA <> ''S'' ' +
+             'AND TB_CLAVE = ''' + TB_CLAVE + ''' ' ;
+   Result := GetDecodeFromSql( Value, Sql, DefaultValue, DefIsValue );
+end;}
+
+function TdmCustomDataModule.DBDateTime: TDateTime;
+begin
+   Result := ValorSqlDateTime(SqlSimpleQuery(SQL_DATETIME), 0, False);
+end;
+
+function TdmCustomDataModule.DBDate: TDateTime;
+begin
+  Result := ValorSqlDateTime(SqlSimpleQuery(SQL_ACTUALDATE), 0, False);
+end;
+
+function TdmCustomDataModule.DBTime: TTime;
+begin
+  Result := ValorSqlDateTime(SqlSimpleQuery(SQL_ACTUALTIME), 0, False);
+end;
+
+function TdmCustomDataModule.SetIniSettings(ASection: String; SDDatabase: TArtDatabase ): boolean;
+var
+  sDbSection : String;
+  IniFile    : TIniFile;
+begin
+  Result := False;
+
+  {$IFNDEF SERVICE}
+  Screen.Cursor := crSQLWait;
+  {$ENDIF}
+  IniFile := TIniFile.Create(GetSettingsFileName);
+  try
+    with SDDatabase do
+    begin
+      RemoteDataBase := IniFile.ReadString('Base de Datos', ASection, 'PART');
+      sDbSection := 'DataBase.' + RemoteDataBase;
+
+      if IniFile.ValueExists(sDbSection, 'Message') then
+      begin
+        {$IFNDEF SERVICE}
+        if (not Assigned(Application.MainForm)) and (MsgBox(IniFile.ReadString(sDbSection, 'Message', ''), MB_ICONINFORMATION + MB_OKCANCEL) = IDCANCEL) then
+          TerminateProcess(GetCurrentProcess, 0);
+        {$ENDIF}
+      end;
+
+      PasswordFile := IniFile.FileName;
+      Close;
+      Params.Clear;
+
+      try
+        {$IFNDEF NOT_AUTOCONNECT}
+        Open;
+
+        if IniFile.ValueExists(sDbSection, 'SQL') then
+          EjecutarSQL(IniFile.ReadString(sDbSection, 'SQL', ''));
+        {$ENDIF}
+        Result := Connected;
+      except
+        on E: exception do
+        begin
+          {$IFNDEF SERVICE}
+          Screen.Cursor := crDefault;
+          ErrorMsg(E, 'Error al establecer la Conexión con el Servidor de Datos "' + RemoteDataBase + '".');
+          Application.Terminate;
+          {$ENDIF}
+        end;
+      end;
+    end;
+
+  finally
+    IniFile.Free;
+    {$IFNDEF SERVICE}
+    Screen.Cursor := crDefault;
+    {$ENDIF}
+  end;
+end;
+
+procedure TdmCustomDataModule.DataModuleDestroy(Sender: TObject);
+begin
+  sdbPrincipal.AfterDisconnect := nil;
+  sdbPrincipal.Close;
+  if Assigned(ALogFile) then
+    FreeAndNil(ALogFile);
+end;
+
+procedure TdmCustomDataModule.BlobSql(ASql: StringSql; AStream: TStream);
+var
+  FieldStream   : TStream;
+{  iBytesWritten : Cardinal;
+  pBuffer       : PChar;
+Const
+  BufferSize    = MaxInt;}
+begin
+  OpenQuery( sdqConsulta, ASql );
+
+  if not sdqConsulta.IsEmpty then begin
+    FieldStream := sdqConsulta.CreateBlobStream(sdqConsulta.Fields[0], bmReadWrite);
+    try
+      AStream.CopyFrom(FieldStream, 0);
+      {
+      GetMem( pBuffer, BufferSize );
+      try
+        FieldStream.Seek( soFromBeginning, 0 );
+        repeat
+          iBytesWritten := FieldStream.Read( pBuffer, BufferSize );
+        until AStream.Write( pBuffer, iBytesWritten ) > 0;
+      finally
+        FreeMem( pBuffer, BufferSize );
+      end;
+      }
+    finally
+       FieldStream.Free ;
+    end;
+  end;
+end;
+
+procedure TdmCustomDataModule.BlobSql(ASql: StringSql; AStrings: TStrings);
+begin
+  OpenQuery(sdqConsulta, ASql);
+
+  if not sdqConsulta.IsEmpty then
+    try
+      FieldToTString(sdqConsulta.Fields[0], AStrings);
+    except
+      AStrings.Text := sdqConsulta.Fields[0].AsString;
+    end;
+end;
+
+procedure TdmCustomDataModule.SetQueryOptions(AQuery: TSDQuery; AOptions: TQueryOptions);
+var
+  objSpareUpdateObject: TSDUpdateSQL;
+begin
+  if qoUniDirectional in AOptions then
+   AQuery.UniDirectional := True;
+
+  if qoIncludeUpdateObject in AOptions then
+  begin
+    objSpareUpdateObject := TSDUpdateSQL.Create(AQuery);
+    AQuery.UpdateObject := objSpareUpdateObject;
+  end;
+end;
+
+procedure TdmCustomDataModule.SaveBlob(ASql, AUpdateSql: StringSql; AFieldName: string; AStream: TStream);
+var
+ UpdateSQL: TSDUpdateSQL;
+begin
+  UpdateSQL := TSDUpdateSQL.Create(Self);
+  try
+    sdqConsulta.UpdateObject := UpdateSQL;
+    UpdateSQL.ModifySQL.Text := AUpdateSql;
+    sdqConsulta.Close;
+    sdqConsulta.CachedUpdates := True;
+    OpenQuery(sdqConsulta, ASql);
+    try
+      sdqConsulta.Edit;
+      TBlobField(sdqConsulta.FieldByName(AFieldName)).LoadFromStream(AStream);
+      sdqConsulta.Post;
+      sdqConsulta.ApplyUpdates;
+    except
+      sdqConsulta.CancelUpdates;
+      raise;
+    end;
+  finally
+    sdqConsulta.UpdateObject := nil;
+    sdqConsulta.Close;
+    sdqConsulta.CachedUpdates := False;
+    UpdateSQL.Free;
+  end;
+end;
+
+procedure TdmCustomDataModule.SaveBlob(ASql, AUpdateSql: StringSql; AFieldName: string; ALines: TStrings);
+var
+  AStream: TMemoryStream;
+begin
+  AStream := TMemoryStream.Create;
+  try
+    ALines.SaveToStream(AStream);
+    SaveBlob(ASql, AUpdateSql, AFieldName, AStream);
+  finally
+    AStream.Free;
+  end;
+end;
+
+function GetSettingsFileName: string;
+begin
+  Result := unART.GetSettingsFileName;
+end;
+
+procedure TdmCustomDataModule.SetParamValues(AValues: array of TVarRec; AParams: TParams);
+var
+  i: Integer;
+begin
+  for i := Low(AValues) to High(AValues) do
+    VarRecToParam(AValues[i], AParams[i]);
+end;
+
+function TdmCustomDataModule.GetSecNextVal(ASequence : String) : Integer;
+begin
+  Result := ValorSqlInteger( SqlSimpleQuery( ASequence + SQL_SEQ_NEXTVAL ) );
+end;
+
+function TdmCustomDataModule.GetSecCurrVal(ASequence : String) : Integer;
+begin
+  Result := ValorSqlInteger( SqlSimpleQuery( ASequence + SQL_SEQ_CURRVAL ) );
+end;
+
+function TdmCustomDataModule.Get_TableDescription(ATableName: String; AOwner: String = ''): String;
+var
+  sSQL: string;
+begin
+  sSQL := 'SELECT COMMENTS FROM ALL_TAB_COMMENTS WHERE TABLE_NAME = ' + SQLValue(ATableName);
+  if AOwner <> '' then
+    sSQL := sSQL + ' AND OWNER = ' + SQLValue(AOwner);
+  Result := ValorSql( sSQL );
+end;
+
+function GetIdentificadorINI(Seccion, Identificador: String; Default: String = ''): String;
+var
+  IniFile: TIniFile;
+begin
+  IniFile := TIniFile.Create( GetSettingsFileName );
+  try
+    Result := IniFile.ReadString( Seccion, Identificador, Default );
+  finally
+    IniFile.Free;
+  end;
+end;
+
+function TdmCustomDataModule.Get_Servidor: String;
+begin
+  Result := GetIdentificadorINI( 'Directorios', 'Servidor', 'Ntfsone' );
+end;
+
+function TdmCustomDataModule.Is_ConectadoProduccion: Boolean;
+begin
+  Result := (UpperCase(sdbPrincipal.RemoteDatabase) = 'PART');
+end;
+
+function TdmCustomDataModule.QuickGetQuery(ASql: StringSql; AOptions: TQueryOptions): TSDQuery;
+begin
+  Result := QuickGetQueryEx(ASql, [], AOptions);
+end;
+
+function TdmCustomDataModule.QuickGetQueryEx(ASql: StringSql; AValues: array of TVarRec; AOptions: TQueryOptions): TSDQuery;
+begin
+  Result := TSDQuery.Create(Self);
+  try
+    SetQueryOptions(Result, AOptions);
+    SetDatabaseToQuery(Result);
+    Result.SQL.Text := ASql;
+    SetParamValues(AValues, Result.Params);
+    Result.Open;
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+end;
+
+procedure TdmCustomDataModule.SetDebug(const Value: boolean);
+begin
+  FDebug := Value;
+end;
+
+function TdmCustomDataModule.GetDebug: boolean;
+begin
+  Result := FDebug or LogHabilitado(ltError) or LogHabilitado(ltWarning) or
+            LogHabilitado(ltHint) or LogHabilitado(ltInfo) or
+            LogHabilitado(ltSQL);
+end;
+
+function TdmCustomDataModule.Get_PathReportes: String;
+begin
+  Result := IncludeTrailingBackslash(GetIdentificadorINI( 'Directorios', 'Reportes' ));
+end;
+
+procedure TdmCustomDataModule.DoAplicarUpdates(Query: TSDQuery);
+begin
+  Query.ApplyUpdates;
+  Query.CommitUpdates;
+  EjecutarSql('COMMIT');
+end;
+
+function TdmCustomDataModule.Get_OracleClientVersion: String;
+begin
+  Result := Trim(IntToStr(sdbPrincipal.ClientMajor)) + '.' + Trim(IntToStr(sdbPrincipal.ClientMinor));
+end;
+
+procedure TdmCustomDataModule.sdbPrincipalAfterDisconnect(Sender: TObject);
+begin
+  if Is_ConectadoProduccion and (sdbPrincipal.IdleTimeOut > 0) then
+  begin
+    Application.ProcessMessages;
+    if MsgAsk('ATENCIÓN: La aplicación ' + UpperCase(Application.Title) + ' se ha desconectado de la base de datos debido al tiempo de inactividad transcurrido. Se recomienda que cierre los módulos que esté usando o directamente cierre el sistema ' + Application.Title + ' para continuar.' + CRLF + CRLF + '¿Desea intentar volver a conectarse ahora?' + CRLF + 'Nota: Si elige NO la aplicación se cerrará ahora.') then
+      ConfigureDataBase
+    else
+      TerminateProcess(GetCurrentProcess, 0);
+  end;
+end;
+
+{
+*** Esta sería una muy buena opción...
+initialization
+  InitializeCriticalSection(CritSect);
+
+finalization
+  DeleteCriticalSection(CritSect);
+}
+
+end.

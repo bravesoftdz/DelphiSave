@@ -1,0 +1,4 @@
+CLOCK2 AVI "resources\\clock2.avi"
+LOGO_2009_BYN_CHICO BITMAP "resources\\logo_2009_BYN_chico.dib"
+LOGO_GBP BITMAP "resources\\logo_gbp.dib"
+SPLASH BITMAP "resources\\splash.dib"

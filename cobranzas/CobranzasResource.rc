@@ -1,0 +1,6 @@
+LOGO_2009_BYN_CHICO BITMAP "resources\\LOGO_2009_BYN_CHICO.dib"
+LOGO_ART BITMAP "resources\\LOGO_ART.dib"
+LOGO_GBP BITMAP "resources\\LOGO_GBP.dib"
+LOGO_PART BITMAP "resources\\LOGO_PART.dib"
+RELOJ AVI "resources\\reloj.avi"
+SPLASH BITMAP "resources\\SPLASH.dib"

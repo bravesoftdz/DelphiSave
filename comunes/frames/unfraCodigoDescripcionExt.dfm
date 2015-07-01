@@ -1,0 +1,2 @@
+inherited fraCodigoDescripcionExt: TfraCodigoDescripcionExt
+end

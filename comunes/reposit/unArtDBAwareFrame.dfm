@@ -1,0 +1,2 @@
+inherited ArtDBAwareFrame: TArtDBAwareFrame
+end

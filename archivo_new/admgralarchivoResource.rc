@@ -1,0 +1,5 @@
+LOGO_2009_BYN BITMAP "resources\\logo_2009_byn.dib"
+LOGO_2009_BYN_CHICO BITMAP "resources\\logo_2009_byn_chico.dib"
+LOGO_2009_COLOR BITMAP "resources\\logo_2009_color.dib"
+LOGO_ART BITMAP "resources\\logo_art.dib"
+SPLASH BITMAP "resources\\admin_gral_de_archivos.bmp"

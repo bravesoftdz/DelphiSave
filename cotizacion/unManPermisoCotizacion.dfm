@@ -1,0 +1,498 @@
+inherited frmManPermisoCotizacion: TfrmManPermisoCotizacion
+  Left = 206
+  Top = 111
+  Width = 700
+  Height = 440
+  Caption = 'Mantenimiento de Estados para Cotizaci'#243'n'
+  Constraints.MinHeight = 403
+  Constraints.MinWidth = 600
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel [0]
+    Left = 484
+    Top = 40
+    Width = 177
+    Height = 13
+    Caption = 'Estados con permisos a cotizar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  inherited pnlBusqueda: TPanel
+    Width = 684
+    Height = 5
+    Enabled = False
+    Visible = False
+  end
+  inherited CoolBar: TCoolBar
+    Top = 5
+    Width = 684
+    Bands = <
+      item
+        Control = ToolBar
+        ImageIndex = -1
+        MinHeight = 27
+        Width = 680
+      end>
+    inherited ToolBar: TToolBar
+      Width = 667
+      inherited tbNuevo: TToolButton
+        ImageIndex = 6
+        Visible = False
+      end
+      inherited tbModificar: TToolButton
+        ImageIndex = 7
+        Visible = False
+      end
+      inherited tbEliminar: TToolButton
+        ImageIndex = 8
+        Visible = False
+      end
+      inherited tbLimpiar: TToolButton
+        ImageIndex = 1
+        Visible = False
+      end
+      inherited tbImprimir: TToolButton
+        ImageIndex = 4
+        OnClick = tbImprimirClick
+      end
+      inherited ToolButton11: TToolButton
+        Visible = False
+      end
+      inherited tbSalir: TToolButton
+        ImageIndex = 5
+      end
+      object tbRefresh: TToolButton
+        Left = 174
+        Top = 0
+        Caption = 'tbRefresh'
+        ImageIndex = 0
+        OnClick = tbRefreshClick
+      end
+      object tbGuardar: TToolButton
+        Left = 199
+        Top = 0
+        Caption = 'Guardar'
+        ImageIndex = 3
+        OnClick = tbGuardarClick
+      end
+    end
+  end
+  inherited pnlDatos: TPanel
+    Width = 691
+    Height = 320
+    object Splitter1: TSplitter
+      Left = 353
+      Top = 0
+      Width = 8
+      Height = 320
+      Beveled = True
+    end
+    object GridConPermiso: TAdvStringGrid
+      Left = 410
+      Top = 0
+      Width = 281
+      Height = 320
+      Cursor = crDefault
+      Align = alClient
+      ColCount = 2
+      DefaultRowHeight = 18
+      FixedCols = 0
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect]
+      ParentFont = False
+      ScrollBars = ssBoth
+      TabOrder = 0
+      ActiveCellFont.Charset = DEFAULT_CHARSET
+      ActiveCellFont.Color = clWindowText
+      ActiveCellFont.Height = -11
+      ActiveCellFont.Name = 'Tahoma'
+      ActiveCellFont.Style = [fsBold]
+      ControlLook.FixedGradientFrom = clBtnFace
+      ControlLook.FlatButton = True
+      Filter = <>
+      FilterDropDown.Font.Charset = DEFAULT_CHARSET
+      FilterDropDown.Font.Color = clWindowText
+      FilterDropDown.Font.Height = -11
+      FilterDropDown.Font.Name = 'MS Sans Serif'
+      FilterDropDown.Font.Style = []
+      FixedColWidth = 60
+      FixedRowHeight = 18
+      FixedFont.Charset = DEFAULT_CHARSET
+      FixedFont.Color = clWindowText
+      FixedFont.Height = -11
+      FixedFont.Name = 'Tahoma'
+      FixedFont.Style = [fsBold]
+      FloatFormat = '%.2f'
+      Look = glClassic
+      MouseActions.DisjunctRowSelect = True
+      PrintSettings.DateFormat = 'dd/mm/yyyy'
+      PrintSettings.Font.Charset = DEFAULT_CHARSET
+      PrintSettings.Font.Color = clWindowText
+      PrintSettings.Font.Height = -11
+      PrintSettings.Font.Name = 'MS Sans Serif'
+      PrintSettings.Font.Style = []
+      PrintSettings.FixedFont.Charset = DEFAULT_CHARSET
+      PrintSettings.FixedFont.Color = clWindowText
+      PrintSettings.FixedFont.Height = -11
+      PrintSettings.FixedFont.Name = 'MS Sans Serif'
+      PrintSettings.FixedFont.Style = []
+      PrintSettings.HeaderFont.Charset = DEFAULT_CHARSET
+      PrintSettings.HeaderFont.Color = clWindowText
+      PrintSettings.HeaderFont.Height = -11
+      PrintSettings.HeaderFont.Name = 'MS Sans Serif'
+      PrintSettings.HeaderFont.Style = []
+      PrintSettings.FooterFont.Charset = DEFAULT_CHARSET
+      PrintSettings.FooterFont.Color = clWindowText
+      PrintSettings.FooterFont.Height = -11
+      PrintSettings.FooterFont.Name = 'MS Sans Serif'
+      PrintSettings.FooterFont.Style = []
+      PrintSettings.PageNumSep = '/'
+      ScrollWidth = 16
+      SearchFooter.Color = clBtnFace
+      SearchFooter.FindNextCaption = 'Find &next'
+      SearchFooter.FindPrevCaption = 'Find &previous'
+      SearchFooter.Font.Charset = DEFAULT_CHARSET
+      SearchFooter.Font.Color = clWindowText
+      SearchFooter.Font.Height = -11
+      SearchFooter.Font.Name = 'MS Sans Serif'
+      SearchFooter.Font.Style = []
+      SearchFooter.HighLightCaption = 'Highlight'
+      SearchFooter.HintClose = 'Close'
+      SearchFooter.HintFindNext = 'Find next occurence'
+      SearchFooter.HintFindPrev = 'Find previous occurence'
+      SearchFooter.HintHighlight = 'Highlight occurences'
+      SearchFooter.MatchCaseCaption = 'Match case'
+      SelectionColor = clHighlight
+      SelectionTextColor = clHighlightText
+      SortSettings.AutoSortForGrouping = False
+      SortSettings.Column = 0
+      SortSettings.Show = True
+      SortSettings.IndexColor = 16776176
+      SortSettings.Full = False
+      SortSettings.AutoFormat = False
+      Version = '4.6.0.8'
+      ColWidths = (
+        60
+        315)
+    end
+    object GridSinPermiso: TAdvStringGrid
+      Left = 0
+      Top = 0
+      Width = 353
+      Height = 320
+      Cursor = crDefault
+      Align = alLeft
+      Anchors = [akTop, akRight, akBottom]
+      ColCount = 2
+      Constraints.MinWidth = 250
+      DefaultRowHeight = 18
+      FixedCols = 0
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect]
+      ParentFont = False
+      ScrollBars = ssBoth
+      TabOrder = 1
+      ActiveCellFont.Charset = DEFAULT_CHARSET
+      ActiveCellFont.Color = clWindowText
+      ActiveCellFont.Height = -11
+      ActiveCellFont.Name = 'Tahoma'
+      ActiveCellFont.Style = [fsBold]
+      ControlLook.FixedGradientFrom = clBtnFace
+      ControlLook.FlatButton = True
+      Filter = <>
+      FilterDropDown.Font.Charset = DEFAULT_CHARSET
+      FilterDropDown.Font.Color = clWindowText
+      FilterDropDown.Font.Height = -11
+      FilterDropDown.Font.Name = 'MS Sans Serif'
+      FilterDropDown.Font.Style = []
+      FixedColWidth = 60
+      FixedRowHeight = 18
+      FixedFont.Charset = DEFAULT_CHARSET
+      FixedFont.Color = clWindowText
+      FixedFont.Height = -11
+      FixedFont.Name = 'Tahoma'
+      FixedFont.Style = [fsBold]
+      FloatFormat = '%.2f'
+      Look = glClassic
+      MouseActions.DisjunctRowSelect = True
+      PrintSettings.DateFormat = 'dd/mm/yyyy'
+      PrintSettings.Font.Charset = DEFAULT_CHARSET
+      PrintSettings.Font.Color = clWindowText
+      PrintSettings.Font.Height = -11
+      PrintSettings.Font.Name = 'MS Sans Serif'
+      PrintSettings.Font.Style = []
+      PrintSettings.FixedFont.Charset = DEFAULT_CHARSET
+      PrintSettings.FixedFont.Color = clWindowText
+      PrintSettings.FixedFont.Height = -11
+      PrintSettings.FixedFont.Name = 'MS Sans Serif'
+      PrintSettings.FixedFont.Style = []
+      PrintSettings.HeaderFont.Charset = DEFAULT_CHARSET
+      PrintSettings.HeaderFont.Color = clWindowText
+      PrintSettings.HeaderFont.Height = -11
+      PrintSettings.HeaderFont.Name = 'MS Sans Serif'
+      PrintSettings.HeaderFont.Style = []
+      PrintSettings.FooterFont.Charset = DEFAULT_CHARSET
+      PrintSettings.FooterFont.Color = clWindowText
+      PrintSettings.FooterFont.Height = -11
+      PrintSettings.FooterFont.Name = 'MS Sans Serif'
+      PrintSettings.FooterFont.Style = []
+      PrintSettings.PageNumSep = '/'
+      ScrollWidth = 16
+      SearchFooter.Color = clBtnFace
+      SearchFooter.FindNextCaption = 'Find &next'
+      SearchFooter.FindPrevCaption = 'Find &previous'
+      SearchFooter.Font.Charset = DEFAULT_CHARSET
+      SearchFooter.Font.Color = clWindowText
+      SearchFooter.Font.Height = -11
+      SearchFooter.Font.Name = 'MS Sans Serif'
+      SearchFooter.Font.Style = []
+      SearchFooter.HighLightCaption = 'Highlight'
+      SearchFooter.HintClose = 'Close'
+      SearchFooter.HintFindNext = 'Find next occurence'
+      SearchFooter.HintFindPrev = 'Find previous occurence'
+      SearchFooter.HintHighlight = 'Highlight occurences'
+      SearchFooter.MatchCaseCaption = 'Match case'
+      SelectionColor = clHighlight
+      SelectionTextColor = clHighlightText
+      SortSettings.AutoSortForGrouping = False
+      SortSettings.Column = 0
+      SortSettings.Show = True
+      SortSettings.IndexColor = 16776176
+      SortSettings.Full = False
+      SortSettings.AutoFormat = False
+      Version = '4.6.0.8'
+      ColWidths = (
+        60
+        306)
+    end
+    object Panel1: TPanel
+      Left = 361
+      Top = 0
+      Width = 49
+      Height = 320
+      Align = alLeft
+      Anchors = [akTop, akBottom]
+      BevelOuter = bvNone
+      TabOrder = 2
+      object btnAgregar: TSpeedButton
+        Left = 0
+        Top = 108
+        Width = 49
+        Height = 29
+        Glyph.Data = {
+          E6080000424DE60800000000000036040000280000002D000000190000000100
+          080000000000B00400000DB305000DB305000001000000000000C0C0C0000100
+          00000502010004020100060403000F0C0A0020170F002F261E00C6B7AA00F4E3
+          D4000A060200050301000D080300130C05000F0A05000302010020160C001F16
+          0D00251B11001A140E0016110C000B090700272019009B867200F3E1CF00F4E4
+          D4001910060022170B004D351A004E361B00372613004F371C005F4222002D1F
+          100050381D005C422500664C2F00241B110020180F0070553900705639007157
+          3B006F553A004D3D2B006D563D00392D2000271F160028201700D8BD9F00E8CE
+          B200DBC3A8001A11060020150800231709001B1207000F0A0400150E06001F15
+          09001D14090023180B003C291300291C0D00432E160048321800735027007351
+          2700714F2600704E26006E4D25004D361A004A34190038271300725027006F4E
+          26006C4C25004F371B004933190046311800322311002F2110006E4D26006B4B
+          250062452200543B1D004B351A00483319003A29140031221100735128007250
+          2800704F27006F4E27006D4D26006A4A2500674924003C2A1500392814002E20
+          10002B1E0F00715028006C4C2600634623005D4121005B402000473219003626
+          130030221100704F28005E422200593F2000563D1F006F4F29005F4423007151
+          2A006E4F29006B4C28005E43230071512B006C4D2900150F0800604525005E43
+          240062472600634727004C371E00664A29006046270079593200614728005F45
+          2700694D2C007455310070543300694F30006C5132006F543400765938007257
+          36006D53340081623E004F3C26007F623F006D54360072583900705739007F63
+          4200896C4800745B3D008B6E4A00836746008A6D4A0084684700655037005A47
+          3100816748006D573D00372C1F00947754001E1811009D7E5A00957755009578
+          550093765400A0825D004A3C2B009F815D00977A5800A7896500A4876400AD8F
+          6C00B4957100B1936F00AC8E6C00584A3900C7A98400C8AB8700191107003D2B
+          1400281C0D0048331800261B0D005D4220003727130034251200312311005039
+          1C0035261300523B1E0063482600563F2200110D0800725939006F5738007058
+          39002C2317003B2F1F0083684600775F4100896E4C00403424005D4C36005346
+          350006040100191106000705020020180D00372A18004F433200040301000504
+          0100080704000202000001010000000101000202020000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000DA000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000DA0000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000DA000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000DA0000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000DA000000000000000000000000000000000000000000000000
+          0000000000CEB300000000000000000000000000000000DA0000000000000000
+          000000000000000000000000000000000000000000C2BD56B400000000000000
+          00000000000000DA000000000000000000000000000000000000000000000000
+          0000000000008A1FB76200000000000000000000000000DA0000000000000000
+          00000000000000000000000000000000000000000000868246B84FB200000000
+          00000000000000DA000000000000000000000000000000000000000000000000
+          000000000035BB7D5E4CBA4F213B000000000000000000DA00000000793E47B6
+          B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B61EB13F6C6351535F4E6A3D00
+          00000000000000DA000000128D7E1D5568686868686868686868686868686868
+          686868686854676448585A5245604F611B000000000000DA000000259491764A
+          5164646464646464646464646464646464646464515C5A484848585850B54D69
+          57610000000000DA0000000096C6834241585858585858585858585858585858
+          58585858404848484848484858485D661C3C7C8C000000DA0000000092A68B71
+          7575757575757575757575757575757575757575756F4443594848485B657870
+          6D85982F000000DA00000000A930A895C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4
+          C4C4C4C497A09F7F5A58595B201CB98493A40000000000DA000000070931A59D
+          A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A19DA33219AC496B73744B22242C
+          00000000000000DA00000016179A8E278FC12827288F909090282727BFC19028
+          27288FC0C50818AB727B816E80292D0000000000000000DA0000000000000000
+          000000000000000000000000000000000000000000ADAAA7BCB97A8899000000
+          00000000000000DA000000000000000000000000000000000000000000000000
+          0000000000C7A8A26E232A9C0000000000000000000000DA0000000000000000
+          000000000000000000000000000000000000000000CFAF89872B000000000000
+          00000000000000DA000000000000000000000000000000000000000000000000
+          0000000000C9AE9B2E0000000000000000000000000000DA0000000000000000
+          000000000000000000000000000000000000000000C3C8000000000000000000
+          00000000000000DA000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000DA0000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000DA0000}
+        OnClick = btnAgregarClick
+      end
+      object SpeedButton2: TSpeedButton
+        Left = 0
+        Top = 140
+        Width = 49
+        Height = 29
+        Glyph.Data = {
+          E6080000424DE60800000000000036040000280000002D000000190000000100
+          080000000000B00400000DB305000DB305000001000000010000C0C0C0000100
+          00000502010004020100060403000F0C0A0020170F002F261E00C6B7AA00F4E3
+          D4000A060200050301000D080300130C05000F0A05000302010020160C001F16
+          0D00251B11001A140E0016110C000B090700272019009B867200F3E1CF00F4E4
+          D4001910060022170B004D351A004E361B00372613004F371C005F4222002D1F
+          100050381D005C422500664C2F00241B110020180F0070553900705639007157
+          3B006F553A004D3D2B006D563D00392D2000271F160028201700D8BD9F00E8CE
+          B200DBC3A8001A11060020150800231709001B1207000F0A0400150E06001F15
+          09001D14090023180B003C291300291C0D00432E160048321800735027007351
+          2700714F2600704E26006E4D25004D361A004A34190038271300725027006F4E
+          26006C4C25004F371B004933190046311800322311002F2110006E4D26006B4B
+          250062452200543B1D004B351A00483319003A29140031221100735128007250
+          2800704F27006F4E27006D4D26006A4A2500674924003C2A1500392814002E20
+          10002B1E0F00715028006C4C2600634623005D4121005B402000473219003626
+          130030221100704F28005E422200593F2000563D1F006F4F29005F4423007151
+          2A006E4F29006B4C28005E43230071512B006C4D2900150F0800604525005E43
+          240062472600634727004C371E00664A29006046270079593200614728005F45
+          2700694D2C007455310070543300694F30006C5132006F543400765938007257
+          36006D53340081623E004F3C26007F623F006D54360072583900705739007F63
+          4200896C4800745B3D008B6E4A00836746008A6D4A0084684700655037005A47
+          3100816748006D573D00372C1F00947754001E1811009D7E5A00957755009578
+          550093765400A0825D004A3C2B009F815D00977A5800A7896500A4876400AD8F
+          6C00B4957100B1936F00AC8E6C00584A3900C7A98400C8AB8700191107003D2B
+          1400281C0D0048331800261B0D005D4220003727130034251200312311005039
+          1C0035261300523B1E0063482600563F2200110D0800725939006F5738007058
+          39002C2317003B2F1F0083684600775F4100896E4C00403424005D4C36005346
+          350006040100191106000705020020180D00372A18004F433200040301000504
+          0100080704000202000001010000000101000202020000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000003F00000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000000000003F000000000000
+          00000000000000000000C8C30000000000000000000000000000000000000000
+          0000000000000000003F00000000000000000000000000002E9BAEC900000000
+          000000000000000000000000000000000000000000000000003F000000000000
+          000000000000002B8789AFCF0000000000000000000000000000000000000000
+          0000000000000000003F00000000000000000000009C2A236EA2A8C700000000
+          000000000000000000000000000000000000000000000000003F000000000000
+          0000000099887AB9BCA7AAAD0000000000000000000000000000000000000000
+          0000000000000000003F00000000000000002D29806E817B72AB1808C5C08F28
+          272890C1BF2727289090908F282728C18F278E9A17160000003F000000000000
+          002C24224B74736B49AC1932A39DA1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1
+          A19DA53109070000003F0000000000A49384B91C205B59585A7F9FA097C4C4C4
+          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C495A830A9000000003F0000002F9885
+          6D7078655B4848485943446F7575757575757575757575757575757575757575
+          75718BA692000000003F0000008C7C3C1C665D48584848484848484840585858
+          58585858585858585858585858585858414283C696000000003F000000000061
+          57694DB55058584848485A5C5164646464646464646464646464646464646464
+          514A769194250000003F0000000000001B614F6045525A584864675468686868
+          6868686868686868686868686868686868551D7E8D120000003F000000000000
+          00003D6A4E5F5351636C3FB11EB6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6
+          B6B6473E79000000003F0000000000000000003B214FBA4C5E7DBB3500000000
+          000000000000000000000000000000000000000000000000003F000000000000
+          0000000000B24FB8468286000000000000000000000000000000000000000000
+          0000000000000000003F0000000000000000000000000062B71F8A0000000000
+          000000000000000000000000000000000000000000000000003F000000000000
+          0000000000000000B456BDC20000000000000000000000000000000000000000
+          0000000000000000003F00000000000000000000000000000000B3CE00000000
+          000000000000000000000000000000000000000000000000003F000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000003F00000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000000000003F000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000003F00000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000000000003F000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000003F}
+        OnClick = SpeedButton2Click
+      end
+    end
+  end
+  inherited btnAceptar: TButton
+    Left = 536
+    Top = 388
+    Width = 72
+    Visible = False
+  end
+  inherited btnCancelar: TButton
+    Left = 616
+    Top = 388
+    Width = 72
+    Visible = False
+  end
+  inherited btnAplicar: TButton
+    Left = 456
+    Top = 388
+    Width = 72
+    Visible = False
+  end
+  inherited ShortCutControl: TShortCutControl
+    ShortCuts = <
+      item
+        Key = 0
+      end
+      item
+        Key = 0
+      end
+      item
+        Key = 0
+      end
+      item
+        Key = 0
+      end
+      item
+        Key = 0
+      end
+      item
+        Key = 0
+      end>
+  end
+  inherited Seguridad: TSeguridad
+    AutoEjecutar = False
+    Left = 356
+  end
+  inherited FormStorage: TFormStorage
+    Left = 384
+  end
+end

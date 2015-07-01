@@ -1,0 +1,135 @@
+object fraImportarInformes: TfraImportarInformes
+  Left = 0
+  Top = 0
+  Width = 494
+  Height = 200
+  TabOrder = 0
+  DesignSize = (
+    494
+    200)
+  object Bevel2: TBevel
+    Left = 6
+    Top = 138
+    Width = 454
+    Height = 7
+    Anchors = [akLeft, akRight, akBottom]
+    Shape = bsTopLine
+  end
+  object Label1: TLabel
+    Left = 6
+    Top = 8
+    Width = 39
+    Height = 13
+    Caption = 'Origen :'
+  end
+  object Label2: TLabel
+    Left = 6
+    Top = 56
+    Width = 43
+    Height = 13
+    Caption = 'Destino :'
+  end
+  object Label3: TLabel
+    Left = 6
+    Top = 112
+    Width = 43
+    Height = 13
+    Caption = 'Periodo :'
+  end
+  object btnCancelar: TButton
+    Left = 330
+    Top = 163
+    Width = 74
+    Height = 25
+    Action = acCancelar
+    ModalResult = 2
+    TabOrder = 0
+  end
+  object btnProcesar: TButton
+    Left = 411
+    Top = 163
+    Width = 74
+    Height = 25
+    Action = acProcesar
+    ModalResult = 1
+    TabOrder = 1
+  end
+  object edOrigenDir: TEdit
+    Left = 6
+    Top = 24
+    Width = 435
+    Height = 21
+    Color = clInactiveCaption
+    ReadOnly = True
+    TabOrder = 2
+  end
+  object edDestinoDir: TEdit
+    Left = 6
+    Top = 72
+    Width = 436
+    Height = 21
+    Color = clInactiveCaption
+    ReadOnly = True
+    TabOrder = 3
+    Text = 
+      '\\ntintraweb\Storage_Data\Web\Informes_Ingenieria_Siniestralidad' +
+      '_Desarrollo'
+  end
+  object edMaskPeriodo: TMaskEdit
+    Left = 55
+    Top = 108
+    Width = 57
+    Height = 21
+    EditMask = '!999999;1; '
+    MaxLength = 6
+    TabOrder = 4
+    Text = '      '
+  end
+  object btBuscarOrigen: TButton
+    Left = 448
+    Top = 22
+    Width = 31
+    Height = 25
+    Action = acBuscarDestino
+    TabOrder = 5
+  end
+  object btBuscarDestino: TButton
+    Left = 448
+    Top = 70
+    Width = 31
+    Height = 25
+    Action = acBuscarOrigen
+    TabOrder = 6
+  end
+  object ActionList1: TActionList
+    Left = 168
+    Top = 144
+    object acBuscarOrigen: TAction
+      Category = 'SetDirectorios'
+      Caption = '...'
+      OnExecute = acBuscarOrigenExecute
+    end
+    object acBuscarDestino: TAction
+      Category = 'SetDirectorios'
+      Caption = '...'
+      OnExecute = acBuscarDestinoExecute
+    end
+    object acCancelar: TAction
+      Category = 'SetDirectorios'
+      Caption = 'Cancelar'
+    end
+    object acProcesar: TAction
+      Category = 'SetDirectorios'
+      Caption = 'Procesar'
+      OnExecute = acProcesarExecute
+    end
+  end
+  object fdSelectDir: TFolderDialog
+    Caption = 'Seleccione Directorio'
+    DialogX = 0
+    DialogY = 0
+    Version = '1.1.0.1'
+    Left = 112
+    Top = 144
+  end
+end

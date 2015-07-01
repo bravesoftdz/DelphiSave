@@ -1,0 +1,609 @@
+unit unVerEventosJuicios;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, unCustomConsulta, FieldHider, ShortCutControl, Placemnt,
+  artSeguridad, QueryPrint, ComCtrls, StdCtrls, ExtCtrls, FormPanel,
+  JvgGroupBox, Mask, ToolEdit, DateComboBox, unArtFrame, unArtDBAwareFrame,
+  unFraCodigoDescripcion, JvExExtCtrls, JvNavigationPane, QueryToFile,
+  ExportDialog, SortDlg, DB, SDEngine, Grids, DBGrids, RXDBCtrl,
+  ArtComboBox, ArtDBGrid, ToolWin, PatternEdit, IntEdit, RxRichEd, RxToolEdit,
+  RxPlacemnt;
+
+type
+  TModoABM = (maNone, maAlta, maModificacion, maBaja);
+  TfrmVerEventosJuicios = class(TfrmCustomConsulta)
+    JvOutlookSplitter1: TJvOutlookSplitter;
+    gbDatosJuicio: TJvgGroupBox;
+    fraJuicioFiltro: TfraCodigoDescripcion;
+    Label1: TLabel;
+    Label2: TLabel;
+    edFechaEventoDesde: TDateComboBox;
+    edFechaEventoHasta: TDateComboBox;
+    Label3: TLabel;
+    fraAbogado: TfraCodigoDescripcion;
+    Label4: TLabel;
+    ShortCutControl1: TShortCutControl;
+    fraTipoEventoFiltro: TfraCodigoDescripcion;
+    Label5: TLabel;
+    fraUsuarioInterno: TfraCodigoDescripcion;
+    Label6: TLabel;
+    fraUsuarioExterno: TfraCodigoDescripcion;
+    Label7: TLabel;
+    Label8: TLabel;
+    edBuscarPalabra: TEdit;
+    fpEventoSeguimiento: TFormPanel;
+    lbAccion: TLabel;
+    bvSeparadorBotonesEventos: TBevel;
+    lblFechaEvento: TLabel;
+    lblVencimientoEvento: TLabel;
+    lblObservacuinesEvento: TLabel;
+    fraTipoEvento: TfraCodigoDescripcion;
+    btnAccAceptar: TButton;
+    btnAccCancelar: TButton;
+    edFechaVencimientoEvento: TDateComboBox;
+    edFechaEvento: TDateComboBox;
+    ToolButton1: TToolButton;
+    Label9: TLabel;
+    Label10: TLabel;
+    edFechaAltaDesde: TDateComboBox;
+    edFechaAltaHasta: TDateComboBox;
+    cbActivos: TCheckBox;
+    cbTerminados: TCheckBox;
+    cbUEAlta: TCheckBox;
+    cbUIAlta: TCheckBox;
+    lbRespuesta: TLabel;
+    Splitter1: TJvOutlookSplitter;
+    Panel2: TPanel;
+    ToolBar1: TToolBar;
+    tbGuardar: TToolButton;
+    Panel3: TPanel;
+    ToolBar2: TToolBar;
+    tbGuardarRespuesta: TToolButton;
+    tbEnvioMail: TToolButton;
+    pnEnvioMail: TFormPanel;
+    btnAceptarAprobConDup: TButton;
+    btnCancelarAprobConDup: TButton;
+    fraJuicioEnvioMail: TfraCodigoDescripcion;
+    Label12: TLabel;
+    fraJuicioEvento: TfraCodigoDescripcion;
+    Label13: TLabel;
+    edIdEvento: TIntEdit;
+    lbNroAudiencia: TLabel;
+    edObsevacionEvento: TRxRichEdit;
+    edRespuestaEvento: TRxRichEdit;
+    Panel1: TPanel;
+    pnlBottom: TPanel;
+    lbCantidad: TLabel;
+    Label11: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    mObservacionesEvento: TRxRichEdit;
+    edRespuesta: TRxRichEdit;
+    dcb_ET_FECHAMODIF: TDateComboBox;
+    lbl_ET_FECHAMODIF: TLabel;
+    procedure tbRefrescarClick(Sender: TObject);
+    procedure sdqConsultaAfterScroll(DataSet: TDataSet);
+    procedure tbLimpiarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure tbModificarClick(Sender: TObject);
+    procedure btnAccAceptarClick(Sender: TObject);
+    procedure ToolButton1Click(Sender: TObject);
+    procedure tbGuardarClick(Sender: TObject);
+    procedure tbGuardarRespuestaClick(Sender: TObject);
+    procedure GridGetCellParams(Sender: TObject; Field: TField;
+      AFont: TFont; var Background: TColor; Highlight: Boolean);
+    procedure tbEnvioMailClick(Sender: TObject);
+    procedure btnAceptarAprobConDupClick(Sender: TObject);
+    procedure tbNuevoClick(Sender: TObject);
+  private
+    ModoABM: TModoABM;
+    function ModificacionEvento: boolean;
+    procedure LimpiarCampoEvento;
+    function VerDatosJuicio(idjuicio: integer): String;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmVerEventosJuicios: TfrmVerEventosJuicios;
+
+implementation
+
+uses Math, AnsiSql,CustomDlgs, unDmPrincipal, unSesion, StrFuncs, unMoldeEnvioMailEvento,
+     VclExtra, unMoldeEnvioMail;
+
+{$R *.dfm}
+
+procedure TfrmVerEventosJuicios.FormCreate(Sender: TObject);
+begin
+  with fraJuicioFiltro do
+  begin
+    TableName   := 'legales.ljt_juicioentramite';
+    FieldID     := 'jt_id';
+    FieldCodigo := 'jt_numerocarpeta';
+    FieldDesc   := 'jt_demandante || '' C/ '' || jt_demandado || '' '' || jt_caratula';
+    ExtraCondition := ' AND JT_ESTADOMEDIACION = ''J'' ';
+    Showbajas   := True;
+  end;
+  with fraJuicioEvento do
+  begin
+    TableName   := 'legales.ljt_juicioentramite';
+    FieldID     := 'jt_id';
+    FieldCodigo := 'jt_numerocarpeta';
+    FieldDesc   := 'jt_demandante || '' C/ '' || jt_demandado || '' '' || jt_caratula';
+    ExtraCondition := ' AND JT_ESTADOMEDIACION = ''J'' ';
+    Showbajas   := True;
+  end;
+  with fraJuicioEnvioMail do
+  begin
+    TableName   := 'legales.ljt_juicioentramite';
+    FieldID     := 'jt_id';
+    FieldCodigo := 'jt_numerocarpeta';
+    FieldDesc   := 'jt_demandante || '' C/ '' || jt_demandado || '' '' || jt_caratula';
+    ExtraCondition := ' AND JT_ESTADOMEDIACION = ''J'' ';
+    Showbajas   := True;
+  end;
+  with fraTipoEventoFiltro do
+  begin
+    TableName   := 'legales.lte_tipoevento';
+    FieldID     := 'TE_ID';
+    FieldCodigo := 'TE_ID';
+    FieldDesc   := 'TE_DESCRIPCION';
+    ExtraCondition := ' AND te_etapa LIKE ''%J%'' ';
+    FieldBaja   := 'TE_FECHABAJA';
+    Showbajas   := True;
+  end;
+  with fraTipoEvento do
+  begin
+    TableName   := 'legales.lte_tipoevento';
+    FieldID     := 'TE_ID';
+    FieldCodigo := 'TE_ID';
+    FieldDesc   := 'TE_DESCRIPCION';
+    ExtraCondition := ' AND te_etapa LIKE ''%J%'' AND (TE_FECHABAJA IS NULL)';
+    FieldBaja   := 'TE_FECHABAJA';
+    Showbajas   := True;
+  end;
+
+  with fraUsuarioInterno do
+  begin
+    TableName   := 'art.use_usuarios';
+    FieldID     := 'SE_ID';
+    FieldCodigo := 'SE_USUARIO';
+    FieldDesc   := 'SE_NOMBRE';
+    ExtraCondition := ' AND se_sector = ''LEGAL'' AND se_usuariogenerico = ''N'' ';
+    FieldBaja   := 'se_fechabaja';
+    Showbajas   := False;
+  end;
+  with fraUsuarioExterno do
+  begin
+    TableName   := 'legales.lnu_nivelusuario';
+    FieldID     := 'NU_ID';
+    FieldCodigo := 'NU_USUARIO';
+    FieldDesc   := 'NU_USUARIO';
+    ExtraCondition := ' AND NU_TIPO = ''E'' ';
+    FieldBaja   := 'NU_FECHABAJA';
+    Showbajas   := False;
+  end;
+  with fraAbogado do
+  begin
+    TableName   := 'legales.lbo_abogado';
+    FieldID     := 'bo_id';
+    FieldCodigo := 'bo_id';
+    FieldDesc   := 'bo_nombre';
+    Showbajas   := True;
+    ExtraCondition := ' AND bo_parte = ''P'' ';
+  end;
+  inherited;
+  tbSalir.Left := 1000;
+end;
+
+procedure TfrmVerEventosJuicios.tbRefrescarClick(Sender: TObject);
+var
+  sSql, sWhere : String;
+begin
+  sSql :=
+    ' SELECT jt_numerocarpeta, jt_fechanotificacionjuicio, jt_idabogado, bo_nombre, ' +
+    '        et_id, et_fechaevento, et_fechavencimiento, jt_id, ' +
+    '        et_idtipoevento, te_descripcion, et_usualta, et_fechaalta, ' +
+    '        et_observaciones,et_respuesta,et_fechabaja, et_usumodif, et_fechamodif ' +
+    '   FROM legales.ljt_juicioentramite, legales.let_eventojuicioentramite let, ' +
+    '        legales.lte_tipoevento, legales.lbo_abogado,legales.lej_estadojuicio ' +
+    '  WHERE et_idjuicioentramite = jt_id ' +
+    '    AND et_idtipoevento = te_id ' +
+    '    AND jt_idestado = ej_id ' +
+    '    AND jt_idabogado = bo_id ' +
+    '    AND jt_estadomediacion = ''J'' ';
+
+  If fraJuicioFiltro.IsSelected then
+    sWhere := sWhere + ' AND jt_id = '+SqlValue(fraJuicioFiltro.Value);
+  If fraAbogado.IsSelected then
+    sWhere := sWhere + ' AND jt_idabogado = '+SqlValue(fraAbogado.Value);
+
+  If (edFechaEventoDesde.Date = edFechaEventoHasta.Date) and (edFechaEventoDesde.Date <> 0) then
+    sWhere := sWhere + ' AND et_fechaevento = '+SqlValue(edFechaEventoDesde.Date)
+  else
+  begin
+   if (edFechaEventoDesde.Date <> 0) then
+    sWhere := sWhere + ' AND et_fechaevento >= '+SqlValue(edFechaEventoDesde.Date);
+   if (edFechaEventoHasta.Date <> 0) then
+    sWhere := sWhere + ' AND et_fechaevento <= '+SqlValue(edFechaEventoHasta.Date);
+  end;
+
+  If (edFechaAltaDesde.Date = edFechaAltaHasta.Date) and (edFechaAltaDesde.Date <> 0) then
+    sWhere := sWhere + ' AND trunc(et_fechaalta) = '+SqlValue(edFechaAltaDesde.Date)
+  else
+  begin
+   if (edFechaAltaDesde.Date <> 0) then
+    sWhere := sWhere + ' AND et_fechaalta >= '+SqlValue(edFechaAltaDesde.Date);
+   if (edFechaAltaHasta.Date <> 0) then
+    sWhere := sWhere + ' AND et_fechaalta <= '+SqlValue(edFechaAltaHasta.Date)+'+1';
+  end;
+
+  If fraTipoEventoFiltro.IsSelected then
+    sWhere := sWhere + ' AND et_idtipoevento = '+SqlValue(fraTipoEventoFiltro.Value);
+  If fraUsuarioInterno.IsSelected then
+    sWhere := sWhere + ' AND et_usualta = '+SqlValue(fraUsuarioInterno.Codigo);
+                         //' OR et_usumodif = '+SqlValue(fraUsuarioInterno.Codigo)+')';
+
+  if cbUIAlta.Checked then
+    sWhere := sWhere + ' AND EXISTS (SELECT 1 '+
+                       '               FROM art.use_usuarios '+
+                       '              WHERE se_usuario = et_usualta '+
+                       '                AND se_sector = ''LEGAL'' '+
+                       '                AND se_usuariogenerico = ''N'' '+
+                       '                AND se_fechabaja IS NULL) ';
+
+  if cbUEAlta.Checked then
+    sWhere := sWhere + ' AND EXISTS (SELECT 1 '+
+                       '               FROM legales.lnu_nivelusuario '+
+                       '              WHERE nu_usuario = et_usualta '+
+                       '                AND nu_tipo = ''E'' '+
+                       '                AND nu_fechabaja IS NULL)';
+
+  If fraUsuarioExterno.IsSelected then
+    sWhere := sWhere + ' AND et_usualta = '+SqlValue(fraUsuarioExterno.Codigo);
+                         //' OR et_usumodif = '+SqlValue(fraUsuarioExterno.Codigo)+')';
+  if edBuscarPalabra.Text <> '' then
+    sWhere := sWhere + ' AND UPPER(et_observaciones) LIKE UPPER(''%'+edBuscarPalabra.Text+'%'') ';
+  if cbActivos.Checked then
+    sWhere := sWhere + ' AND JT_IDESTADO NOT IN (2,3) ';
+  if cbTerminados.Checked then
+    sWhere := sWhere + ' AND JT_IDESTADO IN (2,3) ';
+  if edIdEvento.Text <> '' then
+    sWhere := sWhere + ' AND et_id = '+SqlValue(edIdEvento.Text);
+
+  If (dcb_ET_FECHAMODIF.Date <> 0) then
+    sWhere := sWhere + ' AND  TO_DATE (et_fechamodif,  ''DD/MM/YYYY'')  = '+SqlValue(dcb_ET_FECHAMODIF.Date);
+
+  sSql := sSql + sWhere + SortDialog.OrderBy;
+  sdqConsulta.SQL.Text := sSql;
+  inherited;
+  lbCantidad.Caption := IntToStr(sdqConsulta.RecordCount);
+  sdqConsultaAfterScroll(nil);
+end;
+
+procedure TfrmVerEventosJuicios.sdqConsultaAfterScroll(DataSet: TDataSet);
+begin
+  inherited;
+  edObsevacionEvento.Text := sdqConsulta.FieldByName('et_observaciones').AsString;
+  edRespuestaEvento.Text := sdqConsulta.FieldByName('et_respuesta').AsString;
+  if sdqConsulta.IsEmpty and fraJuicioFiltro.IsSelected then
+    gbDatosJuicio.Caption := VerDatosJuicio(fraJuicioFiltro.Value)
+  else
+    gbDatosJuicio.Caption := VerDatosJuicio(sdqConsulta.FieldByName('jt_id').AsInteger);
+end;
+
+procedure TfrmVerEventosJuicios.tbLimpiarClick(Sender: TObject);
+begin
+  fraJuicioFiltro.Clear;
+  fraAbogado.Clear;
+  edFechaEventoDesde.Clear;
+  edFechaEventoHasta.Clear;
+  edObsevacionEvento.Clear;
+  edRespuestaEvento.Clear;
+  fraTipoEventoFiltro.Clear;
+  fraUsuarioInterno.Clear;
+  fraUsuarioExterno.Clear;
+  edBuscarPalabra.Clear;
+  edIdEvento.Clear;
+  inherited;
+end;
+
+procedure TfrmVerEventosJuicios.tbModificarClick(Sender: TObject);
+begin
+  inherited;
+  if sdqConsulta.IsEmpty then
+    Exit;
+
+  if not sdqConsulta.FieldByName('et_fechabaja').IsNull then
+  begin
+    MsgBox('El evento está dado de baja.' + #13 +
+           'Sus datos no pueden ser modificados.', MB_ICONERROR + MB_OK);
+    Exit
+  end;
+  vclExtra.LockControls([fraJuicioEvento],True);
+  ModificacionEvento;
+end;
+
+function TfrmVerEventosJuicios.ModificacionEvento : boolean ;
+begin
+  result := false;
+  if sdqConsulta.RecordCount > 0 then
+  begin
+   LimpiarCampoEvento;
+   edFechaEvento.Date := sdqConsulta.FieldByName('et_fechaevento').AsDateTime;
+   edFechaVencimientoEvento.Date := sdqConsulta.FieldByName('et_fechavencimiento').AsDateTime;
+   fraTipoEvento.ExtraCondition := ' AND te_etapa LIKE ''%J%'' AND (TE_FECHABAJA IS NULL OR te_id = '+
+                                    sqlvalue(sdqConsulta.FieldByName('et_idtipoevento').AsString)+' )';
+   fraTipoEvento.Codigo := sdqConsulta.FieldByName('et_idtipoevento').AsString;
+   mObservacionesEvento.Text := sdqConsulta.FieldByName('et_observaciones').AsString;
+   edRespuesta.Text := sdqConsulta.FieldByName('et_respuesta').AsString;
+   fraJuicioEvento.Value := sdqConsulta.FieldByName('jt_id').AsInteger;
+   ModoABM := maModificacion;
+   fpEventoSeguimiento.Height := 300;
+   fpEventoSeguimiento.Width := 500;
+   result :=  fpEventoSeguimiento.ShowModal = mrOK;
+   
+   sdqConsulta.Refresh;
+  end;
+end;
+
+procedure TfrmVerEventosJuicios.LimpiarCampoEvento;
+begin
+  fraJuicioEvento.Clear;
+  fraTipoEvento.Codigo := '';
+  edFechaEvento.Date := 0;
+  edFechaVencimientoEvento.Date := 0;;
+  mObservacionesEvento.Lines.Clear;
+  edRespuesta.Lines.Clear;
+end;
+
+procedure TfrmVerEventosJuicios.btnAccAceptarClick(Sender: TObject);
+var
+  textoareemplazar : String;
+  iIdJuicio : Integer;
+begin
+  VerificarMultiple(['Administración de Eventos',
+                    edFechaEvento,
+                    edFechaEvento.Date > 0,
+                    'Debe especificar una fecha para el evento.',
+                    edFechaEvento,
+                    edFechaEvento.Date <= DBDate,
+                    'La fecha para el evento no puede ser mayor que la actual.',
+                    edFechaEvento,
+                    edFechaEvento.Date >= sdqConsulta.FieldByName('JT_FECHANOTIFICACIONJUICIO').AsDateTime,
+                    'La Fecha del evento no puede ser anterior a la fecha de notificación del juicio.',
+                    edFechaVencimientoEvento,
+                    (edFechaVencimientoEvento.Date = 0) or
+                    (edFechaVencimientoEvento.Date >= edFechaEvento.Date) ,
+                    'La fecha de vencimento del evento no puede ser anterior a la fecha del evento.',
+                    edFechaVencimientoEvento,
+                    (edFechaVencimientoEvento.Date = 0) or
+                    (edFechaVencimientoEvento.Date >= sdqConsulta.FieldByName('JT_FECHANOTIFICACIONJUICIO').AsDateTime),
+                    'La Fecha del evento no puede ser anterior a la fecha de notificación del juicio.',
+                    fraTipoEvento,
+                    not fraTipoEvento.IsBaja,
+                    'Debe seleccionar un Tipo de Reclamo activo',
+                    fraTipoEvento,
+                    fraTipoEvento.IsSelected,
+                    'Debe seleccionar un Tipo de Reclamo']);
+  Verificar(not fraJuicioEvento.IsSelected, fraJuicioEvento,'Debe seleccionar un juicio.');
+  BeginTrans(True);
+
+  if ModoABM = maAlta then
+  begin
+    iIdJuicio := GetSecNextVal('LEGALES.SEQ_LET_ID');
+    EjecutarSqlST(' INSERT INTO legales.let_eventojuicioentramite '+
+                  '             (et_id, et_idjuicioentramite, et_fechaevento, et_fechavencimiento, '+
+                  '              et_idtipoevento, et_usualta, et_fechaalta ) '+
+                  '      VALUES ('+SqlValue(iIdJuicio)+','+SqlValue(fraJuicioEvento.Value)+','+
+                                 SqlValue(edFechaEvento.Date)+','+SqlValue(edFechaVencimientoEvento.Date)+','+
+                                 SqlValue(strtoint(fraTipoEvento.Codigo))+','+SqlValue(Sesion.LoginName)+
+                  '              ,SYSDATE)')
+
+  end
+  else
+  begin
+    iIdJuicio := sdqConsulta.FieldByName('et_id').AsInteger;
+    EjecutarSqlST('UPDATE legales.let_eventojuicioentramite ' +
+                  '   SET et_fechaevento =        ' + SqlValue(edFechaEvento.Date)        + ' , ' +
+                  '       et_fechavencimiento =   ' + SqlValue(edFechaVencimientoEvento.Date)  + ' , ' +
+                  '       et_idtipoevento =       ' + SqlValue(strtoint(fraTipoEvento.Codigo)) + ' , ' +
+                  '       et_usumodif =           ' + SqlValue(Sesion.LoginName) + ' , ' +
+                  '       et_fechamodif = SYSDATE ' +
+                  ' WHERE et_id = ' + SqlValue(iIdJuicio));
+  end;
+  textoareemplazar := mObservacionesEvento.Text;
+  ReplaceString( textoareemplazar,'<','');
+  ReplaceString( textoareemplazar,'>','');
+  mObservacionesEvento.Text := textoareemplazar;
+  SaveBlob('SELECT et_observaciones ' +
+           '  FROM legales.let_eventojuicioentramite ' +
+           ' WHERE et_id = ' + SqlValue(iIdJuicio),
+           'UPDATE legales.let_eventojuicioentramite' +
+           '   SET et_observaciones = :et_observaciones ' +
+           ' WHERE et_id = ' + SqlValue(iIdJuicio),
+           'et_observaciones', mObservacionesEvento.Lines);
+  textoareemplazar := edRespuesta.Text;
+  ReplaceString( textoareemplazar,'<','');
+  ReplaceString( textoareemplazar,'>','');
+  edRespuesta.Text := textoareemplazar;
+  SaveBlob('SELECT et_respuesta ' +
+           '  FROM legales.let_eventojuicioentramite ' +
+           ' WHERE et_id = ' + SqlValue(iIdJuicio),
+           'UPDATE legales.let_eventojuicioentramite' +
+           '   SET et_respuesta = :et_respuesta ' +
+           ' WHERE et_id = ' + SqlValue(iIdJuicio),
+           'et_respuesta', edRespuesta.Lines);
+  CommitTrans(True);
+
+  sdqConsulta.Refresh;
+  sdqConsultaAfterScroll(nil);
+  fpEventoSeguimiento.Close;
+end;
+
+procedure TfrmVerEventosJuicios.ToolButton1Click(Sender: TObject);
+begin
+  with GetQuery( ' SELECT * '+
+    '  FROM  legales.let_eventojuicioentramite '+
+    ' WHERE et_observaciones LIKE ''%\rtf%'' '
+     )
+    do
+  try
+    BeginTrans(True);
+    while not Eof do
+    begin
+      edObsevacionEvento.Clear;
+      edObsevacionEvento.Text := FieldByName('et_observaciones').AsString;
+      SaveBlob('SELECT et_observaciones ' +
+               '  FROM legales.let_eventojuicioentramite ' +
+               ' WHERE et_id = ' + SqlValue(FieldByName('et_id').AsInteger),
+               'UPDATE legales.let_eventojuicioentramite' +
+               '   SET et_observaciones = :et_observaciones ' +
+               ' WHERE et_id = ' + SqlValue(FieldByName('et_id').AsInteger),
+               'et_observaciones', edObsevacionEvento.Lines);
+      Next;
+    end;
+  finally
+    Free;
+    CommitTrans(True);
+  end;
+
+  with GetQuery(
+  ' SELECT * '+
+  '  FROM  legales.let_eventojuicioentramite '+
+  '  WHERE et_respuesta LIKE ''%\rtf%'' ') do
+  try
+    BeginTrans(True);
+    while not Eof do
+    begin
+      edRespuestaEvento.Clear;
+      edRespuestaEvento.Text := FieldByName('et_respuesta').AsString;
+      SaveBlob('SELECT et_respuesta ' +
+               '  FROM legales.let_eventojuicioentramite ' +
+               ' WHERE et_id = ' + SqlValue(FieldByName('et_id').AsInteger),
+               'UPDATE legales.let_eventojuicioentramite' +
+               '   SET et_respuesta = :et_respuesta ' +
+               ' WHERE et_id = ' + SqlValue(FieldByName('et_id').AsInteger),
+               'et_respuesta', edRespuestaEvento.Lines);
+     Next;
+    end;
+  finally
+    Free;
+    CommitTrans(True);
+  end;
+end;
+
+procedure TfrmVerEventosJuicios.tbGuardarClick(Sender: TObject);
+var
+  textoareemplazar : String;
+begin
+  inherited;
+  BeginTrans(True);
+  EjecutarSqlST('UPDATE legales.let_eventojuicioentramite ' +
+                '   SET et_usumodif =           ' + SqlValue(Sesion.LoginName) + ' , ' +
+                '       et_fechamodif = SYSDATE ' +
+                ' WHERE et_id = ' + SqlValue(sdqConsulta.FieldByName('et_id').AsInteger));
+  textoareemplazar := edObsevacionEvento.Text;
+  ReplaceString( textoareemplazar,'<','');
+  ReplaceString( textoareemplazar,'>','');
+  edObsevacionEvento.Text := textoareemplazar;
+  SaveBlob('SELECT et_observaciones ' +
+           '  FROM legales.let_eventojuicioentramite ' +
+           ' WHERE et_id = ' + SqlValue(sdqConsulta.FieldByName('et_id').AsInteger),
+           'UPDATE legales.let_eventojuicioentramite' +
+           '   SET et_observaciones = :et_observaciones ' +
+           ' WHERE et_id = ' + SqlValue(sdqConsulta.FieldByName('et_id').AsInteger),
+           'et_observaciones', edObsevacionEvento.Lines);
+  CommitTrans(True);
+  sdqConsulta.Refresh;
+end;
+
+procedure TfrmVerEventosJuicios.tbGuardarRespuestaClick(Sender: TObject);
+var
+  textoareemplazar : String;
+begin
+  inherited;
+  BeginTrans(True);
+  EjecutarSqlST('UPDATE legales.let_eventojuicioentramite ' +
+                '   SET et_usumodif =           ' + SqlValue(Sesion.LoginName) + ' , ' +
+                '       et_fechamodif = SYSDATE ' +
+                ' WHERE et_id = ' + SqlValue(sdqConsulta.FieldByName('et_id').AsInteger));
+  textoareemplazar := edRespuestaEvento.Text;
+  ReplaceString( textoareemplazar,'<','');
+  ReplaceString( textoareemplazar,'>','');
+  edRespuestaEvento.Text := textoareemplazar;
+  SaveBlob('SELECT et_respuesta ' +
+           '  FROM legales.let_eventojuicioentramite ' +
+           ' WHERE et_id = ' + SqlValue(sdqConsulta.FieldByName('et_id').AsInteger),
+           'UPDATE legales.let_eventojuicioentramite' +
+           '   SET et_respuesta = :et_respuesta ' +
+           ' WHERE et_id = ' + SqlValue(sdqConsulta.FieldByName('et_id').AsInteger),
+           'et_respuesta', edRespuestaEvento.Lines);
+  CommitTrans(True);
+  sdqConsulta.Refresh;
+end;
+
+procedure TfrmVerEventosJuicios.GridGetCellParams(Sender: TObject;
+  Field: TField; AFont: TFont; var Background: TColor; Highlight: Boolean);
+begin
+  If sdqConsulta.Active and (not sdqConsulta.FieldByName('et_fechabaja').IsNull) then
+    AFont.Color := clRed; 
+end;
+
+procedure TfrmVerEventosJuicios.tbEnvioMailClick(Sender: TObject);
+begin
+  fraJuicioEnvioMail.Clear;
+  BeginTrans(True);
+  pnEnvioMail.ShowModal;
+  CommitTrans(True);
+end;
+
+procedure TfrmVerEventosJuicios.btnAceptarAprobConDupClick(
+  Sender: TObject);
+begin
+  inherited;
+  Verificar(not fraJuicioEnvioMail.IsSelected, fraJuicioEnvioMail, 'Debe seleccionar un juicio.');
+
+  with TfrmMoldeEnvioMailEvento.Create(Self) do
+  begin
+    FormStyle := fsNormal;
+    Visible := False;
+    Opciones := [oAlwaysShowDialog, oAutoFirma];
+    Cargar(fraJuicioEnvioMail.Value);
+    ShowModal;
+  end;
+  pnEnvioMail.ModalResult := mrOk;
+end;
+
+procedure TfrmVerEventosJuicios.tbNuevoClick(Sender: TObject);
+begin
+  inherited;
+  LimpiarCampoEvento;
+  ModoABM := maAlta;
+  vclExtra.LockControls([fraJuicioEvento],False);
+  fpEventoSeguimiento.Height := 300;
+  fpEventoSeguimiento.Width := 500;
+  fpEventoSeguimiento.ShowModal;
+end;
+
+function TfrmVerEventosJuicios.VerDatosJuicio(idjuicio: integer): String;
+begin
+  Result := ValorSqlEx(' SELECT JT_DEMANDANTE ||'' - ''|| JT_DEMANDADO||'' - Nro Exp.:''|| jt_nroexpediente|| '' - Estado:'' ||EJ_DESCRIPCION '+
+                       '   || '' - RH:'' || LTRIM(TO_CHAR(jt_importereservahonorarios, ''L999G999G990D00'', ''NLS_NUMERIC_CHARACTERS = '''',.'''' '')) ' +
+                       '   || '' - RC:'' || LTRIM(TO_CHAR(jt_importereserva, ''L999G999G990D00'', ''NLS_NUMERIC_CHARACTERS = '''',.'''' '')) ' +
+                       '   || ''- $ Dem:'' || LTRIM(TO_CHAR(jt_importedemandado, ''L999G999G990D00'', ''NLS_NUMERIC_CHARACTERS = '''',.'''' '')) datos' +
+                       '   FROM legales.ljt_juicioentramite,  ' +
+                       '        legales.lbo_abogado, legales.lej_estadojuicio ' +
+                       '  WHERE jt_idestado = ej_id ' +
+                       '    AND jt_idabogado = bo_id ' +
+                       '    AND jt_estadomediacion = ''J'' ' +
+                       '    AND jt_id = :id ', [idjuicio]);
+
+end;
+
+end.

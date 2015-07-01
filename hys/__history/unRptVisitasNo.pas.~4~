@@ -1,0 +1,359 @@
+unit unRptVisitasNo;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, QRCtrls, QuickRpt, ExtCtrls, DB, SDEngine, General, AnsiSql,
+  StdCtrls, ArtDatabase, unDmPrincipal, ArtQReports;
+
+type
+  TrptVisitasNo = class(TForm)
+    sdqReporte: TSDQuery;
+    qrResolucion: TQuickRep;
+    qrbTitulo: TQRBand;
+    QRShape12: TQRShape;
+    QRShape6: TQRShape;
+    QRShape4: TQRShape;
+    QRShape3: TQRShape;
+    QRShape1: TQRShape;
+    ciiu: TQRLabel;
+    contrato: TQRLabel;
+    cpa: TQRLabel;
+    cuit: TQRLabel;
+    denomestablecimiento: TQRLabel;
+    domicilio: TQRLabel;
+    email: TQRLabel;
+    lblactividad: TQRLabel;
+    lblcanttrab: TQRLabel;
+    lblciiu: TQRLabel;
+    lblcontrato: TQRLabel;
+    lblcpa: TQRLabel;
+    lblcuit: TQRLabel;
+    lbldatosempresa: TQRLabel;
+    lbldenomestablecimiento: TQRLabel;
+    lbldomicilio: TQRLabel;
+    lblemail: TQRLabel;
+    lbllocalidad: TQRLabel;
+    lblprovincia: TQRLabel;
+    lblrazonsocial: TQRLabel;
+    lbltelfax: TQRLabel;
+    localidad: TQRLabel;
+    logo: TQRImage;
+    provincia: TQRLabel;
+    QRMemo1: TQRMemo;
+    QRShape10: TQRShape;
+    QRShape13: TQRShape;
+    QRShape14: TQRShape;
+    QRShape7: TQRShape;
+    QRShape8: TQRShape;
+    QRShape9: TQRShape;
+    razonsocial: TQRLabel;
+    telfax: TQRLabel;
+    QRLabel8: TQRLabel;
+    QRShape32: TQRShape;
+    QRSysData1: TQRSysData;
+    QRShape5: TQRShape;
+    qrbPie: TQRBand;
+    QRShape15: TQRShape;
+    lblfirmaprofart: TQRLabel;
+    QRShape28: TQRShape;
+    QRLabel4: TQRLabel;
+    QRShape31: TQRShape;
+    QRLabel10: TQRLabel;
+    qrbHeader: TQRBand;
+    lblitem: TQRLabel;
+    lblmedida: TQRLabel;
+    lblnromedida: TQRLabel;
+    QRLabel2: TQRLabel;
+    QRLabel3: TQRLabel;
+    QRShape22: TQRShape;
+    QRShape23: TQRShape;
+    qrbDetalle: TQRBand;
+    medida: TQRDBText;
+    nromedida: TQRDBText;
+    item: TQRDBText;
+    QRDBText1: TQRDBText;
+    QRShape27: TQRShape;
+    QRShape26: TQRShape;
+    QRShape25: TQRShape;
+    QRShape18: TQRShape;
+    QRShape16: TQRShape;
+    QRShape11: TQRShape;
+    QRShape33: TQRShape;
+    QRShape59: TQRShape;
+    lblconsideraciones: TQRLabel;
+    QRShape34: TQRShape;
+    QRShape21: TQRShape;
+    QRShape19: TQRShape;
+    QRShape2: TQRShape;
+    QRShape24: TQRShape;
+    QRShape20: TQRShape;
+    SummaryBand1: TQRBand;
+    lbCumplimiento: TQRRichText;
+    QRDBText2: TQRDBText;
+    QRShape17: TQRShape;
+    QRDBText3: TQRDBText;
+    actividad: TQRLabel;
+    CantTrab: TQRLabel;
+    cbSubtitulo: TQRChildBand;
+    QRShape36: TQRShape;
+    QRShape40: TQRShape;
+    QRShape35: TQRShape;
+    procedure qrbTituloAfterPrint(Sender: TQRCustomBand;
+      BandPrinted: Boolean);
+    procedure cbSubtituloAfterPrint(Sender: TQRCustomBand;
+      BandPrinted: Boolean);
+    procedure qrResolucionBeforePrint(Sender: TCustomQuickRep;
+      var PrintReport: Boolean);
+    procedure QRLabel8Print(sender: TObject; var Value: String);
+    procedure FormCreate(Sender: TObject);
+  private
+    FFiltroFechaRegularizacion: boolean;
+
+    { Private declarations }
+  public
+    FModoEmpleador : Boolean;
+    procedure VistaPrevia(pCuit, pNroEstablecimiento,
+      pRazonsocial, pDenomestablecimiento, pContrato, pCiiu, pDomicilio,
+      pLocalidad, pCpa, pProvincia, pTelfax, pEmail: String; pPath : String = '');
+    procedure ExportPdf(pCuit, pNroEstablecimiento,
+      pRazonsocial, pDenomestablecimiento, pContrato, pCiiu, pDomicilio,
+      pLocalidad, pCpa, pProvincia, pTelfax, pEmail: String; pPath : String);
+    { Public declarations }
+    property FiltroFechaRegularizacion: boolean read FFiltroFechaRegularizacion write FFiltroFechaRegularizacion;
+  end;
+
+var
+  rptVisitasNo: TrptVisitasNo;
+
+implementation
+
+{$R *.dfm}
+uses unVisualizador, DateTimeFuncs, ArchFuncs, unExportPDF;
+
+Const
+  LpH1 = 4; // # líneas para la primer hoja
+  LpH2 = 5; // # líneas a partir de la 2da. hoja
+
+
+procedure TrptVisitasNo.VistaPrevia (pCuit, pNroEstablecimiento, pRazonsocial, pDenomestablecimiento,
+                                     pContrato, pCiiu, pDomicilio, pLocalidad, pCpa,
+                                             pProvincia, pTelfax, pEmail: String; pPath : String = '');
+var
+  LineasNulas: Integer;
+  sProcedencia ,sSQLitem : String;
+  sSQLCump, sSQLNoAplica : String;
+  sCumplimiento, sCump, sNoAplica, faRegularizacion : String;
+begin
+  try
+    Logo.Picture.Bitmap.LoadFromResourceName(hInstance, 'LOGO_2009_BYN_CHICO');
+    if FModoEmpleador then
+      sSQLitem := ' UNION ALL '+
+                  ' SELECT ia_nrodescripcion || ''-'' || DECODE(rl_idresolucionanexo, 1, ''A'', 2, ''B'', 3, ''C'') || ''-'' '+
+                  '        || DECODE(il_cumplimiento, ''S'', ''I'', ''N'', ''C'', ''X'', ''N/A'') AS item, '+
+                  '          NVL(il_observaciondenuncia, ia_descripcion)'+
+                  '         AS descitem, il_fecharegularizacion AS regul, '+
+                  '        NVL(il_fechaverificacion, '+
+                  '            (SELECT ADD_MONTHS(art.hys.get_vigenciaactual463(em_cuit, rl_fecharecepcion), 12) + 1 '+
+                  '               FROM afi.aem_empresa, afi.aco_contrato '+
+                  '              WHERE rl_contrato = co_contrato '+
+                  '                AND em_id = co_idempresa)) AS verif,ia_nrodescripcion,  '+
+                  '       (select ta_descripcionvisitainc from hys.hta_tipoanexo where ta_id = ia_idtipoformanexo) as observacionitem, '+
+                  '        nvl2((select ta_descripcionvisitainc from hys.hta_tipoanexo where ta_id = ia_idtipoformanexo),''Indicar sustancia:'','''')observacionnonull '+
+                  '   FROM hys.hil_itemsriesgolaboral, hys.hia_itemanexo, hys.hrl_relevriesgolaboral '+
+                  '  WHERE il_iditemanexo = ia_id '+
+                  '    AND il_idrelevriesgolaboral = rl_id '+
+                  '    AND rl_fechabaja IS NULL '+
+                  '    AND ia_idtipoformanexo IS NOT NULL '+
+                  '    AND NVL(ia_cagafecharegul, ''N'') = ''N'' '+
+                  '    AND rl_contrato = :contrato '+
+                  '    AND rl_estableci = :nroestablecimiento ';
+
+    cuit.Caption := pCuit;
+    razonsocial.Caption := pRazonsocial;
+    denomestablecimiento.Caption := pDenomestablecimiento;
+    contrato.Caption := pContrato +' - '+ pNroEstablecimiento;
+    ciiu.Caption := pCiiu;
+    actividad.Caption := ValorSql('SELECT AC_DESCRIPCION FROM cac_actividad WHERE ac_codigo = '+SqlValue(pCiiu));
+    domicilio.Caption := pDomicilio;
+    localidad.Caption := pLocalidad;
+    cpa.Caption := pCpa;
+    provincia.Caption := pProvincia;
+    telfax.Caption := pTelfax;
+    email.Caption := pEmail;
+
+
+    if FModoEmpleador then
+    begin
+      faRegularizacion := ' AND il_fecharegularizacion <= LAST_DAY (SYSDATE) ';
+      sdqReporte.SQL.Text := sdqReporte.SQL.Text + faRegularizacion;
+      sSQLitem := sSQLitem + faRegularizacion;
+    end;
+
+    if FModoEmpleador then
+    begin
+      sdqReporte.SQL.Text := sdqReporte.SQL.Text + ' AND rl_procedencia = ''E'' '+sSQLitem+ ' AND rl_procedencia = ''E'' '+' ORDER BY ia_nrodescripcion)';
+      sProcedencia := 'E';
+    end
+    else
+    begin
+      sdqReporte.SQL.Text := sdqReporte.SQL.Text + ' AND rl_procedencia = ''P'' '+sSQLitem+ ' AND rl_procedencia = ''P'' '+'ORDER BY ia_nrodescripcion)';
+      sProcedencia := 'P';
+    end;
+
+    CantTrab.Caption := ValorSql('SELECT rl_cantempleados FROM hys.hrl_relevriesgolaboral WHERE rl_fechabaja IS NULL '+
+                                 '   AND rl_contrato = '+SqlValue(pContrato)+
+                                 '   AND rl_estableci = '+SqlValue(pNroEstablecimiento)+
+                                 '   AND rl_procedencia = '+SqlValue(sProcedencia));
+
+    //sdqReporte.SQL.Text := sdqReporte.SQL.Text + ' ORDER BY ia_nrodescripcion ';
+
+    OpenQueryEx(sdqReporte, [pContrato, pNroEstablecimiento]);
+
+    //sdqReporte.Open;
+    if sdqReporte.RecordCount = LpH1 then
+      LineasNulas := 0
+    else
+      if sdqReporte.RecordCount < LpH1 then
+        LineasNulas := (LpH1 + 1) - sdqReporte.RecordCount mod LpH1
+      else
+        if (sdqReporte.RecordCount - LpH1) mod LpH2 = 0 then
+          LineasNulas := 0
+        else
+          LineasNulas := (LpH2 + 1) - (sdqReporte.RecordCount - LpH1) mod LpH2;
+
+    sdqReporte.Close;
+    sdqReporte.SQL.Append('UNION ALL ' +
+                          'SELECT NULL item, NULL descitem, NULL regul, NULL verif, NULL observacionitem, ' +
+                          '       NULL observacionnonull '+
+                          '  FROM aco_contrato ' +
+                          ' WHERE ROWNUM <  ' + SqlInt(LineasNulas-1));
+
+    OpenQueryEx(sdqReporte, [pContrato, pNroEstablecimiento]);
+
+    if FModoEmpleador then
+    begin
+      sSQLCump := 'SELECT DISTINCT ia_nrodescripcion '+
+                    '  FROM (SELECT   ia_nrodescripcion '+
+                    '          FROM hys.hil_itemsriesgolaboral, hys.hia_itemanexo, hys.hrl_relevriesgolaboral '+
+                    '         WHERE il_iditemanexo = ia_id '+
+                    '           AND il_idrelevriesgolaboral = rl_id '+
+                    '           AND rl_fechabaja IS NULL '+
+                    '           AND (   (    ia_idtipoformanexo IS NULL '+
+                    '                    AND il_cumplimiento = ''S'') '+
+                    '                OR (    ia_idtipoformanexo IS NOT NULL '+
+                    '                    AND il_cumplimiento = ''N'')) '+
+                    '           AND NVL(ia_cagafecharegul, ''N'') = ''N'' '+
+                    '           AND rl_contrato = '+ SqlValue(pContrato)+
+                    '           AND rl_estableci = '+SqlValue(pNroEstablecimiento)+
+                    '           AND rl_procedencia = '+SqlValue(sProcedencia)+
+                    '      ORDER BY ia_nrodescripcion) '+
+                    '   ORDER BY ia_nrodescripcion ';
+      sCump := '';
+      with getquery (sSQLCump) do
+      try
+        while not eof do
+        begin
+          if sCump = '' then
+            sCump := fieldbyname('ia_nrodescripcion').AsString
+          else
+            sCump := sCump+', '+fieldbyname('ia_nrodescripcion').AsString;
+          next;
+        end;
+      finally
+        Free;
+      end;
+
+      sSQLNoAplica := 'SELECT DISTINCT ia_nrodescripcion '+
+                    '  FROM (SELECT   ia_nrodescripcion '+
+                    '          FROM hys.hil_itemsriesgolaboral, hys.hia_itemanexo, hys.hrl_relevriesgolaboral '+
+                    '         WHERE il_iditemanexo = ia_id '+
+                    '           AND il_idrelevriesgolaboral = rl_id '+
+                    '           AND rl_fechabaja IS NULL '+
+                    '           AND (   (    ia_idtipoformanexo IS NULL '+
+                    '                    AND il_cumplimiento = ''X'') '+
+                    '                OR (    ia_idtipoformanexo IS NOT NULL '+
+                    '                    AND il_cumplimiento = ''X'')) '+
+                    '           AND NVL(ia_cagafecharegul, ''N'') = ''N'' '+
+                    '           AND rl_contrato = '+ SqlValue(pContrato)+
+                    '           AND rl_estableci = '+SqlValue(pNroEstablecimiento)+
+                    '           AND rl_procedencia = '+SqlValue(sProcedencia)+
+                    '      ORDER BY ia_nrodescripcion) '+
+                    '   ORDER BY ia_nrodescripcion ';
+      sNoAplica := '';
+      with getquery (sSQLNoAplica) do
+      try
+        while not eof do
+        begin
+        if sNoAplica = '' then
+          sNoAplica := fieldbyname('ia_nrodescripcion').AsString
+        else
+          sNoAplica := sNoAplica+', '+fieldbyname('ia_nrodescripcion').AsString;
+          next;
+        end;
+      finally
+        Free;
+      end;
+      sCumplimiento := '{\rtf1\ansi\ansicpg1252\deff0\deflang11274{\fonttbl{\f0\fswiss\fprq2\fcharset0 Verdana;}{\f1\fswiss\fcharset0 Arial;}} '+
+                       '{\*\generator Msftedit 5.41.15.1515;}\viewkind4\uc1\pard\b\f0\fs12\par Cumple: \b0 '+sCump+'.\par\par '+
+                       '\b No Aplica: \b0 '+sNoAplica+'.\f1\fs20\par}';
+      lbCumplimiento.Lines.LoadFromStream(TStringStream.Create(sCumplimiento));
+    end;
+
+    if pPath = '' then
+      Visualizar(qrResolucion, GetValores('', '', StrToIntDef(pContrato, 0)), [oForceShowModal, oAlwaysShowdialog, oAutoFirma, oForceDB])
+    else
+    begin
+      qrResolucion.Prepare;
+      qrResolucion.QRPrinter.Title := pPath;
+      qrResolucion.QRPrinter.Print;
+      qrResolucion.QRPrinter.Free;
+      qrResolucion.QRPrinter.Cleanup;
+    end;
+  finally
+    sdqReporte.Close;
+  end;
+end;
+
+procedure TrptVisitasNo.qrbTituloAfterPrint(Sender: TQRCustomBand;
+  BandPrinted: Boolean);
+begin
+  //qrbTitulo.Height :=  253 // 76
+end;
+
+procedure TrptVisitasNo.ExportPdf(pCuit, pNroEstablecimiento, pRazonsocial,
+  pDenomestablecimiento, pContrato, pCiiu, pDomicilio, pLocalidad, pCpa,
+  pProvincia, pTelfax, pEmail: String; pPath : String);
+begin
+  VistaPrevia(pCuit, pNroEstablecimiento,
+      pRazonsocial, pDenomestablecimiento, pContrato, pCiiu, pDomicilio,
+      pLocalidad, pCpa, pProvincia, pTelfax, pEmail,pPath);
+end;
+
+procedure TrptVisitasNo.FormCreate(Sender: TObject);
+begin
+  FFiltroFechaRegularizacion := False;
+end;
+
+procedure TrptVisitasNo.cbSubtituloAfterPrint(Sender: TQRCustomBand;
+  BandPrinted: Boolean);
+begin
+  cbSubtitulo.enabled := False;
+end;
+
+procedure TrptVisitasNo.qrResolucionBeforePrint(Sender: TCustomQuickRep;
+  var PrintReport: Boolean);
+begin
+  cbSubtitulo.enabled := True;
+end;
+
+procedure TrptVisitasNo.QRLabel8Print(sender: TObject; var Value: String);
+begin
+  if not FModoEmpleador then
+    Value := 'RESOLUCIÓN 463 - VERIFICACIÓN DE INCUMPLIMIENTOS DE FORM. DE VEROSIMILITUD'
+  else
+    Value := 'RESOLUCIÓN 463 - EVALUACIÓN DE VEROSIMILITUD';
+end;
+
+end.

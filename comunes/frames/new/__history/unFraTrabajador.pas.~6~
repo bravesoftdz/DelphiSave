@@ -1,0 +1,705 @@
+unit unFraTrabajador;
+
+interface
+
+uses
+  {$IFDEF VER180}
+  rxToolEdit,
+  {$ELSE}
+  ToolEdit,
+  {$ENDIF}
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, unArtDbFrame, Db, SDEngine, ArtComboBox,
+  StdCtrls, Mask, unArt, unArtMessages, Cuit, RxToolEdit{, unFraEmpresa, unFraEstablecimiento};
+
+{$IFNDEF ART2}
+//ESTE FRAME NO ES COMPATIBLE CON LAS APLICACIONES VIEJAS
+{$ENDIF}
+
+const
+  { Alias de los campos }
+  TRAB_ALIAS_ID    : String = 'ID';
+  TRAB_ALIAS_CUIL  : String = 'CUIL';
+  TRAB_ALIAS_NOMBRE: String = 'NOMBRE';
+  TRAB_ALIAS_BAJA  : String = 'FECHA_BAJA';
+
+type
+  TfraTrabajador = class(TArtDbFrame)
+    mskCUIL: TMaskEdit;
+    cmbNombre: TArtComboBox;
+    procedure FrameExit(Sender: TObject);
+    procedure mskCUILKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure mskCUILKeyPress(Sender: TObject; var Key: Char);
+    procedure cmbNombreCloseUp(Sender: TObject);
+    procedure cmbNombreDropDown(Sender: TObject);
+    procedure sdqDatosAfterOpen(DataSet: TDataSet);
+  private
+    FAMP: Boolean;
+    FFieldBaja: String;
+    FFieldCUIL: String;
+    FFieldId: String;
+    FFieldNombre: String;
+    FFiltered: Boolean;
+    FForzarEmpresa: Boolean;
+    FGettingSQL: boolean;
+    FMinLength: Integer;
+    FMostrarRelLab: Boolean;
+    FSinEstablecim: Boolean;
+    FTercerizadoras: Boolean;
+    FUseIndexTrabajador: Boolean;
+
+    function Get_DNI: String;
+    function GetCUIL: TCuil;
+    function GetCUIT: TCuil;
+    function GetFieldName(aIndex: Integer): String;
+    function GetIdRelacionLaboral: TTableId;
+    function GetNombre: String;
+    function GetSqlTercerizadora: String;
+
+    procedure Set_DNI(const Value: String);
+    procedure SetCUIL(const Value: TCuil);
+    procedure SetCUIT(const Value: TCuil);
+    procedure SetFilterValue(const Index: Integer; const Value: TTableId);
+    procedure SetNombre(const Value: String);
+  protected
+    FFilters: Array[0..3] of TTableId;
+
+    function GetFilterValue(Index: Integer): TTableId; virtual;
+    function GetSql: String; override;
+    function GetSqlOrderBy: String; override;
+    function GetSqlWhere: String; override;
+    function GetValue: TTableID; override;
+    function IsBaja: Boolean; override;
+
+    procedure Internal_SetCuil(aCuil: TCuil; aDoChanges: Boolean = False);
+    procedure LoadValues(aDoChanges: Boolean = False); override;
+    procedure SetValue(const Value: TTableID); override;
+    procedure ShowAndHideColumns;
+
+    function CancelExitLoad: Boolean; virtual; {Se usa antes del exists, para si se hereda este frame y se agregan controles, chequee los datos }
+    function ClearOnExit: Boolean; virtual;
+    function GetEmpresa: String;
+
+    procedure SetEditorsValues; virtual;
+    procedure TrabajadorAusente; virtual;
+  public
+    constructor Create(AOwner: TComponent); override;
+
+    procedure Clear; override;
+  published
+    property AMP               : Boolean          read FAMP                  write FAMP             default False;
+    property Contrato          : TTableId index 2 read GetFilterValue        write SetFilterValue   default ART_EMPTY_ID;
+    property CUIL              : TCuil            read GetCUIL               write SetCUIL;
+    property CUIT              : TCuil            read GetCUIT               write SetCUIT;
+    property DNI               : String           read Get_DNI               write Set_DNI;
+    property FieldBaja         : String           read FFieldBaja            write FFieldBaja;
+    property FieldCUIL         : String           read FFieldCUIL            write FFieldCUIL;
+    property FieldId           : String           read FFieldId              write FFieldId;
+    property FieldNombre       : String           read FFieldNombre          write FFieldNombre;
+    property Filtered          : Boolean          read FFiltered             write FFiltered        default False;
+    property ForzarEmpresa     : Boolean          read FForzarEmpresa        write FForzarEmpresa   default False;
+    property IdEmpresa         : TTableId index 0 read GetFilterValue        write SetFilterValue   default ART_EMPTY_ID;
+    property IdEstableci       : TTableId index 1 read GetFilterValue        write SetFilterValue   default ART_EMPTY_ID;
+    property IdRelacionLaboral : TTableId         read GetIdRelacionLaboral;
+    property IdRelaLaboral     : TTableId index 3 read GetFilterValue        write SetFilterValue   default ART_EMPTY_ID;
+    property IdTrabajador      : TTableId         read GetValue              write SetValue;
+    property MinLength         : Integer          read FMinLength            write FMinLength       default 2;
+    property MostrarRelaLaboral: Boolean          read FMostrarRelLab        write FMostrarRelLab   default False;
+    property Nombre            : String           read GetNombre             write SetNombre;
+    property SinEstablecimiento: Boolean          read FSinEstablecim        write FSinEstablecim   default False;
+    property Tercerizadoras    : Boolean          read FTercerizadoras       write FTercerizadoras;
+    property Value;
+    property UseIndexTrabajador: Boolean          read FUseIndexTrabajador       write FUseIndexTrabajador default False;
+{
+    property fraEmpresa         : TfraEmpresa         read FfraEmpresa         write FfraEmpresa;
+    property fraEstablecimiento : TfraEstablecimiento read FfraEstablecimiento write FfraEstablecimiento;
+}
+  end;
+
+implementation
+
+{$R *.DFM}
+
+uses
+  SqlFuncs, AnsiSql, CustomDlgs, Numeros, unDmPrincipal, General, unTercerizadoras, unSesion;
+
+constructor TfraTrabajador.Create(AOwner: TComponent);
+begin
+  inherited;
+
+  FMinLength     := 2;
+  FFieldId       := 'tj_id';
+  FFieldCUIL     := 'tj_cuil';
+  FFieldNombre   := 'tj_nombre';
+  FFieldBaja     := 'NULL';
+  FMostrarRelLab := False;
+  FSinEstablecim := False;
+  FGettingSQL    := False;
+  FAMP           := False;
+  FForzarEmpresa := False;
+end;
+
+function TfraTrabajador.GetFilterValue(Index: Integer): TTableId;
+begin
+  Result := FFilters[Index];
+  if (Result = ART_EMPTY_ID) and not FGettingSQL then
+    if sdqDatos.Active and Assigned(sdqDatos.FindField(GetFieldName(Index))) then
+      Result := sdqDatos.FieldByName(GetFieldName(Index)).AsInteger;
+end;
+
+function TfraTrabajador.GetFieldName(aIndex: integer): String;
+begin
+  case aIndex of
+    0: Result := 'EM_ID';
+    1: Result := 'ES_ID';
+    2: Result := 'CONTRATO';
+  end;
+end;
+
+function TfraTrabajador.GetSql: String;
+var
+  sOuter: String;
+begin
+  FGettingSQL := True;
+  if FSql <> '' then
+    Result := inherited GetSql
+  else begin
+
+    if FUseIndexTrabajador then
+      Result :=
+       'SELECT /*+ INDEX( CTJ_TRABAJADOR NDX_CTJ_NOMBRE ) */   DISTINCT ' + SqlAlias(FieldId,       TRAB_ALIAS_ID)     + ',' +
+                           SqlAlias(FieldCUIL,     TRAB_ALIAS_CUIL)   + ',' +
+                           SqlAlias(FieldNombre,   TRAB_ALIAS_NOMBRE) + ',' +
+                           SqlAlias(FieldBaja,     TRAB_ALIAS_BAJA)   + ' '  +
+                           ExtraFields +
+                    ' FROM DUAL ' +
+                   ' WHERE 1 = 1 '
+    else
+      Result :=
+        'SELECT DISTINCT ' + SqlAlias(FieldId,       TRAB_ALIAS_ID)     + ',' +
+                           SqlAlias(FieldCUIL,     TRAB_ALIAS_CUIL)   + ',' +
+                           SqlAlias(FieldNombre,   TRAB_ALIAS_NOMBRE) + ',' +
+                           SqlAlias(FieldBaja,     TRAB_ALIAS_BAJA)   + ' '  +
+                           ExtraFields +
+                    ' FROM DUAL ' +
+                   ' WHERE 1 = 1 ';
+
+    Filtered := (IdRelaLaboral <> ART_EMPTY_ID) or (IdEmpresa <> ART_EMPTY_ID) or (Contrato <> ART_EMPTY_ID) or (IdEstableci <> ART_EMPTY_ID);
+
+    if not Filtered then
+      AddTable(Result, 'CTJ_TRABAJADOR' + GetDBLink());
+
+    if FAMP then
+    begin
+      AddField (Result, 'RL_ID');
+      AddTable (Result, 'CRL_RELACIONLABORAL' + GetDBLink());
+      AddCondition (Result, 'RL_CONTRATO = ' + SqlValue(Contrato));
+      AddCondition( Result, 'TJ_ID = RL_IDTRABAJADOR');
+    end
+    else
+    if FMostrarRelLab or Filtered then
+    begin
+      if not Filtered then
+        sOuter := '(+)';
+
+      if not FSinEstablecim then
+      begin
+        AddField( Result, 'RL_ID' );
+        AddTable( Result, 'CRL_RELACIONLABORAL' + GetDBLink());
+        AddCondition( Result, 'TJ_ID = RL_IDTRABAJADOR' + sOuter);
+        if (IdRelaLaboral <> ART_EMPTY_ID) then
+          AddCondition( Result, 'RL_ID = ' + SqlValue(IdRelaLaboral) );
+
+        AddTable( Result, 'CRE_RELACIONESTABLECIMIENTO' + GetDBLink());
+        AddCondition( Result, 'RE_IDRELACIONLABORAL' + sOuter + ' = RL_ID' );
+
+        AddField( Result, 'ES_ID' );
+        AddField( Result, 'ES_NROESTABLECI' );
+        AddField( Result, 'ES_NOMBRE' );
+        AddTable( Result, 'AES_ESTABLECIMIENTO' + GetDBLink());
+        AddCondition( Result, 'ES_ID' + sOuter + ' = RE_IDESTABLECIMIENTO' );
+
+        if (IdEstableci <> ART_EMPTY_ID) then
+          AddCondition( Result, 'ES_ID = ' + SqlValue(IdEstableci) );
+      end {else
+      begin
+        AddField( Result, 'NULL as RL_ID' );
+        AddField( Result, 'NULL as ES_ID' );
+        AddField( Result, 'NULL as ES_NROESTABLECI' );
+        AddField( Result, 'NULL as ES_NOMBRE' );
+      end};
+
+      if (Contrato <> ART_EMPTY_ID) and (not FSinEstablecim) then
+      begin
+        AddField( Result, 'RL_CONTRATO', 'CONTRATO' );
+        AddCondition( Result, 'RL_CONTRATO = ' + SqlValue(Contrato) );
+      end;
+
+      if FMostrarRelLab or (IdEmpresa <> ART_EMPTY_ID) then
+      begin
+        if (Contrato = ART_EMPTY_ID) then
+          AddField( Result, 'CO_CONTRATO', 'CONTRATO' );
+
+        if (not FSinEstablecim) then
+          AddCondition( Result, 'RL_CONTRATO = CO_CONTRATO' + sOuter );
+
+        if (IdEmpresa <> ART_EMPTY_ID) then
+          AddCondition( Result, 'EM_ID = ' + SqlValue(IdEmpresa) );
+
+        AddTable( Result, 'ACO_CONTRATO' + GetDBLink());
+        AddField( Result, 'EM_ID' );
+        AddField( Result, 'EM_CUIT' );
+        AddField( Result, 'EM_NOMBRE' );
+        AddTable( Result, 'AEM_EMPRESA' + GetDBLink());
+        AddCondition( Result, 'CO_IDEMPRESA = EM_ID' {+ sOuter} );
+      end;
+    end;
+
+    if Filtered then
+      AddTable(Result, 'CTJ_TRABAJADOR' + GetDBLink());
+  end;
+  FGettingSQL := False;
+end;
+
+function TfraTrabajador.GetSqlOrderBy: String;
+begin
+  Result := ' ' + SQL_ORDERBY + ' ' + SqlSimpleAlias(TRAB_ALIAS_NOMBRE);
+end;
+
+function TfraTrabajador.GetSqlWhere: String;
+var
+  sWhere: String;
+begin
+  if FShowBajas then
+    sWhere := ''
+  else
+    sWhere := ' AND ' + FFieldBaja + ' IS NULL ';
+
+  Result := sWhere + GetSqlTercerizadora;
+end;
+
+function TfraTrabajador.GetValue: TTableID;
+begin
+  FrameExit(nil); // Valida que todo este completo
+  if sdqDatos.Active then
+    Result := sdqDatos.FieldByName(TRAB_ALIAS_ID).AsInteger
+  else
+    Result := ART_EMPTY_ID;
+end;
+
+function TfraTrabajador.IsBaja: Boolean;
+begin
+  Result := sdqDatos.Active and not sdqDatos.FieldByName(TRAB_ALIAS_BAJA).IsNull;
+end;
+
+procedure TfraTrabajador.SetFilterValue(const Index: Integer; const Value: TTableId);
+var
+  Field: TField;
+begin
+  if FFilters[Index] <> Value then
+  begin
+    FFilters[Index] := Value;
+    Field := sdqDatos.FindField( GetFieldName(Index) );
+    if not (Assigned(Field) and (Field.AsInteger = FFilters[Index])) then
+      Clear;
+  end;
+end;
+
+procedure TfraTrabajador.SetValue(const Value: TTableID);
+var
+  sSql: String;
+begin
+  if Value <> ART_EMPTY_ID then
+  begin
+    sSql := GetSql + GetSqlWhere + ' AND ' + FFieldID + ' = ' + SqlInt(Value);
+
+    if OpenQuery(sdqDatos, sSql, True) then
+  {
+      if sdqDatos.IsEmpty then
+        TrabajadorAusente
+      else
+  }
+        LoadValues(False);
+  end else
+    Clear;
+end;
+
+procedure TfraTrabajador.FrameExit(Sender: TObject);
+begin
+  if not ReadOnly then
+  begin
+    if (mskCUIL.Text = '') and ClearOnExit then
+      Clear
+    else if (mskCUIL.Text <> '') and ((not sdqDatos.Active) or (mskCUIL.Text <> sdqDatos.FieldByName(TRAB_ALIAS_CUIL).AsString)) then
+      Internal_SetCuil(mskCUIL.Text, True)
+{    else
+      cmbNombre.Text := sdqDatos.FieldByName( TRAB_ALIAS_NOMBRE ).AsString}
+    else if not CancelExitLoad then
+      LoadValues(False);
+  end;
+end;
+
+procedure TfraTrabajador.Internal_SetCuil(aCuil: TCuil; aDoChanges: Boolean);
+var
+  sSql: String;
+begin
+  if Length(aCuil) = 11 then
+    sSql := GetSql + GetSqlWhere + ' AND ' + FFieldCUIL + ' = ' + SqlString(aCuil, True)
+  else if Length(aCuil) > 0 then
+    sSql := GetSql + GetSqlWhere + ' AND tj_documento = ' + SqlString(GetDNI(aCuil, True), True)
+  else
+  begin
+    Clear;
+    Exit;
+  end;
+
+  if OpenQuery(sdqDatos, sSql, True) then
+  begin
+    if sdqDatos.IsEmpty then
+    begin
+      TrabajadorAusente;
+      Exit;
+    end
+    else
+      if sdqDatos.RecordCount > 1 then
+      begin
+        if Trim(mskCUIL.Text) = EmptyStr then
+          mskCUIL.Text := GetDNI(sdqDatos.FieldByName(TRAB_ALIAS_CUIL).AsString);
+{
+        if  then
+          sdqDatos.FindField('CUIL').Visible := Length(ACuil) = 11
+        else
+          sdqDatos.FindField('CUIL').Tag := 0;
+
+        if Contrato > 0 then
+        begin
+          sdqDatos.FindField('EM_CUIT').Tag := 1;
+          sdqDatos.FindField('CONTRATO').Tag := 1;
+        end else
+        begin
+          sdqDatos.FindField('EM_CUIT').Tag := 0;
+          sdqDatos.FindField('CONTRATO').Tag := 0;
+        end;
+}
+        cmbNombre.DoDropDown(True);
+        {
+        if not DoChanges then
+          LoadValues( DoChanges );
+        }
+      end
+      else
+        LoadValues(aDoChanges);
+  end;
+end;
+
+procedure TfraTrabajador.mskCUILKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if (Key = VK_DOWN) and (ssAlt in Shift) then
+    cmbNombre.DoDropDown ;
+end;
+
+procedure TfraTrabajador.mskCUILKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #13) and (not mskCUIL.ReadOnly) then
+  begin
+    cmbNombre.Clear;
+    Internal_SetCuil(mskCUIL.Text, True);
+  end;
+end;
+
+procedure TfraTrabajador.cmbNombreCloseUp(Sender: TObject);
+begin
+  if cmbNombre.Text = '' then
+    Clear
+  else
+    LoadValues(True);
+end;
+
+procedure TfraTrabajador.cmbNombreDropDown(Sender: TObject);
+var
+  sSql: String;
+begin
+  if cmbNombre.Focused and (Length(Trim(cmbNombre.Text)) < FMinLength) and (Trim(mskCUIL.Text) = '') then
+  begin
+    Clear;
+    InfoHint(cmbNombre, Format(SMinLength, [LowerCase(NumLetras(FMinLength))]));
+  end
+  else
+  begin
+    if not ForzarEmpresa or (IdEmpresa <> ART_EMPTY_ID) or (Contrato <> ART_EMPTY_ID) then
+    begin
+      if (cmbNombre.Text > '') and (Length(Trim( cmbNombre.Text )) >= FMinLength) then
+      begin
+        sSql := GetSql +
+                ' AND ' + FieldNombre + ' LIKE ' + SQL_QUOTE + cmbNombre.Text + SQL_WILLCARD + SQL_QUOTE + ' ' +
+                GetSqlWhere + GetSqlOrderBy;
+
+        OpenQuery(sdqDatos, sSql, True);
+
+        if sdqDatos.IsEmpty then
+        begin
+          TrabajadorAusente;
+          Exit;
+        end;
+
+        if mskCUIL.Text <> '' then
+          sdqDatos.Locate( TRAB_ALIAS_CUIL, mskCUIL.Text, []);
+
+        if (not sdqDatos.IsEmpty) and (sdqDatos.RecordCount > 1) then
+        begin
+          if mskCUIL.Text <> '' then
+            sdqDatos.Locate(TRAB_ALIAS_CUIL, mskCUIL.Text, []);
+
+          if cmbNombre.Text <> '' then
+            sdqDatos.Locate(TRAB_ALIAS_NOMBRE, cmbNombre.Text, [loPartialKey]);
+
+          //LoadValues;
+          //cmbNombre.DoDropDown(False);
+          //inherited DoDropDown(True);
+        end
+        else
+          LoadValues(True);
+      end
+      else
+      begin
+        sSql := GetSql +
+                ' AND tj_documento = ' + SQLValue(GetDNI(mskCUIL.Text)) + ' ' +
+                GetSqlWhere + GetSqlOrderBy;
+
+        OpenQuery(sdqDatos, sSql, True);
+
+        if sdqDatos.IsEmpty then
+        begin
+          TrabajadorAusente;
+          Exit;
+        end;
+
+        if cmbNombre.Text <> '' then
+          sdqDatos.Locate(TRAB_ALIAS_NOMBRE, cmbNombre.Text, [loPartialKey]);
+      end;
+
+      ShowAndHideColumns;
+    end
+    else
+      InfoHint(cmbNombre, 'Debe seleccionar la empresa.');
+  end;
+end;
+
+procedure TfraTrabajador.LoadValues(aDoChanges: Boolean);
+begin
+  SetEditorsValues;
+  if IsBaja then
+    Font.Color := clRed
+  else
+    Font.Color := clWindowText;
+
+  if aDoChanges then
+  begin
+    Change;
+
+    if (mskCUIL.Text <> '') then {Se cargaron los datos}
+      DoLostFocus;
+  end;
+end;
+
+procedure TfraTrabajador.SetEditorsValues;
+begin
+  if Assigned(sdqDatos.FindField(TRAB_ALIAS_CUIL)) then
+    mskCUIL.Text := sdqDatos.FieldByName(TRAB_ALIAS_CUIL).AsString;
+  if Assigned(sdqDatos.FindField(TRAB_ALIAS_NOMBRE)) then
+   cmbNombre.Text := sdqDatos.FieldByName(TRAB_ALIAS_NOMBRE).AsString;
+end;
+
+procedure TfraTrabajador.Clear;
+begin
+  mskCUIL.Text   := '';
+  cmbNombre.Text := '';
+  Contrato       := ART_EMPTY_ID;
+  
+  inherited;
+end;
+
+procedure TfraTrabajador.ShowAndHideColumns; { Solo deja visible aquellas columnas que tienen el campo en el query }
+var
+  iLoop: Integer;
+begin
+  for iLoop := 0 to cmbNombre.Columns.Count - 1 do
+    if Assigned(sdqDatos.FindField(cmbNombre.Columns[iLoop].FieldName)) then
+      cmbNombre.Columns[iLoop].Visible := sdqDatos.FindField(cmbNombre.Columns[iLoop].FieldName).Tag = 0
+    else
+      cmbNombre.Columns[iLoop].Visible := False;
+end;
+
+function TfraTrabajador.CancelExitLoad: boolean;
+begin
+  Result := False;
+end;
+
+function TfraTrabajador.ClearOnExit: boolean;
+begin
+  Result := True;
+end;
+
+function TfraTrabajador.GetCUIL: TCuil;
+begin
+  FrameExit(nil); // Valida que todo este completo
+  if sdqDatos.Active then
+    Result := sdqDatos.FieldByName(TRAB_ALIAS_CUIL).AsString
+  else
+    Result := '';
+end;
+
+procedure TfraTrabajador.SetCUIL(const Value: TCuil);
+begin
+  Internal_SetCuil(Value, True);
+end;
+
+function TfraTrabajador.GetIdRelacionLaboral: TTableId;
+begin
+  if IsSelected and Assigned(sdqDatos.FindField('rl_id')) then
+    Result := sdqDatos.FindField('rl_id').AsInteger
+  else
+    Result := ART_EMPTY_ID;
+end;
+
+function TfraTrabajador.GetEmpresa: String;
+var
+  sSql: String;
+begin
+  if Filtered then
+  begin
+    sSQL := 'SELECT em_nombre FROM aem_empresa' + GetDBLink();
+
+    if IdEmpresa <> ART_EMPTY_ID then
+      AddCondition(sSql, ' EM_ID = ' + SqlValue(IdEmpresa))
+    else if Contrato <> ART_EMPTY_ID then
+    begin
+      AddTable(sSql, 'ACO_CONTRATO' + GetDBLink());
+      AddCondition(sSql, ' CO_IDEMPRESA = EM_ID ');
+      AddCondition(sSql, ' CO_CONTRATO = ' + SqlValue(Contrato));
+    end; { fixme
+
+    else if IdRelaLaboral <> ART_EMPTY_ID then
+    begin
+      AddTable( Result, 'CRE_RELACIONESTABLECIMIENTO' );
+      AddCondition( Result, 'RE_IDRELACIONLABORAL' + sOuter + ' = RL_ID' );
+
+      AddTable( sSQL, ' EM_ID = ' + SQLValue(IdEmpresa);
+      AddCondition( sSQL, ' EM_ID = ' + SQLValue(IdEmpresa);
+
+
+    IdEstableci
+      AddCondition( Result, 'ES_ID = ' + SqlValue(IdEstableci) );}
+
+
+    Result := ValorSql(sSql);
+  end
+  else
+    Result := '';
+end;
+
+procedure TfraTrabajador.sdqDatosAfterOpen(DataSet: TDataSet);
+begin
+  inherited;
+{
+  if sdqDatos.IsEmpty then
+    InfoHint(Screen.ActiveControl, 'No se encontró el trabajador.', False, 'Información', blnInfo, 3, False);
+}
+end;
+
+procedure TfraTrabajador.TrabajadorAusente;
+begin
+  if (Trim(mskCUIL.Text) > '') or (Trim(cmbNombre.Text) > '') then
+    InfoHint(Screen.ActiveControl, 'No se encontró al trabajador' + IIF(Filtered, ' en la empresa ' + GetEmpresa, '') + '.' + CRLF +
+                                   'Puede repetir la búsqueda sin filtrar por empresa.', False, 'Información', blnInfo, 3, False);
+end;
+
+function TfraTrabajador.Get_DNI: String;
+begin
+  FrameExit(nil); // Valida que todo este completo
+  if sdqDatos.Active then
+    Result := GetDNI(sdqDatos.FieldByName(TRAB_ALIAS_CUIL).AsString)
+  else
+    Result := '';
+end;
+
+procedure TfraTrabajador.Set_DNI(const Value: String);
+begin
+  Internal_SetCuil(Value, True);
+  LoadValues(False);
+end;
+
+function TfraTrabajador.GetNombre: String;
+begin
+  Result := cmbNombre.Text;
+end;
+
+procedure TfraTrabajador.SetNombre(const Value: String);
+begin
+  cmbNombre.Text := Value;
+end;
+
+function TfraTrabajador.GetCUIT: TCuil;
+begin
+  FrameExit(nil); // Valida que todo este completo
+  if sdqDatos.Active and not sdqDatos.IsEmpty and Assigned(sdqDatos.FindField('em_cuit')) then
+    Result := sdqDatos.FieldByName('em_cuit').AsString
+  else
+    Result := '';
+end;
+
+procedure TfraTrabajador.SetCUIT(const Value: TCuil);
+var
+  sSql: String;
+begin
+  if Value <> CUIT then
+  begin
+    if Length(Value) = 11 then
+      sSql := GetSql + GetSqlWhere + ' AND em_cuit = ' + SqlString(Value, True)
+    else
+    begin
+      Clear;
+      Exit;
+    end;
+
+    if OpenQuery(sdqDatos, sSql, True) then
+    begin
+      if sdqDatos.IsEmpty then
+      begin
+        TrabajadorAusente;
+        Exit;
+      end
+      else
+        if sdqDatos.RecordCount > 1 then
+        begin
+          if Trim(mskCUIL.Text) = EmptyStr then
+            mskCUIL.Text := GetDNI(sdqDatos.FieldByName(TRAB_ALIAS_CUIL).AsString);
+          cmbNombre.DoDropDown(True);
+          {
+          if not DoChanges then
+            LoadValues( DoChanges );
+          }
+        end
+        else
+          LoadValues(True);
+    end;
+  end;
+end;
+                   
+function TfraTrabajador.GetSqlTercerizadora: String;
+begin
+ { Result := IIF(EsUsuarioDeTercerizadora, ' AND EXISTS (SELECT 1 ' +
+                                                        ' FROM amed.met_empresa_terce' + GetDBLink() + ', amed.mut_usuario_tercerizadora' + GetDBLink() + ',  ' +
+                                                             ' aem_empresa' + GetDBLink() + ', sex_expedientes' + GetDBLink() + ' ' +
+                                                       ' WHERE et_idempresa = em_id ' +
+                                                         ' AND em_cuit = ex_cuit ' +
+                                                         ' AND ex_idtrabajador = tj_id ' +
+                                                         ' AND ut_idtercerizadora = et_idtercerizadora ' +
+                                                         ' AND ut_fechabaja is null ' +    // plan IOMA: no pongo la funcion porque en el sdqDatos (ver GetSql mas arriba) no se llama a la sex_ (NO TENGO EL IDEXPEDIENTE, y puede ser que en este unFraTrabajador no lo tenga nunca).
+                                                         ' AND ex_fechaaccidente BETWEEN et_vigenciadesde AND NVL(et_vigenciahasta, ex_fechaaccidente) ' +
+                                                         ' AND ut_usuario = ' + SqlValue(Sesion.UserID) + ') ', '');    }
+
+  Result := IIF(EsUsuarioDeTercerizadora, ' AND art.siniestro.is_trabenempresatercerizada(TJ_ID, ' + SqlValue(Sesion.UserID) + ', art.actualdate) = ''S'' ', '');  // Por plan ioma - tercerizadoras
+end;
+
+
+end.

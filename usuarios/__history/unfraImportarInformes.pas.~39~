@@ -1,0 +1,77 @@
+unit unfraImportarInformes;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ActnList, Vcl.Mask,
+  Vcl.StdCtrls, Vcl.ExtCtrls, FolderDialog;
+
+type
+  TfraImportarInformes = class(TFrame)
+    Bevel2: TBevel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    btnCancelar: TButton;
+    btnProcesar: TButton;
+    edOrigenDir: TEdit;
+    edDestinoDir: TEdit;
+    edMaskPeriodo: TMaskEdit;
+    btBuscarOrigen: TButton;
+    btBuscarDestino: TButton;
+    ActionList1: TActionList;
+    acBuscarOrigen: TAction;
+    acBuscarDestino: TAction;
+    acCancelar: TAction;
+    acProcesar: TAction;
+    fdSelectDir: TFolderDialog;
+  private
+    FinfoModalresult: TModalResult;
+    FinfoDirDestino: string;
+    FinfoDirOrigen: string;
+    FinfoPerdiodo: Integer;
+    { Private declarations }
+    function ElegirDirectorio(subtitulo, directorio: string) : string;
+    procedure CargarEtiqueta;
+    function ProbableEtiqueta(pathfile: string): string;
+    procedure InicializarControles;
+    function Validation: Boolean;
+  public
+    { Public declarations }
+    property infoModalresult: TModalResult read FinfoModalresult;
+    property infoDirOrigen: string read FinfoDirOrigen;
+    property infoDirDestino: string read FinfoDirDestino;
+    property infoPerdiodo: Integer read FinfoPerdiodo;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TfraImportarInformes.CargarEtiqueta;
+begin
+
+end;
+
+function TfraImportarInformes.ElegirDirectorio(subtitulo, directorio: string): string;
+begin
+
+end;
+
+procedure TfraImportarInformes.InicializarControles;
+begin
+
+end;
+
+function TfraImportarInformes.ProbableEtiqueta(pathfile: string): string;
+begin
+end;
+
+function TfraImportarInformes.Validation: Boolean;
+begin
+
+end;
+
+end.

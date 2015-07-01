@@ -1,0 +1,2 @@
+inherited fraTareas: TfraTareas
+end

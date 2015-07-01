@@ -1,0 +1,824 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{A93C04B8-03ED-49F2-9EE6-2D838585DD88}</ProjectGuid>
+			<MainSource>sic_standalone.dpr</MainSource>
+			<Base>True</Base>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<TargetedPlatforms>1</TargetedPlatforms>
+			<AppType>Application</AppType>
+			<FrameworkType>VCL</FrameworkType>
+			<ProjectVersion>13.4</ProjectVersion>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+			<Base_Win64>true</Base_Win64>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+			<Base_Win32>true</Base_Win32>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+			<Cfg_2_Win32>true</Cfg_2_Win32>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_UnitAlias>Placemnt=rxPlacemnt;ToolEdit=rxToolEdit;CurrEdit=rxCurrEdit;AppUtils=rxAppUtils;MemTable=rxMemTable;DateUtil=rxDateUtil;ZipMstr=ZipMstr19;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<DCC_UsePackage>rtl;vcl;vclx;vclie;xmlrtl;inetdbbde;inet;inetdbxpress;VclSmp;dbrtl;dbexpress;vcldb;dsnap;dbxcds;inetdb;bdertl;vcldbx;adortl;ibxpress;visualclx;visualdbclx;vclactnband;vclshlctrls;IntrawebDB_50_70;Intraweb_50_70;dclOffice2k;ADOX25_D7;ARTExportadorAccess7;RxCtl7;RxDB7;tmsxlsd7;TMSD7;tmsexd7;tmswizd7;DJcl;JvCoreD7R;JvSystemD7R;JvStdCtrlsD7R;JvCtrlsD7R;JvCmpD7R;JvMMD7R;JvNetD7R;JvAppFrmD7R;JvDBD7R;JvDlgsD7R;JvBDED7R;JvBandsD7R;JvJansD7R;JvPrintPreviewD7R;JvPageCompsD7R;JvValidatorsD7R;JvUIBD7R;JvWizardD7R;JvTimeFrameworkD7R;JvHMID7R;JvManagedThreadsD7R;JvXPCtrlsD7R;JvDockingD7R;JvDotNetCtrlsD7R;JvEDID7R;SortGridD7;webdsnap;cxEditorsVCLD7;dxGDIPlusD7;cxLibraryVCLD7;dxCoreD7;dxThemeD7;cxDataD7;cxExtEditorsVCLD7;cxPivotGridD7;JvCustomD7R;JvCryptD7R;JvPluginD7R;PkgPowerPDFD7;AdvHttp7;sx_MAPI_d7;teeui;teedb;tee;ARTComponentesD7;ExPackD7;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<VerInfo_Keys>CompanyName=Provincia ART;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=sic.exe;ProductName=SIC | Sistema Integrado de Comunicaciones;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<DCC_UNIT_LIBRARY>false</DCC_UNIT_LIBRARY>
+			<DCC_SYMBOL_LIBRARY>false</DCC_SYMBOL_LIBRARY>
+			<DCC_SYMBOL_PLATFORM>false</DCC_SYMBOL_PLATFORM>
+			<DCC_UNIT_DEPRECATED>false</DCC_UNIT_DEPRECATED>
+			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;FMXTee.Editor;System.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_Define>ART2;ARTUTILS;MAIL_A_CONTRATO;ORACLE;NO_LEFEVBRE;NEW_LOCKCOLORS;SISTEMAS;SQLDIRECT6.2;AGENDA_SIC;LIBRARY;NO_CUENTAPAGO;ICONOS_SIST_NUEVO;$(DCC_Define)</DCC_Define>
+			<DCC_ExeOutput>C:\DELPHI\EXES</DCC_ExeOutput>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_N>true</DCC_N>
+			<DCC_K>false</DCC_K>
+			<DCC_S>false</DCC_S>
+			<DCC_SYMBOL_DEPRECATED>false</DCC_SYMBOL_DEPRECATED>
+			<DCC_UNIT_PLATFORM>false</DCC_UNIT_PLATFORM>
+			<DCC_F>false</DCC_F>
+			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
+			<DebugSourcePath>C:\Delphi\paquetes\terceros\tms component pack\source;$(DebugSourcePath)</DebugSourcePath>
+			<DCC_DcuOutput>c:\delphi\libsd7</DCC_DcuOutput>
+			<DCC_E>false</DCC_E>
+			<VerInfo_Locale>11274</VerInfo_Locale>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<Icon_MainIcon>sic_standalone_Icon.ico</Icon_MainIcon>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_COMBINING_SIGNED_UNSIGNED>false</DCC_COMBINING_SIGNED_UNSIGNED>
+			<DCC_COMPARING_SIGNED_UNSIGNED>false</DCC_COMPARING_SIGNED_UNSIGNED>
+			<DCC_IMPLICIT_STRING_CAST_LOSS>false</DCC_IMPLICIT_STRING_CAST_LOSS>
+			<DCC_WIDECHAR_REDUCED>false</DCC_WIDECHAR_REDUCED>
+			<DCC_SUSPICIOUS_TYPECAST>false</DCC_SUSPICIOUS_TYPECAST>
+			<DCC_IMPLICIT_STRING_CAST>false</DCC_IMPLICIT_STRING_CAST>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<Icon_MainIcon>sic_standalone_Icon.ico</Icon_MainIcon>
+			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+			<DCC_Optimize>false</DCC_Optimize>
+			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>None</Manifest_File>
+			<DCC_Namespace>VCLTee;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_WIDECHAR_REDUCED>false</DCC_WIDECHAR_REDUCED>
+			<DCC_COMPARING_SIGNED_UNSIGNED>false</DCC_COMPARING_SIGNED_UNSIGNED>
+			<DCC_IMPLICIT_STRING_CAST_LOSS>false</DCC_IMPLICIT_STRING_CAST_LOSS>
+			<DCC_COMBINING_SIGNED_UNSIGNED>false</DCC_COMBINING_SIGNED_UNSIGNED>
+			<DCC_SUSPICIOUS_TYPECAST>false</DCC_SUSPICIOUS_TYPECAST>
+			<DCC_IMPLICIT_STRING_CAST>false</DCC_IMPLICIT_STRING_CAST>
+			<DCC_DcuOutput>C:\delphi\libsXE2\</DCC_DcuOutput>
+			<VerInfo_Keys>CompanyName=Provincia ART;FileDescription=;FileVersion=1.0.0.0;InternalName=sic_standalone;LegalCopyright=;LegalTrademarks=;OriginalFilename=sic_standalone.exe;ProductName=Sistema Integrado de Comunicaciones;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="$(MainSource)">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="..\..\comunes\OneInstance.pas"/>
+			<DCCReference Include="..\..\comunes\OneSession.pas"/>
+			<DCCReference Include="..\Comunes\unCustomDataModule.pas">
+				<Form>dmCustomDataModule</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\ORACLE\unDmPrincipal.pas">
+				<Form>dmPrincipal</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\unfraUsuarios.pas">
+				<Form>fraUsuario</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\REPOSIT\unArtFrame.pas">
+				<Form>ArtFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\REPOSIT\unArtDBAwareFrame.pas">
+				<Form>ArtDBAwareFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\REPOSIT\unArtDbFrame.pas">
+				<Form>ArtDbFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reposit\unCustomConsulta.pas">
+				<Form>frmCustomConsulta</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reposit\unCustomGridABM.pas">
+				<Form>frmCustomGridABM</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unCustomForm.pas">
+				<Form>frmCustomForm</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reposit\unCustomPanelABM.pas">
+				<Form>frmCustomPanelABM</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unDebug.pas">
+				<Form>frmDebug</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\unSesion.pas"/>
+			<DCCReference Include="..\..\Comunes\General.pas"/>
+			<DCCReference Include="..\..\Comunes\VCLExtra.pas"/>
+			<DCCReference Include="..\..\Comunes\ungrids.pas"/>
+			<DCCReference Include="..\..\Comunes\unArt.pas"/>
+			<DCCReference Include="..\..\Comunes\AnsiSql.pas"/>
+			<DCCReference Include="..\..\Comunes\SqlFuncs.pas"/>
+			<DCCReference Include="..\..\Comunes\CustomDlgs.pas"/>
+			<DCCReference Include="..\comunes\frames\unFraStaticCodigoDescripcion.pas">
+				<Form>fraStaticCodigoDescripcion</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unFraCodigoDescripcion.pas">
+				<Form>fraCodigoDescripcion</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraUsuario.pas">
+				<Form>fraUsuarios</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\nuevos\unFraCodDesc.pas">
+				<Form>fraCodDesc</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\unExportPDF.pas"/>
+			<DCCReference Include="..\..\Comunes\uncomunes.pas"/>
+			<DCCReference Include="..\comunes\forms\unLibretaDeDirecciones.pas">
+				<Form>frmLibretaDeDirecciones</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unSeleccionDestinatarios.pas">
+				<Form>frmSeleccionDestinatarios</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraTelefono.pas">
+				<Form>fraTelefono</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unABMTelefonos.pas">
+				<Form>frmTelefonos</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraVistaTIFF.pas">
+				<Form>fraVistaTIFF</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unFraToolbarRTF.pas">
+				<Form>fraToolbarRTF</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unFraCtbTablas.pas">
+				<Form>fraCtbTablas</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraDigitalizacion.pas">
+				<Form>fraDigitalizacion</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraEmpresa.pas">
+				<Form>fraEmpresa</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unEspera.pas">
+				<Form>frmEspera</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\envio de mails\unMoldeEnvioMail.pas">
+				<Form>frmMoldeEnvioMail</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unfraCPR_PRESTADOR.pas">
+				<Form>fraCPR_PRESTADOR</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unfraVendedores.pas">
+				<Form>fraVendedores</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraEstablecimiento.pas">
+				<Form>fraEstablecimiento</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unfraVendedoresCUIT.pas">
+				<Form>fraVendedoresCUIT</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unfraEntidadCUIT.pas">
+				<Form>fraEntidadCUIT</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\unSiniestros.pas"/>
+			<DCCReference Include="..\fax\faxclient_new\unEstrategiaTIFF.pas"/>
+			<DCCReference Include="..\comunes\forms\unTelefonosCargaRapida.pas">
+				<Form>frmTelefonosCargaRapida</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraTrabajador.pas">
+				<Form>fraTrabajador</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unVisualizador.pas">
+				<Form>frmVisualizador</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unImageFunctions.pas"/>
+			<DCCReference Include="..\..\comunes\unFiltros.pas"/>
+			<DCCReference Include="..\Usuarios\unArbolSectores.pas">
+				<Form>frmArbolSectores</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unNovedades.pas"/>
+			<DCCReference Include="..\comunes\reports\unRptCartaDocHeader.pas">
+				<Form>rptCartaDocHeader</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\strfuncs.pas"/>
+			<DCCReference Include="..\..\comunes\ArchFuncs.pas"/>
+			<DCCReference Include="..\comunes\frames\new\unFraTrabajadorSiniestro.pas">
+				<Form>fraTrabajadorSiniestro</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unContratoContacto.pas">
+				<Form>frmContratoContacto</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unfraContacto.pas">
+				<Form>fraContacto</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unFraStaticCTB_TABLAS.pas">
+				<Form>fraStaticCTB_TABLAS</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unAgendaTelefonica.pas">
+				<Form>frmAgendaTelefonica</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\UnRptMoldeCarta.pas">
+				<Form>qrMoldeCarta</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unEstadisticasAGENDA.pas">
+				<Form>frmEstadisticasAGENDA</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\impoexpo\unImpoExpoWizard.pas">
+				<Form>frmImpoExpoWizard</Form>
+			</DCCReference>
+			<DCCReference Include="..\impoexpo\unVisualizarArchivos.pas">
+				<Form>frmVisualizarArchivos</Form>
+			</DCCReference>
+			<DCCReference Include="..\impoexpo\unImpoExpoUtils.pas"/>
+			<DCCReference Include="..\comunes\frames\new\unFraNavegadorWEB.pas">
+				<Form>fraNavegadorWEB</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraDomicilioGIS.pas">
+				<Form>fraDomicilioGIS</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraDomicilio.pas">
+				<Form>fraDomicilio</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unBusquedaDomicilio.pas">
+				<Form>frmBusquedaDomicilio</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unVisorPDF.pas">
+				<Form>frmVisorPDF</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unImpoExpoTypes.pas"/>
+			<DCCReference Include="..\comunes\forms\unABMAgendaBase.pas">
+				<Form>frmABMAgendaBase</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unABMAgendaBaseEvento.pas">
+				<Form>frmABMAgendaBaseEvento</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unABMAgendaBaseTarea.pas">
+				<Form>frmABMAgendaBaseTarea</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unSeleccionMultiple.pas">
+				<Form>frmSeleccionUsuarios</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unSeleccionTareas.pas">
+				<Form>frmSeleccionTareas</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unfraCodigoDescripcionExt.pas">
+				<Form>fraCodigoDescripcionExt</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unAgendaBase.pas">
+				<Form>frmAgendaBase</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraContactoAGENDA.pas">
+				<Form>fraContactoAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\hys\unSeleccionResponsableHYS.pas">
+				<Form>frmSeleccionResponsableHYS</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraPrestadorExtendido.pas">
+				<Form>fraPrestadorExtendido</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unAutorizacionAgenda.pas">
+				<Form>frmAutorizacionAgenda</Form>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\unDlgBusSiniestro.pas">
+				<Form>frmDlgBusSiniestro</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unContratoTrabajador.pas">
+				<Form>frmContratoTrabajador</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unFraActividad.pas">
+				<Form>fraActividad</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraDomicilioTrab.pas">
+				<Form>fraDomicilioTrab</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraEmpresaAfi.pas">
+				<Form>fraEmpresaAfi</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unEstablecimientosTrabajador.pas">
+				<Form>frmEstablecimientosTrabajador</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\interfaces\unAgenda.pas"/>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraEmpresaAGENDA.pas">
+				<Form>fraEmpresaAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraTrabajadorAGENDA.pas">
+				<Form>fraTrabajadorAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraEntidadAGENDA.pas">
+				<Form>fraEntidadAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraVendedorAGENDA.pas">
+				<Form>fraVendedorAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraEntidadVendedorAGENDA.pas">
+				<Form>fraEntidadVendedorAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unAlarmas.pas"/>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraTrabajadorSiniestroAGENDA.pas">
+				<Form>fraTrabajadorSiniestroAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraPrestadorAGENDA.pas">
+				<Form>fraPrestadorAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unAgendaCargaConsulta.pas">
+				<Form>frmAgendaCargaConsulta</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraDomicilioEmpresaAGENDA.pas">
+				<Form>fraDomicilioEmpresaAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraDomicilioExtendido.pas">
+				<Form>fraDomicilioExtendido</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraEstablecimientoAGENDA.pas">
+				<Form>fraEstablecimientoAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraDomicilioEstablecimientoAGENDA.pas">
+				<Form>fraDomicilioEstablecimientoAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\DateTimeFuncs.pas"/>
+			<DCCReference Include="..\comunes\unAyuda.pas">
+				<Form>frmAyuda</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraNumAutoAGENDA.pas">
+				<Form>fraNumAutoAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraContactoLibreAGENDA.pas">
+				<Form>fraContactoLibreAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\Internet.pas"/>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraDomicilioAGENDA.pas">
+				<Form>fraDomicilioGISAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unRTTI.pas"/>
+			<DCCReference Include="..\..\comunes\unCompatibilidad.pas"/>
+			<DCCReference Include="..\afiliaciones\unAfiliaciones.pas"/>
+			<DCCReference Include="..\comunes\reports\unRptCartaDocumento.pas">
+				<Form>rptCartaDocumento</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unfraCuentaBancaria.pas">
+				<Form>fraCuentaBancaria</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Usuarios\unSistemas.pas"/>
+			<DCCReference Include="..\..\comunes\interfaces\unInterfaces.pas"/>
+			<DCCReference Include="..\..\comunes\DBSql.pas"/>
+			<DCCReference Include="..\..\comunes\numeros.pas"/>
+			<DCCReference Include="..\comunes\frames\new\unFraUsuarioConJerarquias.pas">
+				<Form>fraUsuarioConJerarquias</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\Cuit.pas"/>
+			<DCCReference Include="..\..\comunes\ParamFuncs.pas"/>
+			<DCCReference Include="..\comunes\reposit\unCustomSplash.pas">
+				<Form>frmCustomSplash</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unWelcomeSplash.pas">
+				<Form>frmWelcomeSplash</Form>
+			</DCCReference>
+			<DCCReference Include="..\Usuarios\unImageSplash.pas">
+				<Form>frmImageSplash</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraUsuarioConSectorIntranet.pas">
+				<Form>fraUsuarioConSectorIntranet</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unfraInfoEmpresa.pas">
+				<Form>fraInfoEmpresa</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unfraInfoEmpresaExt.pas">
+				<Form>fraInfoEmpresaExt</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\unEstadoCuenta.pas"/>
+			<DCCReference Include="..\cobranzas\reports\unQrEstadoCuentaResumen.pas">
+				<Form>frmEstadoCuentaResumen</Form>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\unImpresionEstadoDeCuenta.pas">
+				<Form>frmImpresionEstadodeCuenta</Form>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\reports\unQrEstadoCuentaDetalle.pas">
+				<Form>frmEstadoCuentaDetalle</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unConsultasAdicionales.pas">
+				<Form>frmConsultasAdicionales</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unEjecutivoCuenta.pas">
+				<Form>frmEjecutivoCuenta</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unGestorCuenta.pas">
+				<Form>frmGestorCuenta</Form>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\reports\unQRF801C.pas">
+				<Form>QRF801C</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\reports\unQRF817.pas">
+				<Form>QRF817</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\reports\unQRCartaDocIntimacion.pas">
+				<Form>QRCartaDocIntimacion</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\unOpcionesDeImpresion.pas">
+				<Form>frmOpcionesDeImpresion</Form>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\reports\unQRCartaDocIntimacionNuevaGrilla.pas">
+				<Form>QRCartaDocIntimacionNuevaGrilla</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\reports\unQrLibreDeuda.pas">
+				<Form>qrLibreDeuda</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\compensacion\reports\unRptCartaDocCompensacion.pas">
+				<Form>rptCartaDocCompensacion</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraValidacionDatosEmpresa.pas">
+				<Form>fraValidacionDatosEmpresa</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraDomicilioEmpresa.pas">
+				<Form>fraDomicilioEmpresa</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unfraDelegacion.pas">
+				<Form>fraDelegacion</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\nuevos\unFraTitulo.pas">
+				<Form>fraTitulo</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="unPrincipal.pas">
+				<Form>frmPrincipal</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraRTD_TIPODOCUMENTO.pas">
+				<Form>fraRTD_TIPODOCUMENTO</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManATE_TIPOEVENTO.pas">
+				<Form>frmManATE_TIPOEVENTO</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManAMI_MOTIVOINGRESO.pas">
+				<Form>frmManami_motivoingreso</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManATD_TIPODESTINATARIO.pas">
+				<Form>frmManATD_TIPODESTINATARIO</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unfraSectores.pas">
+				<Form>fraSectores</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManAGENDA.pas">
+				<Form>frmManAGENDA</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraCanal.pas">
+				<Form>fraCanal</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unDatosSiniestro.pas">
+				<Form>frmDatosSiniestro</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraProspectosAGENDA.pas">
+				<Form>fraProspectosAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManARS_RESPUESTA.pas">
+				<Form>frmManARS_RESPUESTA</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unQrEtiquetasDocCarpetas.pas">
+				<Form>qrEtiquetasDocCarpetas</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unUtilsArchivo.pas"/>
+			<DCCReference Include="..\archivo_new\unArchivo.pas"/>
+			<DCCReference Include="unABMDelegacionTareas.pas">
+				<Form>frmABMDelegacionTareas</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unEnvioMail.pas"/>
+			<DCCReference Include="..\comunes\forms\unVisor.pas">
+				<Form>frmVisor</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unArchivoVisor.pas"/>
+			<DCCReference Include="..\comunes\forms\unVisorExcel.pas">
+				<Form>frmVisorExcel</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unExcel.pas"/>
+			<DCCReference Include="..\emision\comunes\unWebBrowser.pas">
+				<Form>frmWebBrowser</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unElementosEnviados.pas">
+				<Form>frmElementosEnviados</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unControlVersion.pas"/>
+			<DCCReference Include="..\..\comunes\unSIC.pas"/>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraVistaEventos.pas">
+				<Form>fraVistaEventos</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unAgendaVistaEmpresa.pas">
+				<Form>frmAgendaVistaEmpresa</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unConstantArchivo.pas"/>
+			<DCCReference Include="unABMUsuariosPorSector.pas">
+				<Form>frmABMUsuariosPorSector</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptConfiguracionAGENDA.pas">
+				<Form>qrConfiguracionAGENDA</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\frames\unfraArchJuicio.pas">
+				<Form>fraArchJuicio</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unfraProveedor.pas">
+				<Form>fraProveedor</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\frames\unFraFiltroArchivo.pas">
+				<Form>fraFiltroArchivo</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unFrmConsultaCarpetas.pas">
+				<Form>FrmConsultaCarpetas</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\frames\unFraDetalleArchivo.pas">
+				<Form>fraDetalleArchivo</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unFrmDetalleArchivo.pas">
+				<Form>FrmDetalleArchivo</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unMovimientoCarpetas.pas">
+				<Form>frmMovimientoCarpetas</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unQrDetalleLoteEstudio.pas">
+				<Form>QrDetalleLoteEstudio</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unQrEtiquetasCarpetas.pas">
+				<Form>qrEtiquetasCarpetas</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unFrmCargaDocumentacion.pas">
+				<Form>frmCargaDocumentacion</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unReemplazoCarpetas.pas">
+				<Form>frmReemplazoCarpetas</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unFrmSolicitudCarpeta.pas">
+				<Form>FrmSolicitudCarpeta</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unfrmUbicacionActual.pas">
+				<Form>FrmUbicacionActual</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unCapturarCodigoBarras.pas">
+				<Form>frmCapturarCodigoBarras</Form>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\comisiones\unComisiones.pas"/>
+			<DCCReference Include="..\comunes\frames\unfraPrestador.pas">
+				<Form>fraPrestador</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManATS_TIPOEVENTOSECTOR.pas">
+				<Form>frmManATS_TIPOEVENTOSECTOR</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManAMC_MANTENIMIENTOCUENTA.pas">
+				<Form>frmAMC_MANTENIMIENTOCUENTA</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\tesoreria\unTesoreria.pas"/>
+			<DCCReference Include="unManAEX_EXCEPCIONUSUARIOTAREA.pas">
+				<Form>frmManAEX_EXCEPCIONUSUARIOTAREA</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unCargaDocumentosDigitaliz.pas">
+				<Form>frmCargaDocumentosDigitaliz</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\oracle\unDmFinancials.pas">
+				<Form>dmFinancials</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\Registros.pas"/>
+			<DCCReference Include="..\comunes\frames\modulosagenda\unfraEmpresaSolicitudAGENDA.pas">
+				<Form>fraEmpresaSolicitudAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unQrDetalleRemitoDevolucion.pas">
+				<Form>QrDetalleRemitoDevolucion</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraEmpresaSolicitud.pas">
+				<Form>fraEmpresaSolicitud</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unCobranzas.pas"/>
+			<DCCReference Include="unCuboSIC.pas">
+				<Form>frmCuboSIC</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosagenda\unfraDatoFechaAGENDA.pas">
+				<Form>fraDatoFecha</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unMensajeAlertaAGA.pas"/>
+			<DCCReference Include="..\..\comunes\unMensajeAlerta.pas"/>
+			<DCCReference Include="..\archivo_new\unComunesArchivo.pas"/>
+			<DCCReference Include="..\comunes\frames\new\unFraWebBrowser.pas">
+				<Form>fraWebBrowser</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraGIS_APIv3.pas">
+				<Form>fraGIS_APIv3</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unEsperaSimple.pas">
+				<Form>frmEsperaSimple</Form>
+			</DCCReference>
+			<RcItem Include="resources\splash.dib">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>splash</ResourceId>
+			</RcItem>
+			<RcItem Include="resources\logo_2009_byn_chico.dib">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>logo_art_byn_chico</ResourceId>
+			</RcItem>
+			<RcItem Include="resources\logo_art_nuevo_color.dib">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>logo_art_nuevo_color</ResourceId>
+			</RcItem>
+			<RcItem Include="resources\logo_gbp.dib">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>logo_gbp</ResourceId>
+			</RcItem>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Source>
+						<Source Name="MainSource">sic_standalone.dpr</Source>
+					</Source>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">11274</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName">Provincia ART</VersionInfoKeys>
+						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename">sic.exe</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductName">SIC | Sistema Integrado de Comunicaciones</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Excluded_Packages>
+						<Excluded_Packages Name="C:\Program Files\FastReports\LibD16\dclfrxDB16.bpl">FastReport 4.0 DB Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\bcboffice2k160.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\bcbofficexp160.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+					</Excluded_Packages>
+				</Delphi.Personality>
+				<Platforms>
+					<Platform value="Win64">False</Platform>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')" Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+	</Project>

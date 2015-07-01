@@ -1,0 +1,847 @@
+unit unABMAdminstracionJuicio;
+
+{----------------------------------------------------------------------------------------------------------------------
+   Modulo de ABML de Asuntos Judiciales.
+   Desde este modulo se administra: Eventos y Gastos
+   Autor: EVila.
+----------------------------------------------------------------------------------------------------------------------}
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, Placemnt, artSeguridad, ComCtrls, ToolWin,
+  Db, SDEngine, unFraCtbTablas, StdCtrls, IntEdit, CurrEdit, Mask, ToolEdit, DateComboBox, unFraEmpresa, unArtFrame,
+  unFraCodigoDescripcion, unfraAbogadosLegales, ShortCutControl, ExComboBox, OptionGroup, ExtCtrls, unArtDbFrame,
+  PatternEdit, unArtDBAwareFrame, unfraCodigoDescripcionExt, RxRichEd,
+  unFraToolbarRTF, FormPanel, PeriodoPicker, Numeros, RxPlacemnt, RxCurrEdit,
+  RxToolEdit;
+
+type
+  TfrmABMAdminstracionJuicio = class(TForm)
+    Seguridad: TSeguridad;
+    FormStorage1: TFormStorage;
+    tbGestionDeuda: TToolBar;
+    tbGuardar: TToolButton;
+    rbNuevo: TToolButton;
+    ToolButton1: TToolButton;
+    tbLimpiar: TToolButton;
+    tbBuscar: TToolButton;
+    ToolButton2: TToolButton;
+    tbEmpresa: TToolButton;
+    tbEventos: TToolButton;
+    tbGastos: TToolButton;
+    ToolButton3: TToolButton;
+    tbImprimir: TToolButton;
+    tbSalir: TToolButton;
+    sdqActualiza: TSDQuery;
+    edGD_NROORDEN: TIntEdit;
+    lbNroOrden: TLabel;
+    fraAbogados: TfraAbogadosLegales;
+    lbAbogado: TLabel;
+    fraEmpresa: TfraEmpresa;
+    lbCaratula: TLabel;
+    edGD_CARATULA: TEdit;
+    lbFuero: TLabel;
+    fraFuero: TfraCtbTablas;
+    lbJurisdiccion: TLabel;
+    fraEstado: TfraCtbTablas;
+    lbEstado: TLabel;
+    lbJuzgado: TLabel;
+    edGD_JUZGADO: TIntEdit;
+    lbSecretaria: TLabel;
+    edGD_SECRETARIA: TIntEdit;
+    gbFechas: TGroupBox;
+    lbInicio: TLabel;
+    lbTerminacion: TLabel;
+    edGD_FECHAINICIO: TDateComboBox;
+    edGD_FECHA_TERMINADO: TDateComboBox;
+    gbImportes: TGroupBox;
+    lbDemandado: TLabel;
+    lbsentencia: TLabel;
+    edGD_IMPORTEDEMANDADO: TCurrencyEdit;
+    edGD_IMPORTESENTENCIA: TCurrencyEdit;
+    lbParteDemandada: TLabel;
+    edGD_ABOGADODEMANDADA: TEdit;
+    ShortCutControl: TShortCutControl;
+    fraGD_GESTOR: TfraCodigoDescripcion;
+    Label2: TLabel;
+    Label1: TLabel;
+    edGD_CARTERA: TIntEdit;
+    Label3: TLabel;
+    Label6: TLabel;
+    edGD_FECHAASIGN: TDateComboBox;
+    Label4: TLabel;
+    edGD_IMPORTERECLAMADO: TCurrencyEdit;
+    rgGD_TIPOJudicial: TRadioButton;
+    rgGD_TIPOExtrajudicial: TRadioButton;
+    tbPlanPagos: TToolButton;
+    Label13: TLabel;
+    Label5: TLabel;
+    fraMotivoDevol: TfraCtbTablas;
+    GroupBox1: TGroupBox;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    edDeudaNA: TCurrencyEdit;
+    edFechaConcurso: TDateComboBox;
+    edFechaQuiebra: TDateComboBox;
+    Label10: TLabel;
+    edDeudaTA: TCurrencyEdit;
+    Label11: TLabel;
+    edGD_MOTIVODEVOLACOBRANZAS: TEdit;
+    fraJurisdiccion: TfraCodigoDescripcion;
+    Label12: TLabel;
+    edGD_DEUDANOMINAL: TCurrencyEdit;
+    Label14: TLabel;
+    edGD_INTERESES: TCurrencyEdit;
+    tbVerImagenes: TToolButton;
+    pnGenerarDocumento: TFormPanel;
+    Label15: TLabel;
+    btnAceptarGenerarDocumento: TButton;
+    btnCancelGenerarDocumento: TButton;
+    pnlInferior: TPanel;
+    fraToolbarRTFSuperior: TfraToolbarRTF;
+    edTextoDocumentoSuperior: TRxRichEdit;
+    fpSeleccionFechas: TFormPanel;
+    Label16: TLabel;
+    edFechaInteres: TDateComboBox;
+    lblPerDesde: TLabel;
+    lblPerHasta: TLabel;
+    edPeriodoDesde: TPeriodoPicker;
+    edPeriodoHasta: TPeriodoPicker;
+    btnAceptarFechas: TButton;
+    Button2: TButton;
+    Panel1: TPanel;
+    fraToolbarRTFInferior: TfraToolbarRTF;
+    Label17: TLabel;
+    edTextoDocumentoInferior: TRxRichEdit;
+    rgTipoHojaImpresion: TRadioGroup;
+    procedure tbSalirClick(Sender: TObject);
+    procedure tbGuardarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+    procedure tbLimpiarClick(Sender: TObject);
+    procedure tbEmpresaClick(Sender: TObject);
+    procedure tbGastosClick(Sender: TObject);
+    procedure tbEventosClick(Sender: TObject);
+    procedure fraEstadoChange(Sender: TObject);
+    procedure ToolButton4Click(Sender: TObject);
+    procedure rgGD_TIPOClick(Sender: TObject);
+    procedure tbPlanPagosClick(Sender: TObject);
+    procedure fraEmpresaChange(Sender: TObject);
+    procedure tbVerImagenesClick(Sender: TObject);
+    procedure tbImprimirClick(Sender: TObject);
+    procedure btnAceptarGenerarDocumentoClick(Sender: TObject);
+    procedure btnAceptarFechasClick(Sender: TObject);
+  private
+    FTotalSaldoNominal, FTotalInteres, FTotalSaldoCons : String;
+    procedure DoEnviarMailsAltaContratoActivo(Contrato: Integer);
+    procedure DoEnviarMailsBajaGestion(Contrato: Integer; MotivoDevol: String);
+  public
+    procedure DoCargarDatos(AQuery: TDataSet);
+  end;
+
+const
+  LGD_GESTION_ALTA = 'Alta... (Administración de Juicios)';
+  LGD_GESTION_MODIF = 'Modificación... (Administración de Juicios)';
+  LGD_GESTION_CONS = 'Consulta... (Administración de Juicios)';
+
+implementation
+
+uses
+	unPrincipal, AnsiSql, unConsultaAdminstracionJuicio, General, unDmPrincipal, CustomDlgs,
+  SqlFuncs, UnConsultaEmpresa, unABMGastos, unABMEventos, unRPTJudicial, UnRptGasto, VCLExtra,
+  unPlanDePagos, unConstLegales, StrFuncs, unMoldeEnvioMail, unArt, unComunes,
+  unFrmDetalleArchivo, unComunesArchivo, unConstantArchivo, unArchivo, unRptCertificadoDeuda;
+
+{$R *.DFM}
+
+procedure TfrmABMAdminstracionJuicio.tbSalirClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmABMAdminstracionJuicio.tbGuardarClick(Sender: TObject);
+var
+  sSqlTrans: TSql;
+  iNroOrden: Integer;
+  sEstadoAnt, sCodEspecial1, sSql: String;
+begin
+  // CUIT
+  if fraJurisdiccion.IsSelected then
+    Verificar(fraJurisdiccion.IsBaja, fraJurisdiccion,'No puede ser una jurisdicción dada de baja.');
+  if fraEmpresa.CUIT = '' then
+   InvalidExcept(fraEmpresa, 'El CUIT no puede estar en blanco.');
+
+  if (Caption = LGD_GESTION_MODIF) and (edGD_NROORDEN.Text = '') then
+   InvalidExcept(edGD_NROORDEN, 'El Número de Siniestro no puede quedar en blanco.');
+
+  // Tipo.
+  if not (rgGD_TIPOJudicial.Checked or rgGD_TIPOExtrajudicial.Checked) then
+   InvalidExcept(nil, 'Debe seleccionar el Tipo de Juicio.');
+
+  // Gestor
+  if rgGD_TIPOExtrajudicial.Checked and fraGD_GESTOR.IsEmpty then
+   InvalidExcept(fraGD_GESTOR.edCodigo, 'El Gestor es obligatorio si el Tipo es Extrajudicial.');
+
+  // Caratula.
+  // if rgGD_TIPOJudicial.Checked and (edGD_CARATULA.Text = '') then    // by NWK, 21/07/03, se saca la validación por pedido de SGabrielli
+  // InvalidExcept( edGD_CARATULA, 'La Carátula es obligatoria si el Tipo es Judicial' );
+
+  // Estado.
+  if fraEstado.Value = '' then
+   InvalidExcept(fraEstado, 'El estado no puede quedar en blanco.');
+
+  // Abogado.
+  if rgGD_TIPOJudicial.Checked  and fraAbogados.IsEmpty then
+   InvalidExcept(fraAbogados, 'El Abogado no puede quedar en blanco.');
+
+  // Parte demandada.
+// EJV 21/07/2003
+//  if rgGD_TIPOJudicial.Checked and (edGD_ABOGADODEMANDADA.Text = '') then
+//   InvalidExcept( edGD_ABOGADODEMANDADA, 'La parte demandada no puede quedar en blanco' );
+
+  // Fuero
+//  if rgGD_TIPOJudicial.Checked and fraFuero.IsEmpty then
+//   InvalidExcept( fraFuero, 'El fuero no puede estar en blanco.');
+
+  // Juzgado
+//  if rgGD_TIPOJudicial.Checked and (edGD_JUZGADO.Text = '') then
+//   InvalidExcept( edGD_JUZGADO, 'El juzgado no puede estar en blanco.');
+
+  // Si la fecha de inicio esta en blanco.
+//  if rgGD_TIPOJudicial.Checked and edGD_Secretaria.IsEmpty then
+//   InvalidExcept( edGD_Secretaria, 'La secretaría no puede quedar en blanco' );
+
+  // Jurisdicción
+//  if rgGD_TIPOJudicial.Checked and fraJurisdiccion.IsEmpty then
+//   InvalidExcept( fraJurisdiccion, 'La jurisdicción no puede estar en blanco.');
+
+  // Cartera
+  if rgGD_TIPOExtrajudicial.Checked and edGD_CARTERA.IsEmpty then
+   InvalidExcept(edGD_CARTERA, 'La Cartera es obligatoria si el Tipo es Extrajudicial.');
+
+  // Si la fecha de inicio esta en blanco.
+  if rgGD_TIPOJudicial.Checked and edGD_FECHAINICIO.IsEmpty then
+   InvalidExcept(edGD_FECHAINICIO, 'La fecha de inicio no puede quedar en blanco.');
+
+  // Si estado es TERMINADO tiene que tener fecha de terminado.
+  if rgGD_TIPOJudicial.Checked and AreIn(fraEstado.edCodigo.Text, ['02', '08', '15']) and edGD_FECHA_TERMINADO.IsEmpty then
+   InvalidExcept(edGD_FECHA_TERMINADO, 'La fecha de cierre no puede quedar en blanco.');
+
+  // Fecha Asignación
+  if rgGD_TIPOExtrajudicial.Checked and edGD_FECHAASIGN.IsEmpty then
+   InvalidExcept(edGD_FECHAASIGN, 'La Fecha de Asignación es obligatoria si el Tipo es Extrajudicial.');
+
+  // Importe Reclamado
+  // if rgGD_TIPOExtrajudicial.Checked and SameFloat(edGD_IMPORTERECLAMADO.Value, 0) then
+  // InvalidExcept(edGD_IMPORTERECLAMADO, 'El Importe Reclamado es obligatorio si el Tipo es Extrajudicial.');
+
+  // motivo de devolución de cobranzas
+  if not edGD_MOTIVODEVOLACOBRANZAS.ReadOnly and IsEmptyString(edGD_MOTIVODEVOLACOBRANZAS.Text) then
+   InvalidExcept(edGD_MOTIVODEVOLACOBRANZAS, 'El motivo de devolución de cobranzas es obligatorio.');
+
+  // Motivo de Devolución
+  if fraEstado.Codigo = '01' then    // en trámite
+    begin
+      if ExisteSqlEx('SELECT 1' +
+                      ' FROM CTB_TABLAS, LGD_GESTIONDEUDA' +
+                     ' WHERE gd_estado = tb_codigo' +
+                       ' AND tb_clave = ''LGEST''' +
+                       ' AND tb_codigo = ''01''' +
+                       ' AND gd_fechabaja IS NULL ' +
+                       Iif(Caption = LGD_GESTION_MODIF, ' AND gd_nroorden <> ' + SqlValue(edGD_NROORDEN.Value), '') +
+                       ' AND gd_contrato = :p1', [fraEmpresa.edContrato.Value]) then
+        InvalidExcept(fraMotivoDevol, 'Ya existe una gestión para el presente contrato.');
+    end;
+
+(*  if Is_SectorLegal and rgGD_TIPOExtrajudicial.Checked then
+  begin
+  	sSql :=
+    	'SELECT 1' +
+       ' FROM DUAL' +
+      ' WHERE NOT EXISTS (SELECT 1' +
+                          ' FROM ZSE_SELECCIONPLAN, ZCS_CONTRATOSELECCIONADOPLAN' +
+                         ' WHERE CS_IDSELECCIONPLAN = SE_ID' +
+                         	 ' AND SE_IDENCABEZADOPLAN IN (22, 30)' +    // 22: Empresas - Derivación a Legales de Cuentas Rescindidas - 30: Empresas - Derivación a Legales de Cuentas dadas de Baja por Traspaso
+                           ' AND CS_CONTRATO = :Contrato)' +
+      	' AND NOT EXISTS (SELECT 1' +
+                        	' FROM ACO_CONTRATO' +
+                         ' WHERE CO_CONTRATO = :Contrato' +
+                           ' AND CO_FECHABAJA <= TO_DATE(''31/12/2006'', ''DD/MM/YYYY''))';
+
+		if ExisteSqlEx(sSql, [fraEmpresa.Contrato]) then
+    	InvalidExcept(fraEmpresa, 'El contrato no ha sido derivado por cobranzas.');
+	end; *)
+
+  if fraMotivoDevol.IsSelected then
+    begin
+      sSql := 'SELECT TB_ESPECIAL1 ' +
+                'FROM CTB_TABLAS ' +
+               'WHERE TB_CLAVE = ''LGMDV'' ' +
+                 'AND TB_CODIGO = :Motivo';
+      sCodEspecial1 := ValorSqlEx(sSql, [fraMotivoDevol.Codigo]);
+
+      if sCodEspecial1 <> '' then
+        begin
+         if (sCodEspecial1 = 'C') and (ObtenerValorEx('LEGALES.GET_FECHACONCURSO(:Cuit)', [fraEmpresa.CUIT]) = '') then
+           InvalidExcept(fraMotivoDevol, 'La Empresa no se encuentra en Concurso')
+         else if (sCodEspecial1 ='Q') and (ObtenerValorEx('LEGALES.GET_FECHAQUIEBRA(:Cuit)', [fraEmpresa.CUIT]) = '') then
+           InvalidExcept(fraMotivoDevol, 'La Empresa no se encuentra en Quiebra');
+        end;
+
+      if fraEstado.Codigo <> '08' then  // 08: TERMINADO SIN RECUPERAR
+        InvalidExcept(fraEstado, 'Si cargó el motivo de devolución, el estado solo puede ser: Terminado sin Recuperar');
+    end;
+
+
+  sSqlTrans := TSql.Create('LGD_GESTIONDEUDA');
+	try
+		sSqlTrans.Fields.Add('GD_TIPO', 										String(IIF(rgGD_TIPOJudicial.Checked, '01', '02')));
+   	sSqlTrans.Fields.Add('GD_GESTOR', 									fraGD_GESTOR.Value, True);
+   	sSqlTrans.Fields.Add('GD_CARATULA', 								edGD_CARATULA.Text);
+   	sSqlTrans.Fields.Add('GD_ABOGADO', 									fraAbogados.edCodigo.Text);
+  //       sSqlTrans.Fields.Add( 'GD_MOTIVO', fraMotivo.edCodigo.Text);
+   	sSqlTrans.Fields.Add('GD_CUIT', 										fraEmpresa.mskCUIT.Text);
+   	sSqlTrans.Fields.Add('GD_FUERO', 										fraFuero.edCodigo.Text);
+   	sSqlTrans.Fields.Add('GD_JUZGADO', 									edGD_JUZGADO.Text);
+   	sSqlTrans.Fields.Add('GD_SECRETARIA', 							edGD_SECRETARIA.Text);
+   	sSqlTrans.Fields.Add('GD_JURISDICCION', 						fraJurisdiccion.Codigo);
+   	sSqlTrans.Fields.Add('GD_ESTADO', 									fraEstado.edCodigo.Text);
+   	sSqlTrans.Fields.Add('GD_ABOGADODEMANDADA', 				edGD_ABOGADODEMANDADA.Text);
+   	sSqlTrans.Fields.Add('GD_CARTERA', 									edGD_CARTERA.Value);
+   	sSqlTrans.Fields.Add('GD_FECHAINICIO', 							edGD_FECHAINICIO.Date);
+   	sSqlTrans.Fields.Add('GD_FECHATERMINADO', 					edGD_FECHA_TERMINADO.Date);
+   	sSqlTrans.Fields.Add('GD_FECHAASIGN', 							edGD_FECHAASIGN.Date);
+   	sSqlTrans.Fields.AddExtended('GD_IMPORTEDEMANDADO', edGD_IMPORTEDEMANDADO.Value, ALL_DECIMALS, False);
+   	sSqlTrans.Fields.AddExtended('GD_IMPORTESENTENCIA', edGD_IMPORTESENTENCIA.Value, ALL_DECIMALS, False);
+   	sSqlTrans.Fields.AddExtended('GD_IMPORTERECLAMADO', edGD_IMPORTERECLAMADO.Value, ALL_DECIMALS, False);
+   	sSqlTrans.Fields.Add('gd_motivodevolucion', 				fraMotivoDevol.edCodigo.Text);
+    sSqlTrans.Fields.AddInteger('GD_CONTRATO', 					fraEmpresa.edContrato.Value, True);
+   	sSqlTrans.Fields.Add('GD_MOTIVODEVOLACOBRANZAS', 		edGD_MOTIVODEVOLACOBRANZAS.Text);
+   	sSqlTrans.Fields.AddExtended('GD_DEUDANOMINAL',     edGD_DEUDANOMINAL.Value, ALL_DECIMALS, False);
+   	sSqlTrans.Fields.AddExtended('GD_INTERESES',        edGD_INTERESES.Value, ALL_DECIMALS, False);
+
+   	try
+    	if Caption = LGD_GESTION_ALTA then
+      begin
+      	sSqlTrans.SqlType := stInsert;
+        iNroOrden := GetSecNextVal('Seq_NroJuicioGDeuda');
+        sSqlTrans.Fields.Add('GD_NROORDEN', 	IntToStr(iNroOrden), False);
+        sSqlTrans.Fields.Add('GD_USUALTA', 		frmPrincipal.DBLogin.UserId);
+        sSqlTrans.Fields.Add('GD_FECHAALTA', 'Actualdate', False);
+      end
+      else if Caption = LGD_GESTION_MODIF then
+      begin
+        sSql := 'SELECT GD_ESTADO ' +
+                  'FROM LGD_GESTIONDEUDA ' +
+                 'WHERE GD_NROORDEN = :Orden';
+        sEstadoAnt := ValorSqlEx(sSql, [edGD_NROORDEN.Value]);
+
+      	sSqlTrans.SqlType := stUpdate;
+        sSqlTrans.PrimaryKey.Add('GD_NROORDEN', edGD_NROORDEN.Value);
+        sSqlTrans.Fields.Add('GD_USUMODIF', 		frmPrincipal.DBLogin.UserId);
+        sSqlTrans.Fields.Add('GD_FECHAMODIF', 	'Actualdate', False);
+      end;
+
+      EjecutarSQL(sSqlTrans.Sql);
+      // Si es un alta cambia a modificación.
+      if Caption = LGD_GESTION_ALTA then
+      begin
+        sSql := 'SELECT 1 ' +
+                  'FROM ACO_CONTRATO ' +
+                 'WHERE CO_CONTRATO = :Contrato ' +
+                   'AND CO_ESTADO = ''1''';
+        if ExisteSqlEx(sSql, [fraEmpresa.Contrato]) then
+          DoEnviarMailsAltaContratoActivo(fraEmpresa.Contrato);
+
+      	MsgBox('El alta se realizó con éxito.', MB_ICONEXCLAMATION, 'Atención');
+        tbSalirClick(Self);
+      end
+      else
+      begin
+        if (fraEstado.Codigo = '15') and (sEstadoAnt <> fraEstado.Codigo) then    // BAJA DE GESTION - DEVOLUCION A COBRANZAS
+          DoEnviarMailsBajaGestion(fraEmpresa.Contrato, edGD_MOTIVODEVOLACOBRANZAS.Text);
+
+      	MsgBox('La modificación se realizó con éxito.', MB_ICONEXCLAMATION, 'Atención');
+      end;
+
+      tbSalirClick(Self);
+    except
+    	on Error:exception do
+      	ErrorMsg(Error);
+    end;
+  finally
+  	sSqlTrans.Free;
+  end;
+end;
+
+procedure TfrmABMAdminstracionJuicio.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   ModalResult := mrOk;
+end;
+
+procedure TfrmABMAdminstracionJuicio.FormCreate(Sender: TObject);
+begin
+  fraEstado.OnChange := FraEstadoChange;
+//  fraTipo.Clave         := 'LTIPO';
+//  fraMotivo.Clave       := 'MOJUI';
+  fraFuero.Clave        := 'FUERO';
+  with fraJurisdiccion do
+  begin
+    TableName   := 'legales.lju_jurisdiccion';
+    FieldID     := 'ju_id';
+    FieldCodigo := 'ju_id';
+    FieldDesc   := 'ju_descripcion';
+    FieldBaja   := 'ju_fechabaja';
+    ShowBajas := true;
+  end;
+  fraEstado.Clave       := 'LGEST';
+
+  with fraEmpresa do
+    begin
+      ShowBajas   := True;
+      UltContrato := True;
+      OnChange    := fraEmpresaChange;
+    end;
+
+  fraAbogados.Parte := paPropia;
+
+//  fraTipo.Value         := 'A';
+//  fraTipo.edCodigo.Enabled := False;
+//  fraTipo.cmbDescripcion.Enabled := False;
+//  fraTipo.OnChange := fraTipoChange;
+
+  with fraGD_GESTOR do
+  begin
+    TableName   := 'AGE_GESTORCUENTA';
+    FieldID     := 'GE_CODGESTOR';
+    FieldCodigo := 'GE_CODGESTOR';
+    FieldDesc   := 'GE_NOMBRE';
+    {FieldBaja   := '';}
+  end;
+
+
+  fraMotivoDevol.Clave := 'LGMDV';
+  fraMotivoDevol.ShowBajas := False;
+  fraMotivoDevol.ExtraCondition := ' AND tb_codigo <> ''0'' ';
+
+//  DecimalSeparator := '.';
+//  ThousandSeparator := #0;
+
+  fraToolbarRTFSuperior.Edit := edTextoDocumentoSuperior;
+  fraToolbarRTFInferior.Edit := edTextoDocumentoInferior;
+  fraToolbarRTFSuperior.cmbFuente.FontName := 'Neo Sans';
+  fraToolbarRTFInferior.cmbFuente.FontName := 'Neo Sans';
+//  fraToolbarRTFSuperior.cmbFuenteChange(nil);
+//  fraToolbarRTFInferior.cmbFuenteChange(nil);
+end;
+
+procedure TfrmABMAdminstracionJuicio.tbLimpiarClick(Sender: TObject);
+begin
+  Caption := LGD_GESTION_ALTA;
+
+  edGD_NROORDEN.Clear;
+
+  rgGD_TIPOJudicial.Checked := False;
+  rgGD_TIPOExtrajudicial.Checked := False;
+
+  edGD_CARATULA.Clear;
+  fraEstado.Limpiar;
+  fraAbogados.Clear;
+  edGD_ABOGADODEMANDADA.Clear;
+  fraEmpresa.Clear;
+  fraFuero.Limpiar;
+  edGD_JUZGADO.Clear;
+  edGD_SECRETARIA.Clear;
+  fraJurisdiccion.Clear;
+  edGD_FECHAINICIO.Clear;
+  edGD_FECHA_TERMINADO.Clear;
+  edGD_IMPORTEDEMANDADO.Clear;
+  edGD_IMPORTESENTENCIA.Clear;
+  fraGD_GESTOR.Clear;
+  edGD_CARTERA.Clear;
+  edGD_FECHAASIGN.Clear;
+  edGD_IMPORTERECLAMADO.Clear;
+  edFechaConcurso.Clear;
+  edFechaQuiebra.Clear;
+  edDeudaNA.Clear;
+  edDeudaTA.Clear;
+  fraMotivoDevol.Clear;
+  edGD_MOTIVODEVOLACOBRANZAS.Clear;
+  edGD_DEUDANOMINAL.Clear;
+  edGD_INTERESES.Clear;
+end;
+
+procedure TfrmABMAdminstracionJuicio.tbEmpresaClick(Sender: TObject);
+var
+  frmConsultaEmpresa: TfrmConsultaEmpresa;
+begin
+  if fraEmpresa.CUIT <> '' then
+  begin
+    frmConsultaEmpresa  := TfrmConsultaEmpresa.Create(Self);
+    try
+      frmConsultaEmpresa.GetExecute(fraEmpresa.CUIT);
+    finally
+      frmConsultaEmpresa.Free;
+    end;
+  end;
+end;
+
+// Administracion de Gastos
+procedure TfrmABMAdminstracionJuicio.tbGastosClick(Sender: TObject);
+begin
+  if not edGD_NROORDEN.IsEmpty then
+  begin
+    frmABMGastos  := TfrmABMGastos.Create(Self);
+    try
+      if fraestado.edCodigo.Text = '02' then
+        frmABMGastos.Tag := 1
+      else
+        frmABMGastos.Tag := 0;
+
+      frmABMGastos.GetExecute(edGD_NROORDEN.Value);
+    finally
+      frmABMGastos.Free;
+    end;
+  end;
+end;
+
+// Administracion de Eventos
+procedure TfrmABMAdminstracionJuicio.tbEventosClick(Sender: TObject);
+begin
+  if not edGD_NROORDEN.IsEmpty then
+  begin
+    frmABMEventos := TfrmABMEventos.Create(Self);
+    try
+      if fraestado.edCodigo.Text = '02' then
+        frmABMEventos.Tag := 1
+      else
+        frmABMEventos.tag := 0;
+
+      frmABMEventos.GetExecute(edGD_NROORDEN.Value);
+      frmABMEventos.ShowModal;
+    finally
+      frmABMEventos.Free;
+    end;
+  end;
+end;
+
+procedure TfrmABMAdminstracionJuicio.fraEstadoChange(Sender: TObject);
+begin
+  if AreIn(fraestado.Value, ['02', '08', '15']) then
+  	edGD_FECHA_TERMINADO.Enabled := True
+  else
+  begin
+  	edGD_FECHA_TERMINADO.Enabled := False;
+    edGD_FECHA_TERMINADO.Clear;
+  end;
+
+  LockControl(edGD_MOTIVODEVOLACOBRANZAS, fraestado.Value <> '15');  //BAJA DE GESTION - DEVOLUCION A COBRANZAS
+  if edGD_MOTIVODEVOLACOBRANZAS.ReadOnly then
+    edGD_MOTIVODEVOLACOBRANZAS.Clear;
+end;
+
+procedure TfrmABMAdminstracionJuicio.ToolButton4Click(Sender: TObject);
+begin
+	TRptGasto.Create(Self);
+end;
+
+procedure TfrmABMAdminstracionJuicio.rgGD_TIPOClick(Sender: TObject);
+begin
+	LockControls([fraGD_GESTOR, edGD_FECHAASIGN, edGD_CARTERA], rgGD_TIPOJudicial.Checked);
+  LockControls([edGD_CARATULA, fraAbogados, edGD_ABOGADODEMANDADA, fraFuero, edGD_JUZGADO, edGD_SECRETARIA,
+  							fraJurisdiccion, edGD_FECHAINICIO, edGD_IMPORTEDEMANDADO, edGD_IMPORTESENTENCIA],
+                not rgGD_TIPOJudicial.Checked);
+end;
+
+procedure TfrmABMAdminstracionJuicio.DoCargarDatos(AQuery: TDataSet);
+begin
+  if AQuery.FieldByName('GD_TIPO').AsString = '01' Then
+    rgGD_TIPOJudicial.Checked := True
+  else
+    rgGD_TIPOExtrajudicial.Checked := True;
+
+  edGD_NROORDEN.Value             := AQuery.FieldByName('GD_NROORDEN').AsInteger;
+  fraGD_GESTOR.Codigo             := AQuery.FieldByName('GD_GESTOR').AsString;
+  edGD_CARATULA.Text              := AQuery.FieldByName('CARATULA').AsString;
+
+  fraEstado.Value                 := AQuery.FieldByName('COD_ESTADO').AsString;
+  fraEstadoChange(nil);
+
+  fraAbogados.Codigo              := AQuery.FieldByName('GD_ABOGADO').AsString;
+  edGD_ABOGADODEMANDADA.Text      := AQuery.FieldByName('ABO_DEMANADADA').AsString;
+  fraEmpresa.CUIT                 := AQuery.FieldByName('GD_CUIT').AsString;
+  fraEmpresa.Contrato             := AQuery.FieldByName('GD_CONTRATO').AsInteger;
+  fraFuero.Value                  := AQuery.FieldByName('COD_FUERO').AsString;
+  edGD_JUZGADO.Text               := AQuery.FieldByName('JUZGADO').AsString;
+  edGD_SECRETARIA.Text            := AQuery.FieldByName('SECRETARIA').AsString;
+  fraJurisdiccion.Codigo          := AQuery.FieldByName('COD_JURISDICCION').AsString;
+  edGD_CARTERA.Text               := AQuery.FieldByName('GD_CARTERA').AsString;
+  edGD_FECHAINICIO.Date           := AQuery.FieldByName('GD_FECHAINICIO').AsDateTime;
+  edGD_FECHA_TERMINADO.Date       := AQuery.FieldByName('GD_FECHATERMINADO').AsDateTime;
+  edGD_FECHAASIGN.Date            := AQuery.FieldByName('GD_FECHAASIGN').AsDateTime;
+  edGD_IMPORTEDEMANDADO.Text      := AQuery.FieldByName('GD_IMPORTEDEMANDADO').AsString;
+  edGD_IMPORTESENTENCIA.Text      := AQuery.FieldByName('GD_IMPORTESENTENCIA').AsString;
+  edGD_IMPORTERECLAMADO.Value     := AQuery.FieldByName('GD_IMPORTERECLAMADO').AsCurrency;
+  edGD_MOTIVODEVOLACOBRANZAS.Text := AQuery.FieldByName('MOTIVODEVOLACOBRANZAS').AsString;
+  edGD_DEUDANOMINAL.Text          := AQuery.FieldByName('GD_DEUDANOMINAL').AsString;
+  edGD_INTERESES.Text             := AQuery.FieldByName('GD_INTERESES').AsString;
+
+  edFechaConcurso.Date := AQuery.FieldByName('Concurso').AsDateTime;
+  edFechaQuiebra.Date  := AQuery.FieldByName('Quiebra').AsDateTime;
+  edDeudaNA.Text       := AQuery.FieldByName('deuda_nom_actual').AsString;
+  edDeudaTA.Text       := AQuery.FieldByName('deuda_tot_actual').AsString;
+
+  fraMotivoDevol.Value := AQuery.FieldByName('gd_motivodevolucion').AsString;
+end;
+
+procedure TfrmABMAdminstracionJuicio.tbPlanPagosClick(Sender: TObject);
+begin
+  if fraEmpresa.IsEmpty Then
+    InvalidExcept(fraEmpresa.mskCUIT, 'Debe seleccionar una Empresa.');
+
+  with TfrmPlanDePago.Create(Self) do
+  try
+  	Execute(fraEmpresa.Contrato, fraGD_GESTOR.Value);
+  finally
+  	Free;
+  end;
+end;
+
+procedure TfrmABMAdminstracionJuicio.DoEnviarMailsAltaContratoActivo(Contrato: Integer);
+var
+  sDirGestAlta, sMensaje, sAsunto, sDirecciones, sSql: String;
+begin
+  sSql := 'SELECT SE_MAIL MAIL ' +
+            'FROM USE_USUARIOS ' +
+           'WHERE SE_FECHABAJA IS NULL ' +
+             'AND SE_USUARIO IN ((SELECT SE_USUARIO ' +
+                                   'FROM USE_USUARIOS ' +
+                                  'WHERE SE_PERFIL = ''JEFCOB'' ' +
+                                    'AND SE_USUARIOGENERICO = ''N'') ' +
+                                  'UNION ' +
+                                '(SELECT EC_USUARIO ' +
+                                   'FROM ACO_CONTRATO, AEC_EJECUTIVOCUENTA ' +
+                                  'WHERE EC_ID = CO_IDEJECUTIVO ' +
+                                    'AND EC_FECHABAJA IS NULL ' +
+                                    'AND CO_CONTRATO = ' + SqlValue(Contrato) + ') ' +
+                                  'UNION ' +
+                                '(SELECT CA_USURESPONSABLE ' +
+                                   'FROM ACA_CANAL, XVE_VENDEDOR, XEV_ENTIDADVENDEDOR, AVC_VENDEDORCONTRATO ' +
+                                  'WHERE CA_ID = VE_IDCANAL ' +
+                                    'AND CA_FECHABAJA IS NULL ' +
+                                    'AND EV_ID = VC_IDENTIDADVEND ' +
+                                    'AND EV_FECHABAJA IS NULL ' +
+                                    'AND VE_ID = EV_IDVENDEDOR ' +
+                                    'AND VE_FECHABAJA IS NULL ' +
+                                    'AND VC_ID = COMISION.GET_ULTIDENTIDADVENDCONTRATO(VC_CONTRATO) ' +
+                                    'AND VC_FECHABAJA IS NULL ' +
+                                    'AND VC_CONTRATO = ' + SqlValue(Contrato) + ') ' +
+                                  'UNION ' +
+                                '(SELECT EC_USUARIO ' +
+                                   'FROM AEC_EJECUTIVOCUENTA, XVE_VENDEDOR, XEV_ENTIDADVENDEDOR, AVC_VENDEDORCONTRATO ' +
+                                  'WHERE EC_ID = VE_IDEJECUTIVO ' +
+                                    'AND EC_FECHABAJA IS NULL ' +
+                                    'AND EV_ID = VC_IDENTIDADVEND ' +
+                                    'AND EV_FECHABAJA IS NULL ' +
+                                    'AND VE_ID = EV_IDVENDEDOR ' +
+                                    'AND VE_FECHABAJA IS NULL ' +
+                                    'AND VC_ID = COMISION.GET_ULTIDENTIDADVENDCONTRATO(VC_CONTRATO) ' +
+                                    'AND VC_FECHABAJA IS NULL ' +
+                                    'AND VC_CONTRATO = ' + SqlValue(Contrato) + '))';
+  sDirecciones := GetListaDirecciones(sSql);
+  
+  sDirGestAlta := Get_DireccionesEnvioMail('GEST_ALTA');
+  sDirecciones := Iif(sDirGestAlta = '', '', sDirGestAlta + ',') + sDirecciones;
+
+  if sDirecciones <> '' then
+    begin
+       sAsunto  := 'Gestión de Legales';
+       sMensaje := 'El contrato ' + IntToStr(Contrato)+' - '+ fraEmpresa.NombreEmpresa + ' - ha sido dado de alta para su gestión en Legales.';
+
+       EnviarMailBD(sDirecciones, sAsunto, [oAutoFirma], sMensaje);
+    end;
+end;
+
+procedure TfrmABMAdminstracionJuicio.DoEnviarMailsBajaGestion(Contrato: Integer; MotivoDevol: String);
+var
+  sMensaje, sAsunto, sDirecciones, sSql: String;
+begin
+  sSql := 'SELECT SE_MAIL MAIL ' +
+            'FROM USE_USUARIOS ' +
+           'WHERE SE_FECHABAJA IS NULL ' +
+             'AND SE_PERFIL = ''JEFCOB'' ' +
+             'AND SE_USUARIOGENERICO = ''N''';
+  sDirecciones := GetListaDirecciones(sSql);
+
+  if sDirecciones <> '' then
+    begin
+       sAsunto  := 'Baja de Gestión';
+       sMensaje := 'La gestión del contrato ' + IntToStr(Contrato) + ' ha sido dada de baja y se devuelve a Cobranzas.' + CRLF +
+                   'Motivo de devolución: ' + Trim(MotivoDevol);
+
+       EnviarMailBD(sDirecciones, sAsunto, [oAutoFirma], sMensaje);
+    end;
+end;
+
+procedure TfrmABMAdminstracionJuicio.fraEmpresaChange(Sender: TObject);
+var
+  sSql: String;
+  SqlResults: TStringList;
+begin
+  if fraEmpresa.IsSelected then
+    begin
+      sSql := 'SELECT deuda.get_deudatotalconsolidada(' + SqlValue(fraEmpresa.Contrato) + ', null, null, ''S''), ' +
+                     'deuda.get_deudatotalconsolidada(' + SqlValue(fraEmpresa.Contrato) + ', null, actualdate, ''S'') ' +
+                'FROM DUAL';
+      SqlResults := ValoresColSQL(sSql);
+
+      edGD_DEUDANOMINAL.Text     := SqlResults[0];
+      edGD_IMPORTERECLAMADO.Text := SqlResults[1];
+      edGD_INTERESES.Value       := edGD_IMPORTERECLAMADO.Value - edGD_DEUDANOMINAL.Value;
+    end
+  else
+    begin
+      edGD_DEUDANOMINAL.Clear;
+      edGD_IMPORTERECLAMADO.Clear;
+      edGD_INTERESES.Clear;
+    end;
+end;
+
+procedure TfrmABMAdminstracionJuicio.tbVerImagenesClick(Sender: TObject);
+var
+  RARId: TTableId;
+  sClave: String;
+begin
+  Verificar(fraEmpresa.IsEmpty, fraEmpresa, 'Debe haber un contrato seleccionado.');
+
+  sClave := GetClaveArmada(1, IntToStr(fraEmpresa.Contrato), '', '', '');
+  Verificar(not VerificarClaveExiste(ID_CARPETA_AFILIAC, sClave, RARId), fraEmpresa, 'La carpeta no existe.');
+
+  TFrmDetalleArchivo.MostrarDetalleArchivo(Self, RARId, True);
+end;
+
+procedure TfrmABMAdminstracionJuicio.tbImprimirClick(Sender: TObject);
+begin
+  Verificar(Caption = LGD_GESTION_ALTA, tbImprimir, 'Tiene que estar dado Alta.');
+  edFechaInteres.Clear;
+  edPeriodoDesde.Clear;
+  edPeriodoHasta.Clear;
+  fpSeleccionFechas.ShowModal;
+end;
+
+procedure TfrmABMAdminstracionJuicio.btnAceptarGenerarDocumentoClick(
+  Sender: TObject);
+begin
+  pnGenerarDocumento.ModalResult := mrOk;
+  with TrptCertificadoDeuda.Create(nil) do
+  try
+    FNroOrden := StrToInt(edGD_NROORDEN.Text);
+    Load(fraEmpresa.CUIT,edPeriodoDesde.Text, edPeriodoHasta.Text,edFechaInteres.Date,
+         fraEmpresa.Contrato,edTextoDocumentoSuperior,edTextoDocumentoInferior, FTotalSaldoNominal,
+         FTotalInteres,FTotalSaldoCons,rgTipoHojaImpresion.ItemIndex);
+  finally
+    Free;
+  end;
+end;
+
+procedure TfrmABMAdminstracionJuicio.btnAceptarFechasClick(
+  Sender: TObject);
+var
+  sTextoSup, sTextoInf : String;
+
+begin
+  Verificar((edFechaInteres.Date = 0) or (edPeriodoDesde.Text ='')or (edPeriodoHasta.Text ='') or (rgTipoHojaImpresion.ItemIndex = -1),edFechaInteres, 'Debe Completar los 4 campos.');
+
+  edTextoDocumentoSuperior.Clear;
+  edTextoDocumentoInferior.Clear;
+  sTextoSup := TEXTOIMPGESDEUDASUP;
+  sTextoInf := TEXTOIMPGESDEUDAINF;
+  ReplaceString(sTextoSup,'[FECHA]',ValorSql(
+                       'SELECT ''Buenos Aires, '' || TO_CHAR('+SqlValue(edFechaInteres.Date)+', ''DD'') '+
+                       '       || '' de '' || TRIM(INITCAP(TO_CHAR('+SqlValue(edFechaInteres.Date)+', ''MONTH''))) || '' de '' '+
+                       '       || TO_CHAR('+SqlValue(edFechaInteres.Date)+', ''YYYY'') FROM DUAL'));
+  ReplaceString(sTextoSup,'[RAZON SOCIAL]',fraEmpresa.NombreEmpresa);
+  ReplaceString(sTextoSup,'[CUIT]',fraEmpresa.CUIT);
+  with getquery('SELECT pv_descripcion provincia, dc_calle || '' N°'' || dc_numero '+
+                '       || NVL2(dc_piso, '' Piso: '' || dc_piso, '''') '+
+                '       || NVL2(dc_departamento, '' Dpto: '' || dc_departamento, '''') calle, '+
+                '       dc_localidad localidad, dc_cpostal codpostal '+
+                '  FROM afi.aco_contrato, afi.adc_domiciliocontrato, '+
+                '       art.cpv_provincias '+
+                ' WHERE dc_contrato(+) = co_contrato '+
+                '   AND dc_tipo(+) = ''L'' '+
+                '   AND co_contrato = '+SqlValue(fraEmpresa.Contrato)+
+                '   AND dc_provincia = pv_codigo ')  do
+  try
+    ReplaceString(sTextoSup,'[CALLE]',FieldByName('calle').AsString);
+    ReplaceString(sTextoSup,'[LOCALIDAD]',FieldByName('localidad').AsString);
+    ReplaceString(sTextoSup,'[PROVINCIA]',FieldByName('provincia').AsString);
+    ReplaceString(sTextoSup,'[CODPOSTAL]',FieldByName('codpostal').AsString);
+  finally
+    free;
+  end;
+  with GetQueryEx('SELECT   LTRIM(TO_CHAR(SUM(devengados - pagos - saldointereses), ''L999G999G990D00'', '+
+                  '         ''NLS_NUMERIC_CHARACTERS = '''',.'''' '')) totalsaldo_nominal, '+
+                '         LTRIM(TO_CHAR(SUM(ROUND(deuda *(DECODE(importereclamoafip, 0, tasainteres, GREATEST(tasainteres, 0)) / 100), 2) '+
+                '         + saldointereses), ''L999G999G990D00'', ''NLS_NUMERIC_CHARACTERS = '''',.'''' '')) totalintereses, '+
+                '         SUM(ROUND(TO_NUMBER(art.utiles.iif_compara(''<'', periodo, ''199606'', 0, deuda '+
+                '         + ROUND(deuda *(DECODE(importereclamoafip, 0, tasainteres, GREATEST(tasainteres, 0)) '+
+                '         / 100), 2))), 2) + saldointereses) totalsaldo_consolidada, '+
+                '         LTRIM(TO_CHAR(SUM(ROUND(TO_NUMBER(art.utiles.iif_compara(''<'', periodo, ''199606'', 0, deuda '+
+                '         + ROUND(deuda *(DECODE(importereclamoafip, 0, tasainteres, GREATEST(tasainteres, 0)) '+
+                '         / 100), 2))), 2) + saldointereses), ''L999G999G990D00'', '+
+                '        ''NLS_NUMERIC_CHARACTERS = '''',.'''' '')) ftotalsaldo_consolidada '+
+                '   FROM (SELECT rc_periodo periodo, rc_contrato contrato, '+
+                '        art.afiliacion.get_tarifavigentetexto(rc_contrato, rc_periodo) fija_variable, rc_periodonomina ddjj, '+
+                '        rc_empleados empleados, rc_masasalarial masa, rc_importereclamado importereclamoafip, '+
+                '        rc_devengadocuota + rc_devengadofondo + rc_devengadointeres + rc_devengadootros devengados, '+
+                '        rc_pagocuota + rc_pagofondo + rc_pagointeres + rc_pagootros + rc_recuperocuota + rc_recuperofondo '+
+                '        + rc_recuperointeres pagos, '+
+                '        (rc_devengadocuota + rc_devengadofondo + rc_devengadointeres + rc_devengadootros) '+
+                '        -(rc_pagocuota + rc_pagofondo + rc_pagointeres + rc_pagootros + rc_recuperocuota + rc_recuperofondo '+
+                '        + rc_recuperointeres) '+
+                '        - rc_importereclamado - rc_montorefinanciado - art.cobranza.getsaldointereses(rc_contrato, rc_periodo) deuda, '+
+                '        rc_montorefinanciado montorefinanciado, art.cobranza.getsaldointereses(rc_contrato, rc_periodo) saldointereses, '+
+                '        art.deuda.get_tasaacumulada(art.deuda.get_vencimientocuotacontrato(rc_contrato, rc_periodo) + 1, '+
+                         SqlDate(edFechaInteres.Date)+' ) tasainteres, DECODE('''', NULL, ''N'', art.utiles.iif_compara(''<='', rc_periodo, '''', ''S'', ''N'')) esconcursoquiebra, '+
+                '        0 extrajudicial, rc_prescripto prescripto '+
+                '        FROM zrc_resumencobranza '+
+                '        WHERE rc_contrato = :contrato '+
+                '        AND rc_periodo >= :perdesde '+
+                '        AND rc_periodo <= :perhasta) '+
+                '  WHERE 1 = 1 '+
+                '    AND art.cobranza.is_nomostrarreclamoafip(devengados, pagos, importereclamoafip, periodo) = ''S'' '+
+                '    AND esconcursoquiebra <> ''S'' '+
+                '    AND prescripto <> ''S'' '+
+                ' ORDER BY 1 DESC ',[fraEmpresa.Contrato, edPeriodoDesde.Text,edPeriodoHasta.Text]) do
+  try
+    FTotalSaldoNominal := FieldByName('totalsaldo_nominal').AsString;
+    FTotalInteres      := FieldByName('totalintereses').AsString;
+    FTotalSaldoCons    := FieldByName('ftotalsaldo_consolidada').AsString;
+
+    ReplaceString(sTextoSup,'[MONTO]',NumLetras(fieldbyName('totalsaldo_consolidada').AsFloat)+' ('+
+                                   FieldByName('ftotalsaldo_consolidada').AsString +')');
+
+  finally
+    Free;
+  end;
+  ReplaceString(sTextoSup,'[CONTRATO]',IntToStr(fraEmpresa.Contrato));
+  ReplaceString(sTextoInf,'[FECHADEUDA]',edFechaInteres.Text);
+  ReplaceString(sTextoInf,'[FECHAFIN]',ValorSql(
+                       'SELECT TO_CHAR('+SqlValue(edFechaInteres.Date)+', ''DD'') '+
+                       '       || '' días del mes de '' || TRIM(INITCAP(TO_CHAR('+SqlValue(edFechaInteres.Date)+', ''MONTH''))) || '' de '' '+
+                       '       || TO_CHAR('+SqlValue(edFechaInteres.Date)+', ''YYYY'') FROM DUAL'));
+
+
+
+  edTextoDocumentoSuperior.Lines.Add(sTextoSup);
+  edTextoDocumentoInferior.Lines.Add(sTextoInf);
+  fraToolbarRTFSuperior.cmbFuente.FontName := 'Neo Sans';
+  fraToolbarRTFInferior.cmbFuente.FontName := 'Neo Sans';
+  pnGenerarDocumento.ShowModal;
+end;
+
+end.
+

@@ -1,0 +1,1649 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{1047D180-1ECA-4340-BC05-9B50D4AD599F}</ProjectGuid>
+			<MainSource>Integrador.dpr</MainSource>
+			<Base>True</Base>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<TargetedPlatforms>1</TargetedPlatforms>
+			<AppType>Application</AppType>
+			<FrameworkType>VCL</FrameworkType>
+			<ProjectVersion>13.4</ProjectVersion>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+			<Base_Win64>true</Base_Win64>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+			<Base_Win32>true</Base_Win32>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+			<Cfg_2_Win32>true</Cfg_2_Win32>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DCC_SYMBOL_PLATFORM>false</DCC_SYMBOL_PLATFORM>
+			<DCC_ExeOutput>C:\DELPHI\EXES</DCC_ExeOutput>
+			<DCC_SYMBOL_LIBRARY>false</DCC_SYMBOL_LIBRARY>
+			<VerInfo_Keys>CompanyName=Provincia ART;FileDescription=Módulo de Integración;FileVersion=1.0.0.0;InternalName=Integrador;LegalCopyright=;LegalTrademarks=;OriginalFilename=Integrador.exe;ProductName=Integrador;ProductVersion=1.0.0.0;Comments=Desarrollado por Pablo Tavasci Dozo para Provincia ART</VerInfo_Keys>
+			<DCC_UsePackage>VCL;RTL;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_UNIT_DEPRECATED>false</DCC_UNIT_DEPRECATED>
+			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;FMXTee.Editor;System.Win;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_WriteableConstants>true</DCC_WriteableConstants>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_Define>ART2;ARTUTILS;ICONOS_SIST_NUEVO;NEW_LOCKCOLORS;ALARMAS_ON;ORACLE;COMERCIAL;ESSISTEMANUEVOEMI;$(DCC_Define)</DCC_Define>
+			<DCC_Optimize>false</DCC_Optimize>
+			<DCC_N>true</DCC_N>
+			<DCC_K>false</DCC_K>
+			<DCC_F>false</DCC_F>
+			<DCC_SYMBOL_DEPRECATED>false</DCC_SYMBOL_DEPRECATED>
+			<DCC_UNIT_PLATFORM>false</DCC_UNIT_PLATFORM>
+			<DCC_S>false</DCC_S>
+			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
+			<DCC_HIDDEN_VIRTUAL>false</DCC_HIDDEN_VIRTUAL>
+			<DCC_UNIT_LIBRARY>false</DCC_UNIT_LIBRARY>
+			<DCC_E>false</DCC_E>
+			<VerInfo_Locale>11274</VerInfo_Locale>
+			<DCC_DcuOutput>C:\DELPHI\LIBSD7</DCC_DcuOutput>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<DCC_UsePackage>vcldb;office2K;$(DCC_UsePackage)</DCC_UsePackage>
+			<Icon_MainIcon>Integrador_Icon.ico</Icon_MainIcon>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_UsePackage>vcldb;office2K;$(DCC_UsePackage)</DCC_UsePackage>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<Icon_MainIcon>Integrador_Icon.ico</Icon_MainIcon>
+			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<Debugger_RunParams>/clp</Debugger_RunParams>
+			<VerInfo_Keys>CompanyName=Provincia ART;FileDescription=;FileVersion=1.0.0.0;InternalName=Integrador;LegalCopyright=;LegalTrademarks=;OriginalFilename=Integrador;ProductName=Integrador;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<Manifest_File>None</Manifest_File>
+			<DCC_UnitAlias>Placemnt=rxPlacemnt;ToolEdit=rxToolEdit;CurrEdit=rxCurrEdit;AppUtils=rxAppUtils;MemTable=rxMemTable;DBRichEd=rxDBRichEd;DateUtil=rxDateUtil;ZipMstr=ZipMstr19;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<DCC_WIDECHAR_REDUCED>false</DCC_WIDECHAR_REDUCED>
+			<DCC_COMPARING_SIGNED_UNSIGNED>false</DCC_COMPARING_SIGNED_UNSIGNED>
+			<DCC_IMPLICIT_STRING_CAST_LOSS>false</DCC_IMPLICIT_STRING_CAST_LOSS>
+			<DCC_COMBINING_SIGNED_UNSIGNED>false</DCC_COMBINING_SIGNED_UNSIGNED>
+			<DCC_SUSPICIOUS_TYPECAST>false</DCC_SUSPICIOUS_TYPECAST>
+			<DCC_IMPLICIT_STRING_CAST>false</DCC_IMPLICIT_STRING_CAST>
+			<DCC_Namespace>VCLTee;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_DcuOutput>C:\delphi\libsXE2\</DCC_DcuOutput>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="$(MainSource)">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="..\..\Comunes\unArt.pas"/>
+			<DCCReference Include="..\Comunes\unCustomDataModule.pas">
+				<Form>dmCustomDataModule</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\ORACLE\unDmPrincipal.pas">
+				<Form>dmPrincipal</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reposit\unCustomPrincipal.pas">
+				<Form>frmCustomPrincipal</Form>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\REPOSIT\unArtFrame.pas">
+				<Form>ArtFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\REPOSIT\unArtDBAwareFrame.pas">
+				<Form>ArtDBAwareFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\unFraCodigoDescripcion.pas">
+				<Form>fraCodigoDescripcion</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\unFraCtbTablas.pas">
+				<Form>fraCtbTablas</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\REPOSIT\unArtDbFrame.pas">
+				<Form>ArtDbFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\NEW\unFraEmpresa.pas">
+				<Form>fraEmpresa</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\NEW\unFraEmpresaAfi.pas">
+				<Form>fraEmpresaAfi</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\NEW\unFraEmpresaSolicitud.pas">
+				<Form>fraEmpresaSolicitud</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\REPOSIT\unCustomConsulta.pas">
+				<Form>frmCustomConsulta</Form>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\REPOSIT\unCustomPanelABM.pas">
+				<Form>frmCustomPanelABM</Form>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\REPOSIT\unCustomGridABM.pas">
+				<Form>frmCustomGridABM</Form>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\unAdmSiniestros.pas">
+				<Form>frmAdmSiniestros</Form>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\NEW\unFraTrabajador.pas">
+				<Form>fraTrabajador</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\NEW\unFraTrabajadorSiniestro.pas">
+				<Form>fraTrabajadorSiniestro</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\ADMSIN\unDenunciaGrave.pas">
+				<Form>frmDenunciaGrave</Form>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\NEW\unfraCPR_PRESTADOR.pas">
+				<Form>fraCPR_PRESTADOR</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\unFraStaticCodigoDescripcion.pas">
+				<Form>fraStaticCodigoDescripcion</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\unFraStaticCTB_TABLAS.pas">
+				<Form>fraStaticCTB_TABLAS</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\ADMSIN\unParteEvolutivo.pas">
+				<Form>frmParteEvolutivo</Form>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\ADMSIN\unSinForm.pas">
+				<Form>SinForm</Form>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\ADMSIN\unSinFormNavigator.pas">
+				<Form>SinFormNavigator</Form>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\NEW\unFraDomicilio.pas">
+				<Form>fraDomicilio</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\NEW\unFraDomicilioTrab.pas">
+				<Form>fraDomicilioTrab</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\NEW\unFraEstablecimiento.pas">
+				<Form>fraEstablecimiento</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\Forms\unBusquedaDomicilio.pas">
+				<Form>frmBusquedaDomicilio</Form>
+			</DCCReference>
+			<DCCReference Include="..\Afiliaciones\unAfiliaciones.pas"/>
+			<DCCReference Include="..\Comunes\Forms\unManCCP_CUENTAPAGO.pas">
+				<Form>frmManCCP_CUENTAPAGO</Form>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\unfraVendedores.pas">
+				<Form>fraVendedores</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\NEW\unfraVendedoresCUIT.pas">
+				<Form>fraVendedoresCUIT</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\Forms\unAltaModifCCP_CUENTAPAGO.pas">
+				<Form>frmAltaModifCCP_CUENTAPAGO</Form>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\Forms\unConsulta.pas">
+				<Form>frmConsulta</Form>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\unSiniestros.pas"/>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraSAU_AUTORIZACIONES.pas">
+				<Form>fraSAU_AUTORIZACIONES</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\unFraSDA_DETALLEARCHIVO.pas">
+				<Form>fraSDA_DETALLEARCHIVO</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\REPOSIT\unCustomSplash.pas">
+				<Form>frmCustomSplash</Form>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\Forms\unWelcomeSplash.pas">
+				<Form>frmWelcomeSplash</Form>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\ADMSIN\unExpediente.pas">
+				<Form>frmExpediente</Form>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\unFraCIE10.pas">
+				<Form>fraCIE10</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\VCLExtra.pas"/>
+			<DCCReference Include="..\..\Comunes\AnsiSql.pas"/>
+			<DCCReference Include="..\..\Comunes\DbFuncs.pas"/>
+			<DCCReference Include="..\..\Comunes\unSesion.pas"/>
+			<DCCReference Include="..\..\Comunes\CustomDlgs.pas"/>
+			<DCCReference Include="..\comunes\unDebug.pas">
+				<Form>frmDebug</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\envio de mails\unMoldeEnvioMail.pas"/>
+			<DCCReference Include="..\comunes\unCustomForm.pas">
+				<Form>frmCustomForm</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unFraToolbarRTF.pas">
+				<Form>fraToolbarRTF</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unSeleccionDestinatarios.pas">
+				<Form>frmSeleccionDestinatarios</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unLibretaDeDirecciones.pas">
+				<Form>frmLibretaDeDirecciones</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unElementosEnviados.pas">
+				<Form>frmElementosEnviados</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\General.pas"/>
+			<DCCReference Include="..\comunes\frames\new\unfraCuentaBancaria.pas">
+				<Form>fraCuentaBancaria</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unfraUsuarios.pas">
+				<Form>fraUsuario</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraUsuario.pas">
+				<Form>fraUsuarios</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\ADMSIN\unParteIngreso.pas">
+				<Form>frmParteIngreso</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\ADMSIN\unParteEgreso.pas">
+				<Form>frmParteEgreso</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraSMC_MOTIVONOCARGA.pas">
+				<Form>fraSMC_MOTIVONOCARGA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraSTA_TIPOACCIDENTE.pas">
+				<Form>fraSTA_TIPOACCIDENTE</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraSTC_TIPOGRAVEDAD_CIE10.pas">
+				<Form>fraSTC_TIPOGRAVEDAD_CIE10</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\nuevos\unFraStaticCodDesc.pas">
+				<Form>fraStaticCodDesc</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\nuevos\unFraCodDesc.pas">
+				<Form>fraCodDesc</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraSTG_TIPOGRAVEDAD.pas">
+				<Form>fraSTG_TIPOGRAVEDAD</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraSLA_LESIONAGENTE.pas">
+				<Form>fraSLA_LESIONAGENTE</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraSLF_LESIONFORMA.pas">
+				<Form>fraSLF_LESIONFORMA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraSLN_LESIONNATURALEZA.pas">
+				<Form>fraSLN_LESIONNATURALEZA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraSLZ_LESIONZONA.pas">
+				<Form>fraSLZ_LESIONZONA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unEspera.pas">
+				<Form>frmEspera</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\unCITRIX.pas"/>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraCDG_DIAGNOSTICO.pas">
+				<Form>fraCDG_DIAGNOSTICO</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraCCI_CIUO.pas">
+				<Form>fraCCI_CIUO</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\ADMSIN\unResumen.pas">
+				<Form>frmResumen</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\ADMSIN\unOtros.pas">
+				<Form>frmOtros</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\ADMSIN\unParteAuditoria.pas">
+				<Form>frmParteAuditoria</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\DateTimeFuncs.pas"/>
+			<DCCReference Include="..\Siniestros\unDlgBusEstablecimiento.pas">
+				<Form>frmDlgBusEstablecimiento</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraTelefono.pas">
+				<Form>fraTelefono</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unABMTelefonos.pas">
+				<Form>frmTelefonos</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unTelefonosCargaRapida.pas">
+				<Form>frmTelefonosCargaRapida</Form>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unCompatibilidad.pas"/>
+			<DCCReference Include="..\..\comunes\uncomunes.pas"/>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraTipoSiniestro.pas">
+				<Form>fraTipoSiniestro</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraCPA_PAISES.pas">
+				<Form>fraCPA_PAISES</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\unIncapacidadesPermanentes.pas">
+				<Form>frmIncapacidadesPermanentes</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\unRedPres.pas"/>
+			<DCCReference Include="..\..\Comunes\unAlarmas.pas"/>
+			<DCCReference Include="..\..\Comunes\Cuit.pas"/>
+			<DCCReference Include="..\..\Comunes\strfuncs.pas"/>
+			<DCCReference Include="..\..\Comunes\unEnvioMail.pas"/>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraTipoEgreso.pas">
+				<Form>fraTipoEgreso</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraTipoTratamiento.pas">
+				<Form>fraTipoTratamiento</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unVisualizador.pas">
+				<Form>frmVisualizador</Form>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraTipoAtencion.pas">
+				<Form>fraTipoAtencion</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraMAU_AUDITORES.pas">
+				<Form>fraMAU_AUDITORES</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraMIM_IMPLANTES.pas">
+				<Form>fraMIM_IMPLANTES</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraDomicilioTrabajador.pas">
+				<Form>fraDomicilioTrabajador</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unfraDelegacion.pas">
+				<Form>fraDelegacion</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\unCambioDelegacion.pas">
+				<Form>frmCambioDelegacion</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unfraSectores.pas">
+				<Form>fraSectores</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\unEvolucionDeEstados.pas">
+				<Form>frmEvolucionDeEstados</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unContratoContacto.pas">
+				<Form>frmContratoContacto</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unfraContacto.pas">
+				<Form>fraContacto</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\SpoolFuncs.pas"/>
+			<DCCReference Include="..\comunes\frames\new\unFraPrestadorExtendido.pas">
+				<Form>fraPrestadorExtendido</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraPrestadorFueraDeContrato.pas">
+				<Form>fraPrestadorFueraDeContrato</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\unConsultaNomina.pas">
+				<Form>frmConsultaNomina</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\unConsultaEmpresa.pas">
+				<Form>frmConsultaEmpresa</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\unConfidencial.pas"/>
+			<DCCReference Include="..\comunes\frames\new\unFraRTD_TIPODOCUMENTO.pas">
+				<Form>fraRTD_TIPODOCUMENTO</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unVisualizadorDigitalizacion.pas">
+				<Form>frmVisualizadorDigitalizacion</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraVistaTIFF.pas">
+				<Form>fraVistaTIFF</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\libgfl.pas"/>
+			<DCCReference Include="..\comunes\frames\new\unFraDigitalizacion.pas">
+				<Form>fraDigitalizacion</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\ungrids.pas"/>
+			<DCCReference Include="..\comunes\forms\unFaxEnviados.pas">
+				<Form>frmFaxEnviados</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\Forms\unConsFax.pas">
+				<Form>frmConsFax</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\fax\faxclient_new\frames\unfraFFO_FAXFORMULARIO.pas">
+				<Form>fraFFO_FAXFORMULARIO</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\fax\faxclient_new\unEstrategiaTIFF.pas"/>
+			<DCCReference Include="..\..\Comunes\unImageFunctions.pas"/>
+			<DCCReference Include="..\..\Comunes\unFaxFuncs.pas"/>
+			<DCCReference Include="..\Siniestros\unUbicacionDenuncia.pas">
+				<Form>frmUbicacionDenuncia</Form>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraCCO_PARTIDOS_CODIGOSPOSTALES.pas">
+				<Form>fraCCO_PARTIDOS_CODIGOSPOSTALES</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\REPORTS\unRptResumen.pas">
+				<Form>rptResumen</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\abm\unManRDO_DOCUMENTO.pas">
+				<Form>frmManRDO_DOCUMENTO</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\unExportPDF.pas"/>
+			<DCCReference Include="unIntegrador.pas">
+				<Form>frmIntegrador</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unfraInfoEmpresa.pas">
+				<Form>fraInfoEmpresa</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unConsultasAdicionales.pas">
+				<Form>frmConsultasAdicionales</Form>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\unOpcionesDeImpresion.pas">
+				<Form>frmOpcionesDeImpresion</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unBaseAdministracionCartas.pas">
+				<Form>frmBaseAdministracionCartas</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptCartaDocHeader.pas">
+				<Form>rptCartaDocHeader</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptCartaDocumento.pas">
+				<Form>rptCartaDocumento</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\impoexpo\unImpoExpoWizard.pas">
+				<Form>frmImpoExpoWizard</Form>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\reports\unQRCartaDocIntimacion.pas"/>
+			<DCCReference Include="..\cobranzas\reports\unQRF817.pas"/>
+			<DCCReference Include="..\cobranzas\compensacion\reports\unRptCartaDocCompensacion.pas"/>
+			<DCCReference Include="..\cobranzas\unImpresionEstadoDeCuenta.pas"/>
+			<DCCReference Include="..\cobranzas\reports\unQrEstadoCuentaDetalle.pas">
+				<Form>frmEstadoCuentaDetalle</Form>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\reports\unQrEstadoCuentaResumen.pas">
+				<Form>frmEstadoCuentaResumen</Form>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\reports\unQRF801C.pas">
+				<Form>QRF801C</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unEjecutivoCuenta.pas">
+				<Form>frmEjecutivoCuenta</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unGestorCuenta.pas">
+				<Form>frmGestorCuenta</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraCanal.pas">
+				<Form>fraCanal</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unfraEntidadCUIT.pas">
+				<Form>fraEntidadCUIT</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraDomicilioExtendido.pas">
+				<Form>fraDomicilioExtendido</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\nuevos\unFraABMFrame.pas">
+				<Form>ART_ABMFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraABM_ACT_CONTACTO.pas">
+				<Form>fraABM_ACT_CONTACTO</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unNominaPeriodos.pas">
+				<Form>frmNominaPeriodos</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\UnRptMoldeCarta.pas">
+				<Form>qrMoldeCarta</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="unRptCartaConfirmacionAlicuota.pas">
+				<Form>qrCartaConfirmacionAlicuota</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Dinerarias\unLiqIncapacidades.pas">
+				<Form>frmLiqIncapacidades</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\oracle\unDmFinancials.pas">
+				<Form>dmFinancials</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="unRptDDJJSinPresentar.pas">
+				<Form>qrDDJJSinPresentar</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\unTercerizadoras.pas"/>
+			<DCCReference Include="..\cobranzas\unEstadoCuenta.pas"/>
+			<DCCReference Include="unPrincipal.pas">
+				<Form>frmPrincipal</Form>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unEmisionCertificados.pas">
+				<Form>frmEmisionCertificados</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\UnRptCertificados.pas">
+				<Form>rptCertificados</Form>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unRptRepNom.pas">
+				<Form>rptRepNom</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraEmpresaHolding.pas">
+				<Form>fraEmpresaHolding</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\licitaciones\unABMAgenda.pas">
+				<Form>frmABMAgenda</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\licitaciones\unConsultaLicitacion.pas">
+				<Form>frmConsultaLicitacion</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\licitaciones\unGestion.pas">
+				<Form>frmGestion</Form>
+			</DCCReference>
+			<DCCReference Include="..\licitaciones\unRptLicitacion.pas">
+				<Form>rptLicitacion</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\licitaciones\unVisualizaPliegos.pas">
+				<Form>frmVisualizaPliegos</Form>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\ADMSIN\unDenunciaStandard.pas">
+				<Form>frmDenunciaSTD</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unAyuda.pas">
+				<Form>frmAyuda</Form>
+			</DCCReference>
+			<DCCReference Include="..\impoexpo\unImpoExpoUtils.pas"/>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraSMD_MODODETECCION.pas">
+				<Form>fraSMD_MODODETECCION</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\FRAMES\unFraSLM_LESIONAGENTEMATERIAL.pas">
+				<Form>fraSLM_LESIONAGENTEMATERIAL</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\ArchFuncs.pas"/>
+			<DCCReference Include="..\comunes\frames\unfraPrestador.pas">
+				<Form>fraPrestador</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\unSegIncapacidades.pas">
+				<Form>frmSegIncapacidades</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unCuadroTarifarioContrato.pas">
+				<Form>frmContratoTarifa</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unfraStaticActividad.pas">
+				<Form>fraStaticActividad</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unAfiGeneracionCartas.pas">
+				<Form>frmAfiGeneracionCartas</Form>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unQRReporte.pas">
+				<Form>QRReporte</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unAfiCartasDoc.pas"/>
+			<DCCReference Include="..\afiliaciones\reports\unQREndosoBase.pas">
+				<Form>qrEndosoBase</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unQREndoso1.pas">
+				<Form>qrEndoso1</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unQREndoso0.pas">
+				<Form>qrEndoso0</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unrptCartaDocTarifa.pas">
+				<Form>rptCartaDocTarifa</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unRptCartDocTraspasoEgreso2.pas">
+				<Form>rptCartDocTraspasoEgreso2</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unRptCartDocTraspasoEgreso.pas">
+				<Form>rptCartDocTraspasoEgreso</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unRptCartDocTraspasoIngreso.pas">
+				<Form>rptCartDocTraspasoIngreso</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\REPORTS\unRptParteAuditoriaLeve.pas">
+				<Form>rptParteAuditoriaLeve</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\REPORTS\unRptParteAuditoriaGrave.pas">
+				<Form>rptParteAuditoriaGrave</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\Comunes\unNovedades.pas"/>
+			<DCCReference Include="..\Siniestros\REPORTS\unRptNotaEntregaReq.pas">
+				<Form>qrNotaEntregaReq</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Siniestros\REPORTS\unRptNotaRectificatoria.pas">
+				<Form>qrNotaRectificatoria</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unConfirmaTarifa.pas">
+				<Form>frmConfirmaTarifa</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unAgendaTelefonica.pas">
+				<Form>frmAgendaTelefonica</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptParteEgreso.pas">
+				<Form>rptParteEgreso</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\reports\unQrLibreDeuda.pas">
+				<Form>qrLibreDeuda</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\cobranzas\reports\unQRCartaDocIntimacionNuevaGrilla.pas">
+				<Form>QRCartaDocIntimacionNuevaGrilla</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRptIncapacidadRecibo.pas">
+				<Form>qrIncapacidadRecibo</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptNotaBaja.pas">
+				<Form>qrNotaBaja</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\unMotivoCancelacionLiq.pas">
+				<Form>frmMotivoCancelacionLiq</Form>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRptRemuneraciones.pas">
+				<Form>qrRemuneraciones</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRptReciboILT.pas">
+				<Form>qrReciboILT</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRptReciboILP.pas">
+				<Form>qrReciboILP</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRptOrdenDePago.pas">
+				<Form>qrOrdenDePago</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptGestionDeReclamos.pas">
+				<Form>frmRptGestionDeReclamos</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unVentanillaElectronica.pas">
+				<Form>frmVentanillaElectronica</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unFormularioValidacionYRectificacionDatosEstablecimientos.pas">
+				<Form>frmFormularioValidacionYRectificacionDatosEstablecimientos</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptFormularioValidacionYRectificacionDatosEstablecimientos.pas">
+				<Form>qrFormularioValidacionYRectificacionDatosEstablecimientos</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\unDatosLesion.pas">
+				<Form>frmDatosLesion</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\Clases\unClassExpediente.pas"/>
+			<DCCReference Include="..\..\comunes\Clases\unClassLiquidacion.pas"/>
+			<DCCReference Include="..\comunes\forms\unAnalisisCliente.pas">
+				<Form>frmAnalisisCliente</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unDigitalizacion.pas"/>
+			<DCCReference Include="..\..\comunes\unExcel.pas"/>
+			<DCCReference Include="..\comunes\frames\new\unFraNavegadorWEB.pas">
+				<Form>fraNavegadorWEB</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unGoogleMaps.pas">
+				<Form>frmGoogleMaps</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraDomicilioGIS.pas">
+				<Form>fraDomicilioGIS</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManCGI_GIS.pas">
+				<Form>frmManCGI_GIS</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptLiqOtrosConceptos.pas">
+				<Form>qrLiqOtrosConceptos</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptReciboOtrosConceptos.pas">
+				<Form>qrReciboOtrosConceptos</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\OneSession.pas"/>
+			<DCCReference Include="..\dinerarias\unLiqAsigFam.pas">
+				<Form>frmLiqAsigFam</Form>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\ABM\unManAsigEspeciales.pas">
+				<Form>frmManAsigEspeciales</Form>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\ABM\unManAsigHijos.pas">
+				<Form>frmManAsigHijos</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unAnexoRes365.pas">
+				<Form>frmAnexoRes365</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptAnexoRes365.pas">
+				<Form>qrAnexoRes365</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptEstudiosCompl.pas">
+				<Form>qrEstudiosCompl</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptEstadisticasRGRL.pas">
+				<Form>qrEstadisticasRGRL</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptRGRL.pas">
+				<Form>qrRGRL</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unRGRL.pas">
+				<Form>frmRGRL</Form>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\unCompaniaSeguroRetiro.pas">
+				<Form>frmCompaniaSeguroRetiro</Form>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\unListContCartasDoc.pas">
+				<Form>frmListContCartasDoc</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptRemitoExpedientes.pas">
+				<Form>qrRemitoExpedientes</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\redpres\UnListConsPrest.pas">
+				<Form>frmConsPrest</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unClasificacionActivos.pas">
+				<Form>frmClasificacionActivos</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManCPG_PLAZOGUARDA.pas">
+				<Form>frmManCPG_PLAZOGUARDA</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManCTA_TIPOACTIVOS.pas">
+				<Form>frmManCTA_TIPOACTIVOS</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\redpres\UnRepManPrestador.pas">
+				<Form>rptManPrestador</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unFiltros.pas"/>
+			<DCCReference Include="..\comunes\frames\new\unfraMotivoEndoso.pas">
+				<Form>fraMotivoEndoso</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unUtilsArchivo.pas"/>
+			<DCCReference Include="..\comunes\frames\unfraCodigoDescripcionExt.pas">
+				<Form>fraCodigoDescripcionExt</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unSeleccionMultiple.pas">
+				<Form>frmSeleccionUsuarios</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptLegajoSiniestro.pas">
+				<Form>qrLegajoSiniestro</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptDenunciaStandardS.pas">
+				<Form>qrDenunciaStandardS</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRptFormularioCotizacion.pas">
+				<Form>rptFormularioCotizacion</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptFormSelRetiro.pas">
+				<Form>rptFormSelRetiro</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptSiniestroParaReingresar.pas">
+				<Form>qrSiniestroParaReingresar</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\Clases\unClassEmpresa.pas"/>
+			<DCCReference Include="..\dinerarias\reports\unRptResumenIncapacidad.pas">
+				<Form>qrResumenIncapacidad</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRptResumenILP.pas">
+				<Form>qrResumenILP</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\admliq\unGeneracionTasaJusticia.pas">
+				<Form>frmGeneracionTasaJusticia</Form>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\unDinerarias.pas"/>
+			<DCCReference Include="..\siniestros\reports\unRptParteIngreso.pas">
+				<Form>qrParteIngreso</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptNotaBase.pas">
+				<Form>qrNotaBase</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\admliq\unGeneracionOPagos.pas">
+				<Form>frmGeneracionOPagos</Form>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\admliq\unGeneracionIntereses.pas">
+				<Form>frmGeneracionIntereses</Form>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRPTPagoAdic.pas">
+				<Form>qrPagoAdic</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unrptliq8.pas">
+				<Form>Rpt81</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unrptliq8b.pas">
+				<Form>rpt82</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unrptliq8Rep.pas">
+				<Form>Rpt8Rep</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unrptliq8repb.pas">
+				<Form>rpt8rep2</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unrptliq53.pas">
+				<Form>Rpt531</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unrptliq53b.pas">
+				<Form>rpt532</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRptLiqReciboPagoUnico.pas">
+				<Form>frmRptReciboPagoUnico</Form>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptSiniestroParaRecalificar.pas">
+				<Form>qrSiniestroParaRecalificar</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRptReciboRetiraDocum.pas">
+				<Form>rptReciboRetiraDocum</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRptFormularioCotizacionTot.pas">
+				<Form>rptFormularioCotizacionTot</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\abm\unManDEL_DELEGACION.pas">
+				<Form>frmManDEL_DELEGACION</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unInformesSiniestralidad.pas">
+				<Form>frmInformesSiniestralidad</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unInfSiniestralidad.pas"/>
+			<DCCReference Include="..\comunes\forms\unVisor.pas">
+				<Form>frmVisor</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unVisorPDF.pas">
+				<Form>frmVisorPDF</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unArchivoVisor.pas"/>
+			<DCCReference Include="..\comunes\forms\unVisorExcel.pas">
+				<Form>frmVisorExcel</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptEvolucion.pas">
+				<Form>qrEvolucion</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unQrEtiquetasDocCarpetas.pas">
+				<Form>qrEtiquetasDocCarpetas</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\unEmisionFormularios.pas">
+				<Form>frmEmisionFormularios</Form>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptHistSiniestral.pas">
+				<Form>qrHistSiniestral</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptSolicitudIntervencion.pas">
+				<Form>frmRptSolInt</Form>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptSolicitudPedidos.pas">
+				<Form>qrSolicitudPedidos</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptActaAcuedo.pas">
+				<Form>qrActaAcuerdo</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptAcuerdoILPPD.pas">
+				<Form>frmRptAcuerdoILPPD</Form>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptAltaMedica.pas">
+				<Form>qrAltaMedica</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptInfCodInca.pas">
+				<Form>qrInfCodInca</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptEvalPrestacJuntaMed.pas">
+				<Form>qrEvalPrestacJuntaMed</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptRevisionMedica.pas">
+				<Form>qrRevisionMedica</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptCartaAbandonoTto.pas">
+				<Form>rptCartaAbandonoTto</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptDictamenFundMedicos.pas">
+				<Form>qrDictamenFundMedicos</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptDocumentPrestDinerarias.pas">
+				<Form>qrDocumentPrestDinerarias</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptConstanciaDomTrab.pas">
+				<Form>qrConstanciaDomTrab</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptPlantillaRGRL.pas">
+				<Form>qrPlantillaRGRL</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraVistaEventos.pas">
+				<Form>fraVistaEventos</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unABMAgendaBase.pas">
+				<Form>frmABMAgendaBase</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraContactoAGENDA.pas">
+				<Form>fraContactoAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraContactoLibreAGENDA.pas">
+				<Form>fraContactoLibreAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraDomicilioAGENDA.pas">
+				<Form>fraDomicilioGISAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraDomicilioEmpresaAGENDA.pas">
+				<Form>fraDomicilioEmpresaAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraDomicilioEstablecimientoAGENDA.pas">
+				<Form>fraDomicilioEstablecimientoAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraEmpresaAGENDA.pas">
+				<Form>fraEmpresaAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraEntidadAGENDA.pas">
+				<Form>fraEntidadAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraEntidadVendedorAGENDA.pas">
+				<Form>fraEntidadVendedorAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraEstablecimientoAGENDA.pas">
+				<Form>fraEstablecimientoAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraNumAutoAGENDA.pas">
+				<Form>fraNumAutoAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraPrestadorAGENDA.pas">
+				<Form>fraPrestadorAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraProspectosAGENDA.pas">
+				<Form>fraProspectosAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraTrabajadorAGENDA.pas">
+				<Form>fraTrabajadorAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraTrabajadorSiniestroAGENDA.pas">
+				<Form>fraTrabajadorSiniestroAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosAgenda\unfraVendedorAGENDA.pas">
+				<Form>fraVendedorAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unABMAgendaBaseTarea.pas">
+				<Form>frmABMAgendaBaseTarea</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unABMAgendaBaseEvento.pas">
+				<Form>frmABMAgendaBaseEvento</Form>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unContratoTrabajador.pas">
+				<Form>frmContratoTrabajador</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unFraActividad.pas">
+				<Form>fraActividad</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unfraInfoEmpresaExt.pas">
+				<Form>fraInfoEmpresaExt</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraDomicilioEmpresa.pas">
+				<Form>fraDomicilioEmpresa</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraValidacionDatosEmpresa.pas">
+				<Form>fraValidacionDatosEmpresa</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\nuevos\unFraTitulo.pas">
+				<Form>fraTitulo</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraUsuarioConJerarquias.pas">
+				<Form>fraUsuarioConJerarquias</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraUsuarioConSectorIntranet.pas">
+				<Form>fraUsuarioConSectorIntranet</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\usuarios\unArbolSectores.pas">
+				<Form>frmArbolSectores</Form>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unEstablecimientosTrabajador.pas">
+				<Form>frmEstablecimientosTrabajador</Form>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\unDlgBusSiniestro.pas">
+				<Form>frmDlgBusSiniestro</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unAgendaVistaEmpresa.pas">
+				<Form>frmAgendaVistaEmpresa</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unAgendaCargaConsulta.pas">
+				<Form>frmAgendaCargaConsulta</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\interfaces\unInterfaces.pas"/>
+			<DCCReference Include="..\..\comunes\interfaces\unAgenda.pas"/>
+			<DCCReference Include="..\..\comunes\unSIC.pas"/>
+			<DCCReference Include="..\comunes\forms\unSeleccionTareas.pas">
+				<Form>frmSeleccionTareas</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unDatosSiniestro.pas">
+				<Form>frmDatosSiniestro</Form>
+			</DCCReference>
+			<DCCReference Include="..\hys\unSeleccionResponsableHYS.pas">
+				<Form>frmSeleccionResponsableHYS</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRptResumenILT.pas">
+				<Form>qrResumenILT</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\frames\unFraFiltroArchivo.pas">
+				<Form>fraFiltroArchivo</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\frames\unfraArchJuicio.pas">
+				<Form>fraArchJuicio</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unfraProveedor.pas">
+				<Form>fraProveedor</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptNotaDenunciaGrave.pas">
+				<Form>qrNotaDenunciaGrave</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\redpres\reports\unRptCeseDeILT.pas">
+				<Form>rptCeseDeILT</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unCapturarCodigoBarras.pas">
+				<Form>frmCapturarCodigoBarras</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unCargaDocumentosDigitaliz.pas">
+				<Form>frmCargaDocumentosDigitaliz</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unConstantArchivo.pas"/>
+			<DCCReference Include="..\archivo_new\unArchivo.pas"/>
+			<DCCReference Include="..\archivo_new\unFrmConsultaCarpetas.pas">
+				<Form>FrmConsultaCarpetas</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unFrmSolicitudCarpeta.pas">
+				<Form>FrmSolicitudCarpeta</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unQrEtiquetasCarpetas.pas">
+				<Form>qrEtiquetasCarpetas</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\frames\unFraDetalleArchivo.pas">
+				<Form>fraDetalleArchivo</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unFrmDetalleArchivo.pas">
+				<Form>FrmDetalleArchivo</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unMovimientoCarpetas.pas">
+				<Form>frmMovimientoCarpetas</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unFrmCargaDocumentacion.pas">
+				<Form>frmCargaDocumentacion</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unQrDetalleLoteEstudio.pas">
+				<Form>QrDetalleLoteEstudio</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unReemplazoCarpetas.pas">
+				<Form>frmReemplazoCarpetas</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unfrmUbicacionActual.pas">
+				<Form>FrmUbicacionActual</Form>
+			</DCCReference>
+			<DCCReference Include="unManEmpresasVIP.pas">
+				<Form>frmManEmpresasVIP</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\SqlFuncs.pas"/>
+			<DCCReference Include="unManCMV_MOTIVOEMPRESAVIP.pas">
+				<Form>frmManCMV_MOTIVOEMPRESAVIP</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\comisiones\unComisiones.pas"/>
+			<DCCReference Include="..\afiliaciones\tesoreria\unTesoreria.pas"/>
+			<DCCReference Include="..\siniestros\reports\unRptCitacionPresidencia.pas">
+				<Form>qrCitacionPresidencia</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unImprimeContrato.pas">
+				<Form>frmImprimeContrato</Form>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unQRAnexoA.pas">
+				<Form>QRAnexoA</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unQRContrato.pas">
+				<Form>QRContrato</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unQRContrato2.pas">
+				<Form>QRContrato2</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unQRContrato3.pas">
+				<Form>QRContrato3</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unQrDetalleRemitoDevolucion.pas">
+				<Form>QrDetalleRemitoDevolucion</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosagenda\unfraEmpresaSolicitudAGENDA.pas">
+				<Form>fraEmpresaSolicitudAGENDA</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unQRContratoNomina.pas">
+				<Form>qrContratoNomina</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\unfraFirmante.pas">
+				<Form>fraFirmante</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\unFraEntidades.pas">
+				<Form>fraEntidades</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\Comunes\FRAMES\NEW\unfraSucursal.pas">
+				<Form>fraSucursal</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="unContratoVendedor2.pas">
+				<Form>frmContratoVendedor</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManCVS_VENTANILLA_SUBTEMAS.pas">
+				<Form>frmManCVS_VENTANILLA_SUBTEMAS</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="unManSEC_EMPRESASCOMPENSABLES.pas">
+				<Form>frmManSEC_EMPRESASCOMPENSABLES</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\modulosagenda\unfraDatoFechaAGENDA.pas">
+				<Form>fraDatoFecha</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unFrmArmadoLote.pas">
+				<Form>FrmArmadoLote</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unQrDetalleLote.pas">
+				<Form>QrDetalleLote</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unRptResumenLotes.pas">
+				<Form>qrResumenLotes</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\redpres\abm\unAvisosContrato.pas">
+				<Form>frmAvisosContrato</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unVerImagenes.pas">
+				<Form>frmVerImagenes</Form>
+			</DCCReference>
+			<DCCReference Include="..\archivo_new\unMensajeAlertaAGA.pas"/>
+			<DCCReference Include="..\..\comunes\unMensajeAlerta.pas"/>
+			<DCCReference Include="..\afiliaciones\reports\unQREntregaMaterial.pas">
+				<Form>QREntregaMaterial</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraWebBrowser.pas">
+				<Form>fraWebBrowser</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraGIS_APIv3.pas">
+				<Form>fraGIS_APIv3</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unGenerarMultiplesCartasPorContrato.pas">
+				<Form>frmGenerarMultiplesCartasPorContrato</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unAfiAdministracionCartas.pas">
+				<Form>frmAfiAdministracionCartas</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unImportCryptoSrt.pas"/>
+			<DCCReference Include="..\afiliaciones\unSeleccionarCarpetaSRT.pas">
+				<Form>frmSeleccionarCarpetaSRT</Form>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unGenerarMultiplesCartas.pas">
+				<Form>frmGenerarMultiplesCartas</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\unQRAvisoRecibo.pas">
+				<Form>rptAvisoRecibo</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unEnvioSMS.pas">
+				<Form>frmEnvioSMS</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unEsperaSimple.pas">
+				<Form>frmEsperaSimple</Form>
+			</DCCReference>
+			<DCCReference Include="..\controller\unCargaTablasSin.pas">
+				<Form>frmCargaTablasSin</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\IArtMail.pas"/>
+			<DCCReference Include="..\redpres\reports\unRptRemitoCartas.pas">
+				<Form>qrRemitoCartas</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\unDireccionCDO.pas">
+				<Form>frmDireccionCDO</Form>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\unJustificacionILT.pas">
+				<Form>frmJustificacionILT</Form>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptPedidoDocum.pas">
+				<Form>frmPedidoDocum</Form>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptAntecedentesLabYMed.pas">
+				<Form>frmRptAntecedentesLabYMed</Form>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\reports\unRptNotaReqCarDef.pas">
+				<Form>rptNotaReqCarDef</Form>
+			</DCCReference>
+			<DCCReference Include="..\dinerarias\reports\unRptReciboILPPerDef.pas">
+				<Form>frmReciboILPPerDef</Form>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unQRContratoPCP.pas">
+				<Form>QRContratoPCP</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\afiliaciones\reports\unQRAnexoPCP.pas">
+				<Form>QRAnexoPCP</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManCEN_ENCUESTA.pas">
+				<Form>frmManCEN_ENCUESTA</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManCEC_ENCUESTACATEGORIA.pas">
+				<Form>frmManCEN_ENCUESTACATEGORIA</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManCEP_ENCUESTAPREGUNTA.pas">
+				<Form>frmManCEN_ENCUESTAPREGUNTA</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unGestionDeEncuestas.pas">
+				<Form>frmGestionDeEncuestas</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\unSeleccionarFechaFinTrat.pas">
+				<Form>frmSeleccionarFechaFinTrat</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraTipoRegimen.pas">
+				<Form>fraTipoRegimen</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraPreguntas.pas">
+				<Form>fraPreguntas</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraPregunta.pas">
+				<Form>fraPregunta</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptEncuesta.pas">
+				<Form>qrEncuesta</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unEncuesta.pas"/>
+			<DCCReference Include="..\comunes\reports\unRptEncuestaEstadistica.pas">
+				<Form>qrEncuestaEstadistica</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unFiltroEncuestaEstadistica.pas">
+				<Form>frmFiltroEncuestaEstadistica</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManCVS_VISITA.pas">
+				<Form>frmManCVS_VISITA</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManCVC_VISITACATEGORIA.pas">
+				<Form>frmManCVC_VISITACATEGORIA</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unManCVT_VISITATEMA.pas">
+				<Form>frmManCVT_VISITATEMA</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraTema.pas">
+				<Form>fraTema</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\unVisita.pas"/>
+			<DCCReference Include="..\comunes\forms\unGestionDeVisitas.pas">
+				<Form>frmGestionDeVisitas</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptVisita.pas">
+				<Form>qrVisita</Form>
+				<DesignClass>TQuickRep</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\frames\new\unFraTemas.pas">
+				<Form>fraTemas</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unTexto.pas">
+				<Form>frmTexto</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\comunes\numeros.pas"/>
+			<DCCReference Include="..\..\comunes\unGIS.pas"/>
+			<DCCReference Include="..\..\comunes\unCobranzas.pas"/>
+			<DCCReference Include="..\comunes\unWSTramitesMedicos.pas">
+				<Form>$R *.RES</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unDocumentacion.pas">
+				<Form>frmDocumentacion</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unRemitoDocumentacion.pas">
+				<Form>frmRemitoDocumentacion</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unHistoricoDocumentacion.pas">
+				<Form>frmHistoricoDocumentacion</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unLstRemitosnoRecepcionados.pas">
+				<Form>frmLstRemitosnoRecepcionados</Form>
+			</DCCReference>
+			<DCCReference Include="..\siniestros\unSituacionDocumental.pas">
+				<Form>frmDocumentacion</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\unChat.pas">
+				<Form>frmChat</Form>
+			</DCCReference>
+			<DCCReference Include="..\comunes\forms\unEnviosVentanillaElectronica.pas">
+				<Form>frmEnviosVentanillaElectronica</Form>
+				<DesignClass>TFSForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\comunes\reports\unRptHistoriaEmpresa.pas">
+				<Form>frmRptHistoriaEmpresa</Form>
+			</DCCReference>
+			<None Include="Integrador.todo"/>
+			<RcItem Include="resources\LOGO_2009_BYN.dib">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>LOGO_2009_BYN</ResourceId>
+			</RcItem>
+			<RcItem Include="resources\LOGO_2009_BYN_COLOR.dib">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>LOGO_2009_BYN_COLOR</ResourceId>
+			</RcItem>
+			<RcItem Include="resources\LOGO_2009_COLOR.dib">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>LOGO_2009_COLOR</ResourceId>
+			</RcItem>
+			<RcItem Include="resources\LOGO_ART.dib">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>LOGO_ART</ResourceId>
+			</RcItem>
+			<RcItem Include="resources\LOGO_ART_NUEVO.dib">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>LOGO_ART_NUEVO</ResourceId>
+			</RcItem>
+			<RcItem Include="resources\LOGO_GBP.dib">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>LOGO_GBP</ResourceId>
+			</RcItem>
+			<RcItem Include="resources\SPLASH.dib">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>SPLASH</ResourceId>
+			</RcItem>
+			<RcItem Include="resources\LOGO_2009_BYN_CHICO.dib">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>LOGO_2009_BYN_CHICO</ResourceId>
+			</RcItem>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Source>
+						<Source Name="MainSource">Integrador.dpr</Source>
+					</Source>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">11274</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName">Provincia ART</VersionInfoKeys>
+						<VersionInfoKeys Name="FileDescription">Módulo de Integración</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName">Integrador</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename">Integrador.exe</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductName">Integrador</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments">Desarrollado por Pablo Tavasci Dozo para Provincia ART</VersionInfoKeys>
+					</VersionInfoKeys>
+					<Excluded_Packages>
+						<Excluded_Packages Name="C:\Program Files\FastReports\LibD16\dclfrxDB16.bpl">FastReport 4.0 DB Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+					</Excluded_Packages>
+				</Delphi.Personality>
+				<Platforms>
+					<Platform value="Win64">False</Platform>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+				<ModelSupport>False</ModelSupport>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')" Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+	</Project>

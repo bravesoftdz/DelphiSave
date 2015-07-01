@@ -1,0 +1,182 @@
+[FileVersion]
+Version=7.0
+[Compiler]
+A=8
+B=0
+C=1
+D=1
+E=0
+F=0
+G=1
+H=1
+I=1
+J=1
+K=0
+L=1
+M=0
+N=1
+O=1
+P=1
+Q=0
+R=0
+S=0
+T=0
+U=0
+V=1
+W=0
+X=1
+Y=2
+Z=1
+ShowHints=1
+ShowWarnings=1
+UnitAliases=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+NamespacePrefix=
+SymbolDeprecated=0
+SymbolLibrary=0
+SymbolPlatform=0
+UnitLibrary=0
+UnitPlatform=0
+UnitDeprecated=0
+HResultCompat=1
+HidingMember=1
+HiddenVirtual=1
+Garbage=1
+BoundsError=1
+ZeroNilCompat=1
+StringConstTruncated=1
+ForLoopVarVarPar=1
+TypedConstVarPar=1
+AsgToTypedConst=1
+CaseLabelRange=1
+ForVariable=1
+ConstructingAbstract=1
+ComparisonFalse=1
+ComparisonTrue=1
+ComparingSignedUnsigned=1
+CombiningSignedUnsigned=1
+UnsupportedConstruct=1
+FileOpen=1
+FileOpenUnitSrc=1
+BadGlobalSymbol=1
+DuplicateConstructorDestructor=1
+InvalidDirective=1
+PackageNoLink=1
+PackageThreadVar=1
+ImplicitImport=1
+HPPEMITIgnored=1
+NoRetVal=1
+UseBeforeDef=1
+ForLoopVarUndef=1
+UnitNameMismatch=1
+NoCFGFileFound=1
+MessageDirective=1
+ImplicitVariants=1
+UnicodeToLocale=1
+LocaleToUnicode=1
+ImagebaseMultiple=1
+SuspiciousTypecast=1
+PrivatePropAccessor=1
+UnsafeType=0
+UnsafeCode=0
+UnsafeCast=0
+[Linker]
+MapFile=0
+OutputObjs=0
+ConsoleApp=1
+DebugInfo=0
+RemoteSymbols=0
+MinStackSize=16384
+MaxStackSize=1048576
+ImageBase=4194304
+ExeDescription=
+[Directories]
+OutputDir=C:\DELPHI\EXES
+UnitOutputDir=C:\Delphi\LibsD7
+PackageDLLOutputDir=
+PackageDCPOutputDir=
+SearchPath=
+Packages=vcl;rtl;vclx;vcldb;dbrtl;JvCoreD7R;vclie;xmlrtl;inetdbbde;inet;inetdbxpress;soaprtl;dsnap;VclSmp;dbexpress;dbxcds;ibxpress;bdertl;vclshlctrls;IntrawebDB_50_70;Intraweb_50_70;dclOffice2k;IndyCore70;vclactnband;IndySystem70;IndyProtocols70;DJcl;JvStdCtrlsD7R;JvAppFrmD7R;JvBandsD7R;JvBDED7R;JvDBD7R;JvDlgsD7R;JvCmpD7R;JvCryptD7R;JvCtrlsD7R;JvCustomD7R;JvDockingD7R;JvDotNetCtrlsD7R;JvEDID7R;JvHMID7R;JvInspectorD7R;JvJansD7R;JvManagedThreadsD7R;JvMMD7R;JvNetD7R;JvPageCompsD7R;JvPluginD7R;JvPrintPreviewD7R;JvSystemD7R;JvTimeFrameworkD7R;JvUIBD7R;JvValidatorsD7R;JvWizardD7R;JvXPCtrlsD7R;adortl;visualclx;visualdbclx;sx_MAPI_d7;TMSD7;tmsxlsd7;ADOX25_D7;vcldbx;teeui;teedb;tee;ARTExportadorAccess7;ExPackD7;qrpt70;ARTComponentesD7;SortGridD7;AdvHttp7;PkgPowerPDFD7;P164_D70
+Conditionals=ART2;ARTUTILS;PAQUETE;SQLDIRECT6.2;ORACLE
+DebugSourceDirs=
+UsePackages=0
+[Parameters]
+RunParams=/username:fperez
+HostApplication=
+Launcher=
+UseLauncher=0
+DebugCWD=
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+[Version Info]
+IncludeVerInfo=1
+AutoIncBuild=0
+MajorVer=1
+MinorVer=1
+Release=0
+Build=15
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=11274
+CodePage=1252
+[Version Info Keys]
+CompanyName=Provincia A.R.T.
+FileDescription=
+FileVersion=1.1.0.15
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=portal.exe
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+[Excluded Packages]
+c:\program files\borland\delphi7\Projects\Bpl\DclTQR70.bpl=TeeChart 4 for QuickReport
+[HistoryLists\hlDebugSourcePath]
+Count=2
+Item0=\\NTSERVER\D5$\DCU\D5;\\Ntserver\d5$\Comunes\TERCEROS\NPDF\;$(DELPHI)\Source\Rtl\Sys;H:\FIRESOFT\StaticSuite\SOURCE\
+Item1=\\NTSERVER\D5$\DCU\D5;\\Ntserver\d5$\Comunes\TERCEROS\NPDF\;$(DELPHI)\Source\Rtl\Sys
+[HistoryLists\hlConditionals]
+Count=5
+Item0=ART2;ARTUTILS;PAQUETE;SQLDIRECT6.2;ORACLE
+Item1=ART2;ARTUTILS;PAQUETE;SQLDIRECT6.2
+Item2=ART2;ARTUTILS;PAQUETE
+Item3=ART2;ARTUTILS
+Item4=ART2;
+[HistoryLists\hlUnitAliases]
+Count=1
+Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[HistoryLists\hlSearchPath]
+Count=15
+Item0=C:\Archivos de programa\Borland\Delphi7\Source\ToolsAPI;C:\Delphi\Desarrollo\Comunes\FRAMES;C:\Delphi\Desarrollo\Comunes\FRAMES\NEW;C:\Delphi\Desarrollo\Comunes;C:\Delphi\Desarrollo\Comunes\REPOSIT
+Item1=C:\Archivos de programa\Borland\Delphi7\Source\ToolsAPI;C:\Delphi\Desarrollo\Comunes\FRAMES;C:\Delphi\Desarrollo\Comunes\FRAMES\NEW;C:\Delphi\Desarrollo\Comunes
+Item2=C:\Archivos de programa\Borland\Delphi7\Source\ToolsAPI;C:\Delphi\Desarrollo\Comunes\FRAMES;C:\Delphi\Desarrollo\Comunes\FRAMES\NEW
+Item3=\\NTSERVER\D5$\DCU\D5;\\NTSERVER\D5$\COMUNES;\\NTSERVER\D5$\PAQUETES;$(DELPHI)\RX\Units;$(DELPHI)\Source\Toolsapi;C:\Archivos de programa\SqlDir\Source;\\Ntserver\d5$\Paquetes\CEDIT;\\Ntserver\pkg5$;\\NtServer\d5$\ImpoExpo2\ScriptParser;c:\delphi\extras
+Item4=\\Ntserver\pkg5$\FIRESOFT\EditSuite\SOURCE-;$(DELPHI)\Lib\Debug;\\NTSERVER\D5$\DCU\D5;\\NTSERVER\D5$\COMUNES;\\NTSERVER\D5$\PAQUETES;$DELPHI\lib-;C:\Archivos de programa\SqlDir\Source;$(DELPHI)\RX\Units-;\\Ntserver\d5$\Comunes\TERCEROS\QrTee4D5;\\Ntserver\pkg5$-
+Item5=\\Ntserver\pkg5$\FIRESOFT\EditSuite\SOURCE-;$(DELPHI)\Lib\Debug;\\NTSERVER\D5$\DCU\D5;\\NTSERVER\D5$\COMUNES;\\NTSERVER\D5$\PAQUETES;$DELPHI\lib-;C:\Archivos de programa\SqlDir\Source;$(DELPHI)\RX\Units-;\\Ntserver\d5$\Comunes\TERCEROS\QrTee4D5-;\\Ntserver\pkg5$-
+Item6=\\Ntserver\pkg5$\FIRESOFT\EditSuite\SOURCE-;$(DELPHI)\Lib\Debug;\\NTSERVER\D5$\DCU\D5;\\NTSERVER\D5$\COMUNES;\\NTSERVER\D5$\PAQUETES;$DELPHI\lib-;C:\Archivos de programa\SqlDir\Source-;$(DELPHI)\RX\Units-;\\Ntserver\d5$\Comunes\TERCEROS\QrTee4D5-;\\Ntserver\pkg5$-
+Item7=\\Ntserver\pkg5$\FIRESOFT\EditSuite\SOURCE;$(DELPHI)\Lib\Debug;\\NTSERVER\D5$\DCU\D5;\\NTSERVER\D5$\COMUNES;\\NTSERVER\D5$\PAQUETES;$DELPHI\lib;C:\Archivos de programa\SqlDir\Source;$(DELPHI)\RX\Units;\\Ntserver\d5$\Comunes\TERCEROS\QrTee4D5;\\Ntserver\pkg5$
+Item8=$(DELPHI)\Lib\Debug;\\NTSERVER\D5$\DCU\D5;\\NTSERVER\D5$\COMUNES;\\NTSERVER\D5$\PAQUETES;$DELPHI\lib;C:\Archivos de programa\SqlDir\Source;$(DELPHI)\RX\Units;\\Ntserver\d5$\Comunes\TERCEROS\QrTee4D5;\\Ntserver\pkg5$;\\Ntserver\pkg5$\FIRESOFT\EditSuite\SOURCE
+Item9=$(DELPHI)\Lib\Debug;\\NTSERVER\D5$\DCU\D5;\\NTSERVER\D5$\COMUNES;\\NTSERVER\D5$\PAQUETES;$DELPHI\lib;C:\Archivos de programa\SqlDir\Source;$(DELPHI)\RX\Units;\\Ntserver\d5$\Comunes\TERCEROS\QrTee4D5;\\Ntserver\pkg5$
+Item10=$(DELPHI)\Lib\Debug;\\NTSERVER\D5$\DCU\D5;\\NTSERVER\D5$\COMUNES;\\NTSERVER\D5$\PAQUETES;$DELPHI\lib;C:\Archivos de programa\SqlDir\Source;$(DELPHI)\RX\Units;\\Ntserver\d5$\Comunes\TERCEROS\QrTee4D5;\\Ntserver\pkg5$\FIRESOFT\QueryPrint\SOURCE
+Item11=$(DELPHI)\Lib\Debug;\\NTSERVER\D5$\DCU\D5;\\NTSERVER\D5$\COMUNES;\\NTSERVER\D5$\PAQUETES;$DELPHI\lib;C:\Archivos de programa\SqlDir\Source;$(DELPHI)\RX\Units;\\Ntserver\d5$\Comunes\TERCEROS\QrTee4D5
+Item12=$(DELPHI)\Lib\Debug;\\NTSERVER\D5$\DCU\D5;\\NTSERVER\D5$\COMUNES;\\NTSERVER\D5$\PAQUETES;$DELPHI\lib;C:\Archivos de programa\SqlDir\Source;$(DELPHI)\RX\Units
+Item13=$(DELPHI)\quickrpt;$(DELPHI)\lib;C:\delphi\LIBS;C:\Archivos de programa\Borland\Delphi5\Source\Vcl
+Item14=$(DELPHI)\quickrpt;\\NTSERVER\D5$\DCU\D5;\\NTSERVER\D5$\PAQUETES;\\NTSERVER\D5$\COMUNES;$(DELPHI)\Rx\Units;C:\Archivos de programa\SqlDir\Source
+[HistoryLists\hlUnitOutputDirectory]
+Count=2
+Item0=C:\Delphi\LibsD7
+Item1=C:\DELPHI\LIBS
+[HistoryLists\hlOutputDirectorry]
+Count=1
+Item0=C:\DELPHI\EXES
+[HistoryLists\hlBPLOutput]
+Count=1
+Item0=C:\DELPHI\LIBS
+[HistoryLists\hlDCPOutput]
+Count=1
+Item0=C:\DELPHI\LIBS
